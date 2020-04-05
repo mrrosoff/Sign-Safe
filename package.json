@@ -1,5 +1,5 @@
 {
-  "name": "react-express-template",
+  "name": "blockchain-document-dapp",
   "version": "1.0.0",
   "description": "Project Short Description",
   "scripts": {
@@ -49,5 +49,8 @@
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1"
+  },
+  "babel": {
+    "presets": ["@babel/preset-env", "@babel/preset-react"]
   }
 }
