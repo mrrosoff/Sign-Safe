@@ -23,9 +23,9 @@ const Layout = props =>
 				<Grid item>
 					<Button
 						variant={"contained"}
-						onClick={() => props.produceSnackBar("I am an error message")}
+						onClick={() => props.produceSnackBar("I am an warning message", "warning")}
 					>
-						Click Me To Trigger An Error
+						Click Me To Trigger An Warning
 					</Button>
 				</Grid>
 			</Grid>

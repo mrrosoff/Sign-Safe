@@ -27,5 +27,3 @@ The following resources are used in this project.
 * [Material UI](https://material-ui.com/)
 * [Framer-Motion](https://www.framer.com/motion/)
 * [Notistack](https://github.com/iamhosseindhv/notistack)
-* [Express](https://expressjs.com/)
-* [Morgan](https://github.com/expressjs/morgan)
