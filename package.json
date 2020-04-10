@@ -1,12 +1,10 @@
 {
-  "name": "blockchain-document-dapp",
+  "name": "sign-safe",
   "version": "1.0.0",
-  "description": "Project Short Description",
+  "description": "An E-Contract Solution For A Modern World",
   "scripts": {
-    "devServer": "nodemon server/index.js",
-    "devClient": "webpack-dev-server --mode development --devtool inline-source-map",
-    "dev": "concurrently --kill-others-on-fail \"npm run devClient\" \"npm run devServer\"",
-    "prod": "webpack --mode production && node server/index.js"
+    "dev": "webpack-dev-server --mode development --devtool inline-source-map",
+    "prod": "webpack --mode production"
   },
   "author": "",
   "license": "ISC",
@@ -49,8 +47,5 @@
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1"
-  },
-  "babel": {
-    "presets": ["@babel/preset-env", "@babel/preset-react"]
   }
 }
