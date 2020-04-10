@@ -20,7 +20,7 @@ const Layout = props =>
 					<Typography align={"center"}>An item</Typography>
 				</Grid>
 				<Grid item>
-					<Typography align={"center"}>Another Item</Typography>
+					<Typography align={"center"}>Another Item that has spacing</Typography>
 				</Grid>
 				<Grid item>
 					<PrimaryButton
