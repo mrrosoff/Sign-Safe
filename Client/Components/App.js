@@ -6,7 +6,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 import { SnackbarProvider, useSnackbar } from 'notistack';
 
-import Layout from "./Layout";
+import Layout from "./Pages/Layout";
 
 const LoadApp = () => {
 
@@ -25,8 +25,8 @@ const App = () => {
             createMuiTheme({
                 palette: {
                     type: prefersDarkMode ? 'dark' : 'light',
-                    primary: { main: "#123456" },
-                    secondary: { main: "#123456"}
+                    primary: { main: "#157F1F" },
+                    secondary: { main: "#00A5CF"}
                 },
             }),
         [prefersDarkMode],

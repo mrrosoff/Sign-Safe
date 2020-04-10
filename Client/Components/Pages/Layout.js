@@ -2,6 +2,8 @@ import React from "react";
 
 import { Button, Container, Grid, Typography } from "@material-ui/core";
 
+import PrimaryButton from "../Elements/PrimaryButton";
+
 const Layout = props =>
 {
 	return(
@@ -21,13 +23,11 @@ const Layout = props =>
 					<Typography align={"center"}>Another Item</Typography>
 				</Grid>
 				<Grid item>
-					<Button
-						variant={"contained"}
+					<PrimaryButton
+						text={"Click Me To Trigger An Warning"}
 						onClick={() => props.produceSnackBar("I am an warning message", "warning")}
-					>
-						Click Me To Trigger An Warning
-					</Button>
-				</Grid>
+					/>
+					</Grid>
 			</Grid>
 		</Container>
 
