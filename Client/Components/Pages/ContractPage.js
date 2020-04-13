@@ -19,7 +19,8 @@ const ContractPage = props =>
 				let urlStatusData = r.data[0].urlStatus;
 				if (urlStatusData !== urlStatus) {
 					console.log("Change Detected", urlStatusData, urlStatus);
-					setURLStatus(urlStatusData)
+					setURLStatus(urlStatusData);
+					console.log("After Set", urlStatusData, urlStatus);
 				}
 			})
 		}, 3000);
