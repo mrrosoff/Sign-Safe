@@ -6,7 +6,7 @@ export function callLambdaFunction(requestType, requestBody) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(requestBody)
   };
-  return processRestfulAPI("./netlify/functions/" + requestType, requestOptions);
+  return processRestfulAPI("/.netlify/functions/" + requestType, requestOptions);
 }
 
 async function processRestfulAPI(restfulAPI, requestOptions) {
