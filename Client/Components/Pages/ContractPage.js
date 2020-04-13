@@ -55,6 +55,7 @@ const ContractPage = props =>
 
 const updateContractState = (url, newState) =>
 {
+	console.log(newState);
 	callLambdaFunction("updateURLStatus", {
 		url: url, urlState: newState
 	}).then(r => console.log(r));
