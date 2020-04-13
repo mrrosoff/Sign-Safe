@@ -1,18 +1,17 @@
 const { MongoClient } = require('mongodb');
 
-const getData = async () => {
+const getData = async (data) => {
 
-	// const uri = "mongodb+srv://mrosoff:zlysuHOUVJoUF8r5@sign-safe-zol3w.mongodb.net/test?retryWrites=true&w=majority";
-	// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
+	const uri = "mongodb+srv://mrosoff:zlysuHOUVJoUF8r5@sign-safe-zol3w.mongodb.net/test?retryWrites=true&w=majority";
+	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
 
 	try
 	{
-		// await client.connect();
-		//return await client
-		//.db('sample_airbnb')
-		//.collection('listingsAndReviews')
-		// .findOne({name: 'Apt Linda Vista Lagoa - Rio'});
-		return "Test";
+		await client.connect();
+		return await client
+		.db('sample_weatherdata')
+		.collection('data')
+		.find({}).maxTimeMS(1000).toArray();
 	}
 
 	catch (err)
@@ -22,7 +21,7 @@ const getData = async () => {
 
 	finally
 	{
-		// await client.close();
+		await client.close();
 	}
 };
 
@@ -30,11 +29,11 @@ exports.handler = async function(event, context) {
 
 	try
 	{
-		const data = await getData();
+		const data = await getData(JSON.parse(event.body));
 		return (
 			{
 				statusCode: 200,
-				body: JSON.stringify(JSON.parse(event.body))
+				body: JSON.stringify(data)
 			}
 		);
 	}
