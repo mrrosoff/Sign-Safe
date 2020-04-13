@@ -16,17 +16,13 @@
     "@mui-treasury/components": "^0.3.12",
     "@mui-treasury/styles": "^0.3.6",
     "@mui-treasury/styling": "^0.2.7",
-    "body-parser": "^1.19.0",
     "clsx": "latest",
-    "express": "^4.17.1",
     "framer-motion": "^1.8.4",
     "mongodb": "^3.5.5",
-    "morgan": "^1.10.0",
     "notistack": "^0.9.7",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-transition-group": "^1.2.1",
-    "serverless-http": "^2.3.2",
     "styled-components": "^5.0.0"
   },
   "devDependencies": {
