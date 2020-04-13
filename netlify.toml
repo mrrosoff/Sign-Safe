@@ -1,18 +1,30 @@
 [build]
 
+  # Directory of Built Files
+
   publish = "dist/"
 
-  # Default build command.
+  # Production Build Command
+
   command = "npm run prod"
 
-  # Directory with the Lambda functions to deploy to AWS.
+  # Directory with the Lambda functions to deploy to AWS
+
   functions = "Lambda/"
 
-[[redirects]]
+[dev]
 
-  from = "/*"
-  to = "/index.html"
-  status = 200
+  # Development Build Command
+
+  command = "./netlify-dev.sh"
+
+  # Webpack-Dev-Server Port
+
+  targetPort = 3000
+
+  publish = "./dist"
+  autoLaunch = true
+
 
 [[headers]]
 
