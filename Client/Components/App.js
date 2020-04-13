@@ -6,14 +6,14 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 import { SnackbarProvider, useSnackbar } from 'notistack';
 
-import Layout from "./Pages/Layout";
+import Router from "./Pages/Router";
 
 const LoadApp = () => {
 
     const { enqueueSnackbar } = useSnackbar();
     const produceSnackBar = (message, variant = "error") => enqueueSnackbar(message, { variant: variant });
 
-    return <Layout produceSnackBar={produceSnackBar}/>;
+    return <Router produceSnackBar={produceSnackBar}/>;
 };
 
 const App = () => {
