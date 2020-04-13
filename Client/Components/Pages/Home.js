@@ -29,7 +29,10 @@ const Home = props =>
 				<Grid item>
 					<PrimaryButton
 						text={"Test Mongo"}
-						onClick={() => callLambdaFunction("mongo", {hello: "hi"}).then(r => r.json()).then(r => console.log(r))}
+						onClick={() => callLambdaFunction("mongo", {hello: "hi"}).then(r => {
+							console.log(r);
+							r.json()
+						}).then(r => console.log(r))}
 					/>
 				</Grid>
 			</Grid>
