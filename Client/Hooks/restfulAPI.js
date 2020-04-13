@@ -1,12 +1,8 @@
 import axios from 'axios';
 
 export function callLambdaFunction(requestType, requestBody) {
-  const requestOptions = {
-    method: "POST",
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(requestBody)
-  };
-  return processRestfulAPI("/.netlify/functions/" + requestType, requestOptions);
+
+  return processRestfulAPI("/.netlify/functions/" + requestType, JSON.stringify(requestBody));
 }
 
 async function processRestfulAPI(restfulAPI, requestOptions) {
