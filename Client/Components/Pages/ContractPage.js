@@ -22,7 +22,7 @@ const ContractPage = props =>
 					setURLStatus(urlStatusData)
 				}
 			})
-		}, 1000);
+		}, 3000);
 		return () => clearInterval(interval);
 	}, []);
 
