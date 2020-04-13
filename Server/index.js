@@ -1,3 +1,5 @@
+import main from "./Mongo";
+
 const express = require('express');
 const serverless = require('serverless-http');
 
@@ -10,11 +12,6 @@ app.use(bodyParser);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-
-function updateDatabase(data) {
-	return newValue;
-}
 
 app.post('/api/', (req, res) => console.log(req.body.body));
 

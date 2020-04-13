@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { Container, Grid, Typography } from "@material-ui/core";
 
 import PrimaryButton from "../Elements/PrimaryButton";
-import main from "../../Hooks/Mongo";
 
 const Home = props =>
 {
