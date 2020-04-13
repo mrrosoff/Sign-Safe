@@ -19,6 +19,7 @@
     "clsx": "latest",
     "framer-motion": "^1.8.4",
     "mongodb": "^3.5.5",
+    "node-fetch": "^2.6.0",
     "notistack": "^0.9.7",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
