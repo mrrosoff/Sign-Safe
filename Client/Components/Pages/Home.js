@@ -6,6 +6,8 @@ import { Container, Grid, Typography } from "@material-ui/core";
 
 import PrimaryButton from "../Elements/PrimaryButton";
 
+import { callLambdaFunction }from "../../Hooks/restfulAPI"
+
 const Home = props =>
 {
 	return(
@@ -27,7 +29,7 @@ const Home = props =>
 				<Grid item>
 					<PrimaryButton
 						text={"Test Mongo"}
-						onClick={() => main().catch(console.error)}
+						onClick={() => callLambdaFunction("mongo", {hello: "hi"})}
 					/>
 				</Grid>
 			</Grid>
