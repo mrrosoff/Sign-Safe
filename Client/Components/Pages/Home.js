@@ -1,10 +1,12 @@
 import React from "react";
 
-import { Button, Container, Grid, Typography } from "@material-ui/core";
+import { Link } from "react-router-dom";
+
+import { Container, Grid, Typography } from "@material-ui/core";
 
 import PrimaryButton from "../Elements/PrimaryButton";
 
-const Layout = props =>
+const Home = props =>
 {
 	return(
 		<Container>
@@ -17,21 +19,21 @@ const Layout = props =>
 				style={{height: "100vh"}}
 			>
 				<Grid item>
-					<Typography align={"center"}>An item</Typography>
+					<Link to="/"><Typography align={"center"}>Home</Typography></Link>
 				</Grid>
 				<Grid item>
-					<Typography align={"center"}>Another Item that has spacing</Typography>
+					<Link to="/test"><Typography align={"center"}>Test</Typography></Link>
 				</Grid>
 				<Grid item>
 					<PrimaryButton
-						text={"Click Me To Trigger An Warning"}
-						onClick={() => props.produceSnackBar("I am an warning message", "warning")}
+						text={"Test Mongo"}
+						onClick={() => main().catch(console.error)}
 					/>
-					</Grid>
+				</Grid>
 			</Grid>
 		</Container>
 
 	);
 };
 
-export default Layout;
+export default Home;
