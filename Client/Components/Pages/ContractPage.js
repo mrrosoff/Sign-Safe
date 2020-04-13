@@ -9,23 +9,7 @@ import {PrimaryButton} from "../Elements/Buttons";
 const ContractPage = props =>
 {
 	let { contractURL } = useParams();
-	let [urlStatus, setURLStatus] = useState(null);
-
-	useEffect(() => {
-		const interval = setInterval(() => {
-			callLambdaFunction("getURLStatus", {
-				url: contractURL
-			}).then(r => {
-				let urlStatusData = r.data[0].urlStatus;
-				if (urlStatusData !== urlStatus) {
-					console.log("Change Detected", urlStatusData, urlStatus);
-					setURLStatus(urlStatusData);
-					console.log("After Set", urlStatusData, urlStatus);
-				}
-			})
-		}, 3000);
-		return () => clearInterval(interval);
-	}, []);
+	let [urlStatus, setUrlStatus] = useState(1);
 
 	return(
 		<Container>
@@ -45,21 +29,33 @@ const ContractPage = props =>
 				<Grid item>
 					<PrimaryButton
 						text={"Update URL State"}
-						onClick={() => updateContractState(contractURL, urlStatus + 1)}
+						onClick={() => updateContractState(contractURL, urlStatus, setUrlStatus, 1)}
 					/>
 				</Grid>
 			</Grid>
 		</Container>
-
 	);
 };
 
-const updateContractState = (url, newState) =>
+const checkURLStatus = (contractURL, urlStatus, setUrlStatus) => {
+
+	callLambdaFunction("getURLStatus", {
+		url: contractURL
+	}).then(r => {
+		let newUrlStatus = r.data[0].urlStatus;
+		if (newUrlStatus !== urlStatus) {
+			setUrlStatus(newUrlStatus);
+		}
+	});
+};
+
+const updateContractState = async (contractURL, urlStatus, setUrlStatus, change) =>
 {
-	console.log(newState);
+	await checkURLStatus(contractURL, urlStatus, setUrlStatus);
 	callLambdaFunction("updateURLStatus", {
-		url: url, urlState: newState
+		url: contractURL, urlStatus: urlStatus + change
 	}).then(r => console.log(r));
+	setUrlStatus(urlStatus + change);
 };
 
 export default ContractPage;
