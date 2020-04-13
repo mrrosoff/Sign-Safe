@@ -4,6 +4,7 @@
   "description": "An E-Contract Solution For A Modern World",
   "scripts": {
     "dev": "webpack-dev-server --mode development --devtool inline-source-map",
+    "netDev": "netlify dev",
     "prod": "webpack --mode production"
   },
   "author": "",
