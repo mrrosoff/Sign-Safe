@@ -12,9 +12,18 @@ const ContractPage = props =>
 	let [urlStatus, setURLStatus] = useState(null);
 
 	useEffect(() => {
-		callLambdaFunction("getURLStatus", {
-			url: contractURL
-		}).then(r => setURLStatus(r.data[0].urlStatus))
+		const interval = setInterval(() => {
+			callLambdaFunction("getURLStatus", {
+				url: contractURL
+			}).then(r => {
+				let urlStatusData = r.data[0].urlStatus;
+				if (urlStatusData !== urlStatus) {
+					console.log("Change Detected");
+					setURLStatus(urlStatusData)
+				}
+			})
+		}, 1000);
+		return () => clearInterval(interval);
 	}, []);
 
 	return(
@@ -35,7 +44,7 @@ const ContractPage = props =>
 				<Grid item>
 					<PrimaryButton
 						text={"Update URL State"}
-						onClick={() => updateContractState(contractURL, urlStatus + 1, setURLStatus)}
+						onClick={() => updateContractState(contractURL, urlStatus + 1)}
 					/>
 				</Grid>
 			</Grid>
@@ -44,13 +53,11 @@ const ContractPage = props =>
 	);
 };
 
-const updateContractState = (url, newState, setState) =>
+const updateContractState = (url, newState) =>
 {
 	callLambdaFunction("updateURLStatus", {
 		url: url, urlState: newState
 	}).then(r => console.log(r));
-
-	setState(newState);
 };
 
 export default ContractPage;
