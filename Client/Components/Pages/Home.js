@@ -1,41 +1,70 @@
 import React from "react";
 
-import { Link } from "react-router-dom";
+import { Box, Container, Grid, Paper, TextField, Typography } from "@material-ui/core";
 
-import { Container, Grid, Typography } from "@material-ui/core";
-
-import PrimaryButton from "../Elements/PrimaryButton";
-
+import { PrimaryButton } from "../Elements/Buttons";
 import { callLambdaFunction }from "../../Hooks/restfulAPI"
 
 const Home = props =>
 {
 	return(
 		<Container>
-			<Grid
-				container
-				justify={"center"}
-				alignItems={"center"}
-				alignContent={"center"}
-				spacing={2}
-				style={{height: "100vh"}}
-			>
-				<Grid item>
-					<Link to="/"><Typography align={"center"}>Home</Typography></Link>
-				</Grid>
-				<Grid item>
-					<Link to="/test"><Typography align={"center"}>Test</Typography></Link>
-				</Grid>
-				<Grid item>
-					<PrimaryButton
-						text={"Test Mongo"}
-						onClick={() => callLambdaFunction("mongo", {hello: "hi"}).then(r => console.log(r.data))}
-					/>
-				</Grid>
-			</Grid>
+			<Box m={4} >
+				<Paper>
+					<Grid
+						container
+						justify={"center"}
+						alignItems={"center"}
+						alignContent={"center"}
+						spacing={4}
+					>
+						<Grid item>
+							<PrimaryButton
+								text={"Create A Contract"}
+								onClick={() => generateNewURLAndGo()}
+							/>
+						</Grid>
+						<Grid item xs={12}>
+							<Typography align={"center"}>or</Typography>
+						</Grid>
+						<Grid item>
+							<TextField
+								label={"Enter A Contract Address"}
+								variant={"outlined"}
+							/>
+						</Grid>
+					</Grid>
+				</Paper>
+			</Box>
 		</Container>
 
 	);
 };
+
+const generateNewURLAndGo = () => {
+
+	function randomStr(len) {
+
+		let ans = '';
+		let possibleCharacters = 'abcdefghijklmnopqrstuvwxyz1234567890';
+
+		for (let i = 0; i < len; i++)
+		{
+			ans += possibleCharacters[Math.floor(Math.random() * possibleCharacters.length)];
+		}
+
+		return ans;
+	}
+
+	let newRandomURL = randomStr(20);
+
+	callLambdaFunction("pushURLInitialStatus", {
+		url: newRandomURL,
+		urlStatus: 1
+	}).then(r => console.log(r));
+
+	window.location.href = window.location + newRandomURL;
+};
+
 
 export default Home;

@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb');
 
-const getData = async (data) => {
+const getURLStatus = async (data) => {
 
 	const uri = "mongodb+srv://mrosoff:zlysuHOUVJoUF8r5@sign-safe-zol3w.mongodb.net/test?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
@@ -8,13 +8,11 @@ const getData = async (data) => {
 	try
 	{
 		await client.connect();
-		return await client
-		.db('sample_weatherdata')
-		.collection('data')
-		.findOne({ st: "x+47600-047900" });
+		return await client.db('URL-Data').collection('URL-Status')
+		.find({ url: data.url }).toArray();
 	}
 
-	catch (err)
+catch (err)
 	{
 		console.log(err);
 	}
@@ -29,7 +27,7 @@ exports.handler = async function(event, context) {
 
 	try
 	{
-		const data = await getData();
+		const data = await getURLStatus(JSON.parse(event.body));
 		return (
 			{
 				statusCode: 200,
