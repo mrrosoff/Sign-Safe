@@ -10,13 +10,14 @@ export function callLambdaFunction(requestType, requestBody) {
 }
 
 async function processRestfulAPI(restfulAPI, requestOptions) {
+
   try
   {
-    let response = await axios.post(restfulAPI, requestOptions);
-    return { statusCode: response.status, statusText: response.statusText, body: response };
+    return await axios.post(restfulAPI, requestOptions);
   }
+
   catch(err)
   {
-    return { statusCode: 404, statusText: 'Resource Not Found', body: null }
+    console.error('Resource Not Found');
   }
 }
