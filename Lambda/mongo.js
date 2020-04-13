@@ -22,7 +22,7 @@ const getData = async () => {
 
 	finally
 	{
-		await client.close();
+		// await client.close();
 	}
 };
 
@@ -30,12 +30,11 @@ exports.handler = async function(event, context) {
 
 	try
 	{
-		console.log(event, context);
 		const data = await getData();
 		return (
 			{
 				statusCode: 200,
-				body: JSON.stringify({ id: data._id })
+				body: JSON.stringify(event)
 			}
 		);
 	}
