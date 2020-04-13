@@ -11,7 +11,7 @@ const getData = async (data) => {
 		return await client
 		.db('sample_weatherdata')
 		.collection('data')
-		.find({}).maxTimeMS(1000).max(10).toArray();
+		.findOne({ st: "x+47600-047900" });
 	}
 
 	catch (err)
