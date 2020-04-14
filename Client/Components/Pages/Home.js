@@ -3,66 +3,101 @@ import React, { useState } from "react";
 import { Box, Container, Grid, Paper, TextField, Typography } from "@material-ui/core";
 
 import { PrimaryButton } from "../Elements/Buttons";
-import { callLambdaFunction }from "../../Hooks/restfulAPI"
+import { callLambdaFunction }from "../../Hooks/getDatabase"
 
 const Home = props =>
 {
 	let [urlText, setUrlText] = useState("");
 
+	return <Layout urlText={urlText} setUrlText={setUrlText} {...props} />;
+};
+
+
+const Layout = props =>
+{
 	return(
 		<Container>
-			<Box m={4} >
+			<Grid
+				container
+				justify={"center"}
+				alignItems={"center"}
+				alignContent={"center"}
+				style={{height: "100vh"}}
+			>
 				<Paper>
-					<Grid
-						container
-						justify={"center"}
-						alignItems={"center"}
-						alignContent={"center"}
-						spacing={4}
-					>
-						<Grid item>
-							<PrimaryButton
-								text={"Create A Contract"}
-								onClick={() => generateNewURLAndGo()}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<Typography align={"center"}>or</Typography>
-						</Grid>
-						<Grid item>
-							<Grid
-								container
-								justify={"center"}
-								alignItems={"center"}
-								alignContent={"center"}
-								spacing={4}
-								>
-								<Grid item>
-									<TextField
-										variant={"outlined"}
-										label={"Enter A Contract Address"}
-										value={urlText}
-										onChange={(e) => setUrlText(e.target.value)}
-									/>
-								</Grid>
-								<Grid item>
-									<PrimaryButton
-										text={"Go!"}
-										onClick={() => window.location.href = urlText}
-									/>
-								</Grid>
-							</Grid>
-
-						</Grid>
-					</Grid>
+					<Box m={4}>
+						<HomeContent {...props} />
+					</Box>
 				</Paper>
-			</Box>
+			</Grid>
 		</Container>
-
 	);
 };
 
-const generateNewURLAndGo = () => {
+
+const HomeContent = props =>
+{
+	return(
+		<Grid
+			container
+			justify={"center"}
+			alignItems={"center"}
+			alignContent={"center"}
+			spacing={4}
+		>
+			<Grid item xs={12}>
+				<Typography variant={"h3"} align={"center"}>Sign Safe</Typography>
+			</Grid>
+			<Grid item xs={12}>
+				<Typography variant={"body1"} align={"center"}>An E-Contract Solution For A Modern World</Typography>
+			</Grid>
+			<Grid item>
+				<PrimaryButton
+					text={"Create A New Contract"}
+					onClick={() => generateNewURLAndGo(props.ethAccount)}
+				/>
+			</Grid>
+			<Grid item xs={12}>
+				<Typography align={"center"}>or</Typography>
+			</Grid>
+			<Grid item>
+				<ExistingURLSection {...props} />
+			</Grid>
+		</Grid>
+	)
+};
+
+
+const ExistingURLSection = props =>
+{
+	return(
+		<Grid
+			container
+			justify={"center"}
+			alignItems={"center"}
+			alignContent={"center"}
+			spacing={4}
+		>
+			<Grid item>
+				<TextField
+					variant={"outlined"}
+					label={"Contract Address"}
+					value={props.urlText}
+					onChange={(e) => props.setUrlText(e.target.value)}
+				/>
+			</Grid>
+			<Grid item>
+				<PrimaryButton
+					text={"Go!"}
+					onClick={() => window.location.href = props.urlText}
+				/>
+			</Grid>
+		</Grid>
+	)
+};
+
+
+const generateNewURLAndGo = (creatorAddress) => {
 
 	function randomStr(len) {
 
@@ -77,11 +112,15 @@ const generateNewURLAndGo = () => {
 		return ans;
 	}
 
-	let newRandomURL = randomStr(20);
+	let newRandomURL = randomStr(8);
 
-	callLambdaFunction("pushURLInitialStatus", {
+	callLambdaFunction("createURL", {
 		url: newRandomURL,
-		urlStatus: 1
+		urlStatus: [{
+			address: creatorAddress,
+			status: 0
+		}],
+		contractOwner: creatorAddress
 	}).then(r => console.log(r));
 
 	window.location.href = window.location + newRandomURL;

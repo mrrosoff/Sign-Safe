@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb');
 
-const pushURLInitialStatus = async (data) => {
+const updateURLAccountStatus = async (data) => {
 
 	const uri = "mongodb+srv://mrosoff:zlysuHOUVJoUF8r5@sign-safe-zol3w.mongodb.net/test?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
@@ -9,10 +9,10 @@ const pushURLInitialStatus = async (data) => {
 	{
 		await client.connect();
 		return await client.db('URL-Data').collection('URL-Status')
-		.insertOne(data);
+		.updateOne({ url: data.url, "urlStatus.address": data.address }, { $set: { "urlStatus.$.status": data.urlStatus } });
 	}
 
-	catch (err)
+catch (err)
 	{
 		console.log(err);
 	}
@@ -27,7 +27,7 @@ exports.handler = async function(event, context) {
 
 	try
 	{
-		const data = await pushURLInitialStatus(JSON.parse(event.body));
+		const data = await updateURLAccountStatus(JSON.parse(event.body));
 		return (
 			{
 				statusCode: 200,

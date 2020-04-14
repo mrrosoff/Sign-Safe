@@ -1,36 +1,74 @@
-import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-import {Container, Grid, Typography} from "@material-ui/core";
-import {callLambdaFunction} from "../../Hooks/restfulAPI";
-import {PrimaryButton} from "../Elements/Buttons";
+import {Box, Container, Grid, Paper} from "@material-ui/core";
+
+import {callLambdaFunction, checkURLStatus} from "../../Hooks/getDatabase";
+
+import ContractPageLoading from "./ContractPages/ContractPageLoading";
+import ContractPageCreator from "./ContractPages/ContractPageCreator";
+import ContractPageOther from "./ContractPages/ContractPageOther";
 
 const ContractPage = props =>
 {
-	let { contractURL } = useParams();
+	let { contractUrl } = useParams();
 	let [urlStatus, setUrlStatus] = useState(null);
+	let [isContractOwner, setIsContractOwner] = useState(null);
 
 	const firstUpdate = useRef(true);
 
-	useLayoutEffect(() => {
-		checkURLStatus(contractURL, props.produceSnackBar).then(r => setUrlStatus(r));
-	}, []);
+	useEffect(() =>
+	{
+		if(props.ethAccount)
+		{
+			checkURLStatus(contractUrl, props.ethAccount, setUrlStatus, setIsContractOwner, props.produceSnackBar)
+			.then(r => { console.log(r); setUrlStatus(r) });
+			firstUpdate.current = false;
+		}
+	}, [props.ethAccount]);
 
-	useEffect(() => {
+	useEffect(() =>
+	{
 		if (!firstUpdate.current)
 		{
-			callLambdaFunction("updateURLStatus", {
-				url: contractURL, urlStatus: urlStatus
-			}).then(r => console.log("Update Database to", urlStatus, ". Log:", r));
+			callLambdaFunction("updateURLAccountStatus", {
+				url: contractUrl, urlStatus: urlStatus, address: props.ethAccount
+			})
+			.then(r => console.log(r));
 		}
 
 		else
 		{
 			firstUpdate.current = false;
 		}
-
 	}, [urlStatus]);
+
+	return (
+		<Layout
+			contractUrl={contractUrl}
+			urlStatus={urlStatus}
+			setUrlStatus={setUrlStatus}
+			isContractOwner={isContractOwner}
+			setIsContractOwner={setIsContractOwner}
+			{...props}
+		/>
+	);
+};
+
+const Layout = props =>
+{
+	let pageType = <ContractPageLoading {...props}/>;
+
+	if(props.isContractOwner)
+	{
+		pageType = <ContractPageCreator {...props}/>;
+	}
+
+	else if (props.isContractOwner !== null)
+	{
+		pageType = <ContractPageOther {...props}/>;
+	}
 
 	return(
 		<Container>
@@ -39,52 +77,17 @@ const ContractPage = props =>
 				justify={"center"}
 				alignItems={"center"}
 				alignContent={"center"}
-				spacing={2}
 				style={{height: "100vh"}}
 			>
-				<Grid item>
-					<Typography align={"center"}>
-						This URL ({contractURL}) is at status: {urlStatus}
-					</Typography>
-				</Grid>
-				<Grid item>
-					<PrimaryButton
-						text={"Update URL State"}
-						onClick={() => updateContractState(contractURL, urlStatus, setUrlStatus, urlStatus + 1, props.produceSnackBar)}
-					/>
-				</Grid>
+				<Paper>
+					<Box m={4}>
+						{pageType}
+					</Box>
+				</Paper>
 			</Grid>
 		</Container>
 	);
 };
 
-const checkURLStatus = (contractURL, produceSnackBar) =>
-{
-	return callLambdaFunction("getURLStatus", {
-		url: contractURL
-	}).then(r => {
-		if (r.data[0]) {
-			return r.data[0].urlStatus;
-		} else {
-			produceSnackBar("This Contract Address Does Not Exist, Redirecting...");
-			setTimeout(() => {
-				window.location.href = window.location.protocol + "//" + window.location.host
-			}, 3000)
-		}
-	});
-};
-
-const updateContractState = async (contractURL, urlStatus, setUrlStatus, newStatus, produceSnackBar) =>
-{
-	let databaseStatus;
-	await checkURLStatus(contractURL, produceSnackBar).then(result => databaseStatus = result);
-
-	if(databaseStatus !== urlStatus) {
-		produceSnackBar("Synchronization Issue! Please Try Again.");
-		setUrlStatus(databaseStatus);
-	} else {
-		setUrlStatus(newStatus);
-	}
-};
 
 export default ContractPage;
