@@ -9,37 +9,28 @@ const Home = props =>
 {
 	let [urlText, setUrlText] = useState("");
 
-	return(
-		<Layout urlText={urlText} setUrlText={setUrlText} {...props} />
-	);
+	return <Layout urlText={urlText} setUrlText={setUrlText} {...props} />;
 };
 
 
 const Layout = props =>
 {
 	return(
-		<>
-			<Container>
-				<Grid
-					container
-					justify={"center"}
-					alignItems={"center"}
-					alignContent={"center"}
-					style={{height: "100vh"}}
-				>
-					<Paper>
-						<Box m={4}>
-							<HomeContent {...props} />
-						</Box>
-					</Paper>
-				</Grid>
-			</Container>
-			<div style={{position: 'absolute', top: '10px', right: '10px'}}>
-				Ethereum Address: {
-				props.ethAccount.substring(0, 6) + "..." +
-				props.ethAccount.substring(props.ethAccount.length - 4, props.ethAccount.length)}
-			</div>
-		</>
+		<Container>
+			<Grid
+				container
+				justify={"center"}
+				alignItems={"center"}
+				alignContent={"center"}
+				style={{height: "100vh"}}
+			>
+				<Paper>
+					<Box m={4}>
+						<HomeContent {...props} />
+					</Box>
+				</Paper>
+			</Grid>
+		</Container>
 	);
 };
 
@@ -123,13 +114,13 @@ const generateNewURLAndGo = (creatorAddress) => {
 
 	let newRandomURL = randomStr(8);
 
-	callLambdaFunction("pushURLInitialStatus", {
+	callLambdaFunction("createURL", {
 		url: newRandomURL,
 		urlStatus: [{
 			address: creatorAddress,
-			status: 1
+			status: 0
 		}],
-		contractAdmin: creatorAddress
+		contractOwner: creatorAddress
 	}).then(r => console.log(r));
 
 	window.location.href = window.location + newRandomURL;

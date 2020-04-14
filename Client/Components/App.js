@@ -8,7 +8,7 @@ import { SnackbarProvider, useSnackbar } from 'notistack';
 
 import {getWeb3, loadWeb3AccountListener} from "../Hooks/getWeb3";
 
-import Router from "./Pages/Router";
+import Router from "./Router";
 
 const LoadApp = () => {
 
@@ -19,7 +19,7 @@ const LoadApp = () => {
         getWeb3().then(web3Container => {
             if (web3Container) {
                 setWeb3(web3Container);
-                web3Container.eth.getAccounts().then(e => setEthAccount(e[0]));
+                web3Container.eth.getAccounts().then(e => setEthAccount(e[0].toLowerCase()));
                 loadWeb3AccountListener(setEthAccount);
             }
         });

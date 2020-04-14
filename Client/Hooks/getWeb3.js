@@ -38,7 +38,7 @@ export const loadWeb3AccountListener = (callback) =>
     {
         window.ethereum.on('accountsChanged', function(accounts)
         {
-            callback(accounts[0])
+            callback(accounts[0].toLowerCase())
         });
     }
 };
