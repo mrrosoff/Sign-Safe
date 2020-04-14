@@ -6,7 +6,7 @@ import Home from "./Home";
 import ContractPage from "./ContractPage"
 import NotFound from "./NotFound";
 
-const Router = () =>
+const Router = props =>
 {
 	return (
 		<Switch>
@@ -14,7 +14,7 @@ const Router = () =>
 				<Home />
 			</Route>
 			<Route path="/:contractURL">
-				<ContractPage />
+				<ContractPage {...props}/>
 			</Route>
 			<Route path="*">
 				<NotFound />

@@ -1,15 +1,38 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 
-import { useParams } from "react-router-dom";
+import {useParams} from "react-router-dom";
 
-import { Container, Grid, Typography } from "@material-ui/core";
+import {Container, Grid, Typography} from "@material-ui/core";
 import {callLambdaFunction} from "../../Hooks/restfulAPI";
 import {PrimaryButton} from "../Elements/Buttons";
 
 const ContractPage = props =>
 {
 	let { contractURL } = useParams();
-	let [urlStatus, setUrlStatus] = useState(1);
+	let [urlStatus, setUrlStatus] = useState(null);
+
+	const firstUpdate = useRef(true);
+
+	useLayoutEffect(() => {
+		checkURLStatus(contractURL).then(r => setUrlStatus(r));
+	}, []);
+
+	useEffect(() => {
+		if (!firstUpdate.current)
+		{
+			callLambdaFunction("updateURLStatus", {
+				url: contractURL, urlStatus: urlStatus
+			}).then(r => console.log("Update Database to", urlStatus, ". Log:", r));
+		}
+
+		else
+		{
+			firstUpdate.current = false;
+		}
+
+	}, [urlStatus]);
+
+	console.log(urlStatus);
 
 	return(
 		<Container>
@@ -29,7 +52,7 @@ const ContractPage = props =>
 				<Grid item>
 					<PrimaryButton
 						text={"Update URL State"}
-						onClick={() => updateContractState(contractURL, urlStatus, setUrlStatus, 1)}
+						onClick={() => updateContractState(contractURL, urlStatus, setUrlStatus, urlStatus + 1, props.produceSnackBar)}
 					/>
 				</Grid>
 			</Grid>
@@ -37,25 +60,24 @@ const ContractPage = props =>
 	);
 };
 
-const checkURLStatus = (contractURL, urlStatus, setUrlStatus) => {
-
-	callLambdaFunction("getURLStatus", {
+const checkURLStatus = (contractURL) =>
+{
+	return callLambdaFunction("getURLStatus", {
 		url: contractURL
-	}).then(r => {
-		let newUrlStatus = r.data[0].urlStatus;
-		if (newUrlStatus !== urlStatus) {
-			setUrlStatus(newUrlStatus);
-		}
-	});
+	}).then(r => r.data[0].urlStatus);
 };
 
-const updateContractState = async (contractURL, urlStatus, setUrlStatus, change) =>
+const updateContractState = async (contractURL, urlStatus, setUrlStatus, newStatus, produceSnackBar) =>
 {
-	await checkURLStatus(contractURL, urlStatus, setUrlStatus);
-	callLambdaFunction("updateURLStatus", {
-		url: contractURL, urlStatus: urlStatus + change
-	}).then(r => console.log(r));
-	setUrlStatus(urlStatus + change);
+	let databaseStatus;
+	await checkURLStatus(contractURL).then(result => databaseStatus = result);
+
+	if(databaseStatus !== urlStatus) {
+		produceSnackBar("Synchronization Issue! Please Try Again.");
+		setUrlStatus(databaseStatus);
+	} else {
+		setUrlStatus(newStatus);
+	}
 };
 
 export default ContractPage;
