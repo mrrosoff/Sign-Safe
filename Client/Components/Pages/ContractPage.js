@@ -14,7 +14,7 @@ const ContractPage = props =>
 	const firstUpdate = useRef(true);
 
 	useLayoutEffect(() => {
-		checkURLStatus(contractURL).then(r => setUrlStatus(r));
+		checkURLStatus(contractURL, props.produceSnackBar).then(r => setUrlStatus(r));
 	}, []);
 
 	useEffect(() => {
@@ -31,8 +31,6 @@ const ContractPage = props =>
 		}
 
 	}, [urlStatus]);
-
-	console.log(urlStatus);
 
 	return(
 		<Container>
@@ -60,25 +58,26 @@ const ContractPage = props =>
 	);
 };
 
-const checkURLStatus = (contractURL) =>
+const checkURLStatus = (contractURL, produceSnackBar) =>
 {
-	try
-	{
-		return callLambdaFunction("getURLStatus", {
-			url: contractURL
-		}).then(r => r.data[0].urlStatus);
-	}
-
-	catch (e)
-	{
-		window.location.href = window.location + "not-found"
-	}
+	return callLambdaFunction("getURLStatus", {
+		url: contractURL
+	}).then(r => {
+		if (r.data[0]) {
+			return r.data[0].urlStatus;
+		} else {
+			produceSnackBar("This Contract Address Does Not Exist, Redirecting...");
+			setTimeout(() => {
+				window.location.href = window.location.protocol + "//" + window.location.host
+			}, 3000)
+		}
+	});
 };
 
 const updateContractState = async (contractURL, urlStatus, setUrlStatus, newStatus, produceSnackBar) =>
 {
 	let databaseStatus;
-	await checkURLStatus(contractURL).then(result => databaseStatus = result);
+	await checkURLStatus(contractURL, produceSnackBar).then(result => databaseStatus = result);
 
 	if(databaseStatus !== urlStatus) {
 		produceSnackBar("Synchronization Issue! Please Try Again.");
