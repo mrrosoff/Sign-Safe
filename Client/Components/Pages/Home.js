@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Box, Container, Grid, Paper, TextField, Typography } from "@material-ui/core";
 
@@ -7,6 +7,8 @@ import { callLambdaFunction }from "../../Hooks/restfulAPI"
 
 const Home = props =>
 {
+	let [urlText, setUrlText] = useState("");
+
 	return(
 		<Container>
 			<Box m={4} >
@@ -28,10 +30,29 @@ const Home = props =>
 							<Typography align={"center"}>or</Typography>
 						</Grid>
 						<Grid item>
-							<TextField
-								label={"Enter A Contract Address"}
-								variant={"outlined"}
-							/>
+							<Grid
+								container
+								justify={"center"}
+								alignItems={"center"}
+								alignContent={"center"}
+								spacing={4}
+								>
+								<Grid item>
+									<TextField
+										variant={"outlined"}
+										label={"Enter A Contract Address"}
+										value={urlText}
+										onChange={(e) => setUrlText(e.target.value)}
+									/>
+								</Grid>
+								<Grid item>
+									<PrimaryButton
+										text={"Go!"}
+										onClick={() => window.location.href = urlText}
+									/>
+								</Grid>
+							</Grid>
+
 						</Grid>
 					</Grid>
 				</Paper>
