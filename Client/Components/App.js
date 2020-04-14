@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -6,14 +6,29 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 import { SnackbarProvider, useSnackbar } from 'notistack';
 
+import {getWeb3, loadWeb3AccountListener} from "../Hooks/getWeb3";
+
 import Router from "./Pages/Router";
 
 const LoadApp = () => {
 
+    const [web3, setWeb3] = useState();
+    let [ethAccount, setEthAccount] = useState("");
+
+    useEffect(() => {
+        getWeb3().then(web3Container => {
+            if (web3Container) {
+                setWeb3(web3Container);
+                web3Container.eth.getAccounts().then(e => setEthAccount(e[0]));
+                loadWeb3AccountListener(setEthAccount);
+            }
+        });
+    }, []);
+
     const { enqueueSnackbar } = useSnackbar();
     const produceSnackBar = (message, variant = "error") => enqueueSnackbar(message, { variant: variant });
 
-    return <Router produceSnackBar={produceSnackBar}/>;
+    return <Router web3={web3} ethAccount={ethAccount} produceSnackBar={produceSnackBar}/>;
 };
 
 const App = () => {

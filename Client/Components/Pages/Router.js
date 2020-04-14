@@ -10,7 +10,7 @@ const Router = props =>
 	return (
 		<Switch>
 			<Route exact path="/">
-				<Home />
+				<Home {...props}/>
 			</Route>
 			<Route path="/:contractURL">
 				<ContractPage {...props}/>

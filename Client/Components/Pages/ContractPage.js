@@ -3,7 +3,8 @@ import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {useParams} from "react-router-dom";
 
 import {Container, Grid, Typography} from "@material-ui/core";
-import {callLambdaFunction} from "../../Hooks/restfulAPI";
+
+import {callLambdaFunction} from "../../Hooks/getDatabase";
 import {PrimaryButton} from "../Elements/Buttons";
 
 const ContractPage = props =>
