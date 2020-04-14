@@ -8,22 +8,21 @@
 
 ## Installation
 
-To install all of the necessary node packages needed for the application, run the following bash command.
+To install all packages and run, use the following command.
 
 ```bash
-npm install
+npm install && npm run dev
 ```
 
-Then to run the application in development mode, use the following bash command.
+If intending to develop using the provided lambda functions, use 
 
 ```bash
-npm run dev
+npm run netDev
 ```
 
 ## Resources
 
 The following resources are used in this project.
 
-* [Material UI](https://material-ui.com/)
-* [Framer-Motion](https://www.framer.com/motion/)
-* [Notistack](https://github.com/iamhosseindhv/notistack)
+* [React](https://reactjs.org/), [MongoDB](https://www.mongodb.com/)
+* [Material UI](https://material-ui.com/), [Notistack](https://github.com/iamhosseindhv/notistack)
