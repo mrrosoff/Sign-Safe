@@ -62,9 +62,17 @@ const ContractPage = props =>
 
 const checkURLStatus = (contractURL) =>
 {
-	return callLambdaFunction("getURLStatus", {
-		url: contractURL
-	}).then(r => r.data[0].urlStatus);
+	try
+	{
+		return callLambdaFunction("getURLStatus", {
+			url: contractURL
+		}).then(r => r.data[0].urlStatus);
+	}
+
+	catch (e)
+	{
+		window.location.href = window.location + "not-found"
+	}
 };
 
 const updateContractState = async (contractURL, urlStatus, setUrlStatus, newStatus, produceSnackBar) =>

@@ -13,12 +13,13 @@ const Router = props =>
 			<Route exact path="/">
 				<Home />
 			</Route>
+			<Route exact path="/not-found">
+				<NotFound />
+			</Route>
 			<Route path="/:contractURL">
 				<ContractPage {...props}/>
 			</Route>
-			<Route path="*">
-				<NotFound />
-			</Route>
+
 		</Switch>
 	);
 };
