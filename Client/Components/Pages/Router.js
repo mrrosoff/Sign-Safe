@@ -12,7 +12,7 @@ const Router = props =>
 			<Route exact path="/">
 				<Home {...props}/>
 			</Route>
-			<Route path="/:contractURL">
+			<Route path="/:contractUrl">
 				<ContractPage {...props}/>
 			</Route>
 		</Switch>

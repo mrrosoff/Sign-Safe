@@ -35,7 +35,9 @@ const Layout = props =>
 				</Grid>
 			</Container>
 			<div style={{position: 'absolute', top: '10px', right: '10px'}}>
-				Ethereum Address: {props.ethAccount.substring(0, 6) + "..." + props.ethAccount.substring(props.ethAccount.length - 4, props.ethAccount.length)}
+				Ethereum Address: {
+				props.ethAccount.substring(0, 6) + "..." +
+				props.ethAccount.substring(props.ethAccount.length - 4, props.ethAccount.length)}
 			</div>
 		</>
 	);
@@ -61,7 +63,7 @@ const HomeContent = props =>
 			<Grid item>
 				<PrimaryButton
 					text={"Create A New Contract"}
-					onClick={() => generateNewURLAndGo()}
+					onClick={() => generateNewURLAndGo(props.ethAccount)}
 				/>
 			</Grid>
 			<Grid item xs={12}>
@@ -104,7 +106,7 @@ const ExistingURLSection = props =>
 };
 
 
-const generateNewURLAndGo = () => {
+const generateNewURLAndGo = (creatorAddress) => {
 
 	function randomStr(len) {
 
@@ -123,7 +125,11 @@ const generateNewURLAndGo = () => {
 
 	callLambdaFunction("pushURLInitialStatus", {
 		url: newRandomURL,
-		urlStatus: 1
+		urlStatus: [{
+			address: creatorAddress,
+			status: 1
+		}],
+		contractAdmin: creatorAddress
 	}).then(r => console.log(r));
 
 	window.location.href = window.location + newRandomURL;
