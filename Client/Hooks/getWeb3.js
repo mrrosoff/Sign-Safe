@@ -27,7 +27,6 @@ export const getWeb3 = async () =>
 
     else
     {
-        console.log('Error Loading Blockchain. You should consider trying MetaMask!');
         return null;
     }
 };
