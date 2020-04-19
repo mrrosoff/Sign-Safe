@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "An E-Contract Solution For A Modern World",
   "scripts": {
-    "dev": "webpack-dev-server --mode development --devtool inline-source-map",
-    "netDev": "netlify dev",
-    "prod": "webpack --mode production"
+    "dev": "webpack-dev-server --mode development --devtool inline-source-map && npm run cp_files",
+    "cp_files": "cp Client/Static/HTML/FaviconImages/* dist",
+    "prod": "webpack --mode production && npm run cp_files",
+    "netDev": "netlify dev"
   },
   "author": "",
   "license": "ISC",

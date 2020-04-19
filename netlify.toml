@@ -25,14 +25,6 @@
   publish = "./dist"
   autoLaunch = true
 
-[[redirects]]
-
-
-  # For React Router
-
-  from = "/*"
-  to = "/index.html"
-  status = 200
 
 [[headers]]
 

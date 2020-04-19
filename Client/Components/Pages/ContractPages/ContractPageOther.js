@@ -3,7 +3,6 @@ import React from "react";
 import {Grid, Step, StepLabel, Stepper} from "@material-ui/core";
 
 import {PrimaryButton} from "../../Elements/Buttons";
-import {updateURLStatus} from "../../../Hooks/getDatabase";
 
 const ContractPageOther = props =>
 {

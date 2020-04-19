@@ -23,7 +23,7 @@ const LoadApp = () => {
                 loadWeb3AccountListener(setEthAccount);
             } else {
                 setWeb3(null);
-                produceSnackBar("Failure To acquire Metamask. Please Sign In and Refresh.")
+                produceSnackBar("Failure To Acquire Metamask. Please Sign In and Refresh.")
             }
         });
     }, []);
