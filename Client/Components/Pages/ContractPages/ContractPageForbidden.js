@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Grid, Paper, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 
 const ContractPageForbidden = props =>
 {
