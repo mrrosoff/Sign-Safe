@@ -2,8 +2,6 @@ import React, {useEffect, useRef, useState} from "react";
 
 import { useParams } from "react-router-dom";
 
-import {Box, Container, Grid, Paper} from "@material-ui/core";
-
 import {callLambdaFunction, checkURLStatus} from "../../Hooks/getDatabase";
 
 import ContractPageLoading from "./ContractPages/ContractPageLoading";
@@ -79,27 +77,7 @@ const Layout = props =>
 		}
 	}
 
-
-
-	return(
-		<Container>
-			<Grid
-				container
-				justify={"center"}
-				alignItems={"center"}
-				alignContent={"center"}
-				style={{height: "100vh"}}
-			>
-				<Grid item>
-					<Paper elevation={2}>
-						<Box m={4} width={"75vw"} height={"75vh"}>
-							{pageType}
-						</Box>
-					</Paper>
-				</Grid>
-			</Grid>
-		</Container>
-	);
+	return pageType;
 };
 
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Box, Container, Grid, Paper, TextField, Typography } from "@material-ui/core";
+import { Grid, TextField, Typography } from "@material-ui/core";
 
 import { PrimaryButton } from "../Elements/Buttons";
 import { callLambdaFunction }from "../../Hooks/getDatabase"
@@ -9,29 +9,7 @@ const Home = props =>
 {
 	let [urlText, setUrlText] = useState("");
 
-	return <Layout urlText={urlText} setUrlText={setUrlText} {...props} />;
-};
-
-
-const Layout = props =>
-{
-	return(
-		<Container>
-			<Grid
-				container
-				justify={"center"}
-				alignItems={"center"}
-				alignContent={"center"}
-				style={{height: "100vh"}}
-			>
-				<Paper elevation={2}>
-					<Box m={4} width={"75vw"} height={"75vh"}>
-						<HomeContent {...props} />
-					</Box>
-				</Paper>
-			</Grid>
-		</Container>
-	);
+	return <HomeContent urlText={urlText} setUrlText={setUrlText} {...props} />;
 };
 
 
