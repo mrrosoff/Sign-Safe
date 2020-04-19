@@ -7,7 +7,7 @@ const outputDirectory = "dist";
 
 module.exports = {
 	entry: ['@babel/polyfill', './Client/index.js'],
-	devServer: { port: 3000, open: true, hot: true, historyApiFallback: true },
+	devServer: { port: 3000, open: false, hot: true, historyApiFallback: true },
 	module: {
 		rules: [
 			{test: /\.js$/, exclude: /node_modules/, loader: "babel-loader", options: { presets: ["@babel/preset-env", "@babel/preset-react"]}},
