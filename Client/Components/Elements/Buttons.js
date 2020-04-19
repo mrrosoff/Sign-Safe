@@ -7,6 +7,7 @@ export const PrimaryButton = props => {
 		<Button
 			color={"primary"}
 			variant={"contained"}
+			size={"large"}
 			{...props}
 		>
 			{props.text}
@@ -22,6 +23,7 @@ export const UploadButton = props =>
 		<Button
 			color={"primary"}
 			variant={"contained"}
+			size={"large"}
 			component={"label"}
 		>
 			{props.text}

@@ -10,12 +10,13 @@ const ContractPageLoading = props =>
 			justify={"center"}
 			alignItems={"center"}
 			alignContent={"center"}
-			spacing={2}
+			style={{width: "100%", height: "100%"}}
+			spacing={4}
 		>
-			<Grid item xs={6}>
-				<Typography variant={"h4"} align={"center"}>We are loading your data</Typography>
+			<Grid item>
+				<Typography variant={"h6"} align={"center"}>We are loading your data. Please wait.</Typography>
 			</Grid>
-			<Grid item xs={6}>
+			<Grid item>
 				<CircularProgress />
 			</Grid>
 		</Grid>

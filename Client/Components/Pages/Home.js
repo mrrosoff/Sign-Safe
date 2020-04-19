@@ -25,10 +25,10 @@ const HomeContent = props =>
 			spacing={4}
 		>
 			<Grid item xs={12}>
-				<Typography variant={"h3"} align={"center"}>Sign Safe</Typography>
+				<Typography variant={"h2"} align={"center"}>Sign Safe</Typography>
 			</Grid>
 			<Grid item xs={12}>
-				<Typography variant={"body1"} align={"center"}>An E-Contract Solution For A Modern World</Typography>
+				<Typography variant={"h6"} align={"center"}>An E-Contract Solution For A Modern World</Typography>
 			</Grid>
 			<Grid item>
 				<PrimaryButton
@@ -37,7 +37,7 @@ const HomeContent = props =>
 				/>
 			</Grid>
 			<Grid item xs={12}>
-				<Typography align={"center"}>or</Typography>
+				<Typography variant={"h6"} align={"center"}>or</Typography>
 			</Grid>
 			<Grid item>
 				<ExistingURLSection {...props} />
@@ -55,15 +55,18 @@ const ExistingURLSection = props =>
 			justify={"center"}
 			alignItems={"center"}
 			alignContent={"center"}
-			spacing={4}
+			spacing={2}
 		>
 			<Grid item>
 				<TextField
 					variant={"outlined"}
-					label={"Contract Address"}
+					label={"Enter Contract Address"}
 					value={props.urlText}
 					onChange={(e) => props.setUrlText(e.target.value)}
 				/>
+			</Grid>
+			<Grid item>
+				<Typography variant={"h6"} align={"center"}>and</Typography>
 			</Grid>
 			<Grid item>
 				<PrimaryButton
