@@ -13,7 +13,8 @@ const ContractPageOther = props =>
 			justify={"center"}
 			alignItems={"center"}
 			alignContent={"center"}
-			spacing={2}
+			style={{height: "100%"}}
+			spacing={4}
 		>
 			<Grid item xs={2}>
 				<PrimaryButton

@@ -10,8 +10,8 @@ const ContractPageForbidden = props =>
 			justify={"center"}
 			alignItems={"center"}
 			alignContent={"center"}
-			style={{width: "100%", height: "100%"}}
-			spacing={2}
+			style={{height: "100%"}}
+			spacing={4}
 		>
 			<Grid item>
 				<Paper>

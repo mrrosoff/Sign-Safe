@@ -19,7 +19,7 @@ const ContractPageCreator = props =>
 			alignItems={"center"}
 			alignContent={"center"}
 			direction={"column"}
-			style={{width: "100%", height: "100%"}}
+			style={{height: "100%"}}
 			spacing={4}
 		>
 			<Grid item xs={9}>
