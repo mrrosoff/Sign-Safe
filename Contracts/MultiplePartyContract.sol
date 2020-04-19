@@ -36,11 +36,11 @@ contract MultiplePartyContract is SignSafeContract{
         delete signatories[_signatory];
     }
 
-    function contractReadyForSignatures() only_SETUP only_owner all_signatories_added public {
+    function contractReadyForSignatures() only_SETUP only_owner all_signatories_added only_contract_uploaded public {
         STATE = sign_safe_contract_state.PENDING;
     }
 
-    function sign() only_PENDING only_unsigned_signatories only_signatories public {
+    function sign() only_PENDING only_unsigned_signatories only_signatories only_hash_match public {
         numberOfSignatures++;
         who_has_signed[msg.sender] = true;
         emit signature(msg.sender, true);
@@ -54,6 +54,8 @@ contract MultiplePartyContract is SignSafeContract{
         string memory emit_message = "All signatories have signed the contract. ";
         emit contractComplete(emit_message, true);
     }
+
+
 
 
 }
