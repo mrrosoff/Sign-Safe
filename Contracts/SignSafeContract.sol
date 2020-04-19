@@ -9,6 +9,9 @@ contract SignSafeContract{
     uint256 public second_signatory_signature_date;
     bool public owner_has_signed;
     bool public second_signatory_has_signed;
+    uint internal contractHash;
+    bool internal contractUploaded = false;
+
 
     enum sign_safe_contract_state{
         SETUP, PENDING, COMPLETED, CANCELLED
@@ -16,6 +19,7 @@ contract SignSafeContract{
 
     mapping(address => bool) public who_has_signed;
     mapping(address => bool) public signatories;
+    mapping(address => bool) public hashMatch;
 
     sign_safe_contract_state public STATE;
 
@@ -43,10 +47,43 @@ contract SignSafeContract{
         _;
     }
 
+    modifier only_hash_match(){
+        require(hashMatch[msg.sender] == true);
+        _;
+    }
+
+    modifier only_contract_uploaded(){
+        require(contractUploaded == true);
+        _;
+    }
+
     event ownerSignature(address indexed contract_owner, bool owner_has_signed);
     event secondSignatorySignature(address indexed second_signatory, bool second_signatory_has_signed);
     event contractComplete(string message, bool complete);
     event signature(address indexed signatory, bool has_signed);
+
+    function hashContract(string memory kontract) only_owner only_SETUP public {
+        contractHash = uint(keccak256(abi.encodePacked(kontract)));
+        contractUploaded = true;
+    }
+
+    function confirmContract(string memory kontract) only_contract_uploaded only_PENDING only_signatories public returns(bool) {
+        uint hash = uint(keccak256(abi.encodePacked(kontract)));
+        if(hash == contractHash){
+            hashMatch[msg.sender] = true;
+            return true;
+        }
+        else{
+            hashMatch[msg.sender] = false;
+            return false;
+        }
+    }
+
+    function getContractHash() only_contract_uploaded public returns(uint) {
+        return contractHash;
+    }
+
+
 
 //    function () external
 //    {
