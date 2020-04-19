@@ -23,7 +23,7 @@ const ContractPage = props =>
 		if(props.ethAccount)
 		{
 			checkURLStatus(contractUrl, props.ethAccount, setUrlStatus, setIsContractOwner, props.produceSnackBar)
-			.then(r => { console.log(r); setUrlStatus(r) });
+			.then(r => setUrlStatus(r));
 			firstUpdate.current = false;
 		}
 	}, [props.ethAccount]);
@@ -79,11 +79,13 @@ const Layout = props =>
 				alignContent={"center"}
 				style={{height: "100vh"}}
 			>
-				<Paper>
-					<Box m={4}>
-						{pageType}
-					</Box>
-				</Paper>
+				<Grid item>
+					<Paper>
+						<Box m={4} width={"75vw"} height={"75vh"}>
+							{pageType}
+						</Box>
+					</Paper>
+				</Grid>
 			</Grid>
 		</Container>
 	);

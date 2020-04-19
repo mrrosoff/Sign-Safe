@@ -56,21 +56,3 @@ export const checkURLStatus = (contractUrl, ethAccount, setUrlStatus, setIsContr
     }
   });
 };
-
-export const updateURLStatus = async (contractUrl, ethAccount, setUrlStatus, setIsContractOwner, produceSnackBar, urlStatus, newStatus) =>
-{
-  let databaseStatus = null;
-  await checkURLStatus(contractUrl, ethAccount, setUrlStatus, setIsContractOwner, produceSnackBar)
-  .then(result => databaseStatus = result);
-
-  if(databaseStatus !== urlStatus)
-  {
-    produceSnackBar("Synchronization Issue! Please Try Again.");
-    setUrlStatus(databaseStatus);
-  }
-
-  else
-  {
-    setUrlStatus(newStatus);
-  }
-};

@@ -16,17 +16,17 @@
 
   # Development Build Command
 
-  command = "./netlify-dev.sh"
+  framework = "#custom"
+  command = "netlify-dev.sh"
 
   # Webpack-Dev-Server Port
 
   targetPort = 3000
 
-  publish = "./dist"
+  publish = "dist/"
   autoLaunch = true
 
 [[redirects]]
-
 
   # For React Router
 
@@ -37,6 +37,8 @@
 [[headers]]
 
   for = "/*"
+
+  # Security Is Good
 
   [headers.values]
 

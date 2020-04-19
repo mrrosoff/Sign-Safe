@@ -15,3 +15,22 @@ export const PrimaryButton = props => {
 };
 
 export const LinkPrimaryButton = props => <PrimaryButton {...props} />;
+
+export const UploadButton = props =>
+{
+	return(
+		<Button
+			color={"primary"}
+			variant={"contained"}
+			component={"label"}
+		>
+			{props.text}
+			<input
+				type="file"
+				accept={props.accept}
+				style={{ display: "none" }}
+				onChange={props.onClick}
+			/>
+		</Button>
+	)
+};

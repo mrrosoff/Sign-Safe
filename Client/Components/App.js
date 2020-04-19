@@ -21,6 +21,9 @@ const LoadApp = () => {
                 setWeb3(web3Container);
                 web3Container.eth.getAccounts().then(e => setEthAccount(e[0].toLowerCase()));
                 loadWeb3AccountListener(setEthAccount);
+            } else {
+                setWeb3(null);
+                produceSnackBar("Failure To Acquire Metamask. Please Sign In and Refresh.")
             }
         });
     }, []);

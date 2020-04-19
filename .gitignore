@@ -1,7 +1,3 @@
-# Idea Files
-
-.idea/workspace.xml
-
 # Node Files
 
 node_modules
@@ -11,3 +7,8 @@ package-lock.json
 
 out
 dist
+build
+
+# Idea Files
+
+.idea/workspace.xml
