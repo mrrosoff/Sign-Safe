@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "An E-Contract Solution For A Modern World",
   "scripts": {
-    "dev": "webpack-dev-server --mode development --devtool inline-source-map && npm run cp_files",
-    "cp_files": "cp Client/Static/HTML/FaviconImages/* dist",
-    "prod": "webpack --mode production && npm run cp_files",
+    "file-copy": "cp Client/Static/HTML/FaviconImages/* dist",
+    "dev": "webpack-dev-server --mode development --devtool inline-source-map && npm run file-copy",
+    "prod": "webpack --mode production && npm run file-copy",
     "start": "netlify dev"
   },
   "author": "",
@@ -39,7 +39,9 @@
     "css-loader": "^3.5.2",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.2.0",
+    "node-sass": "^4.13.1",
     "react-router-dom": "^5.1.2",
+    "sass-loader": "^8.0.2",
     "style-loader": "^1.1.4",
     "url-loader": "^4.1.0",
     "webpack": "^4.42.1",
