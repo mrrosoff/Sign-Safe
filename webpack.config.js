@@ -10,7 +10,7 @@ module.exports = {
 	devServer: { port: 3000, open: false, hot: true, historyApiFallback: true },
 	module: {
 		rules: [
-			{test: /\.js$/, exclude: /node_modules/, use: "babel-loader", options: { presets: ["@babel/preset-env", "@babel/preset-react"]}},
+			{test: /\.js$/, exclude: /node_modules/, loader: "babel-loader", options: { presets: ["@babel/preset-env", "@babel/preset-react"]}},
 			{test: /\.css$/, use: ['style-loader', 'css-loader',]},
 			{test: /\.s[ac]ss$/i, use: ['style-loader', 'css-loader', 'sass-loader']},
 			{test: /\.(png|svg|jpg|gif)$/, use: ['file-loader',]},

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { CircularProgress, Grid } from "@material-ui/core";
+import { CircularProgress, Grid, Typography } from "@material-ui/core";
 
 const ContractPageLoading = props =>
 {
@@ -12,7 +12,10 @@ const ContractPageLoading = props =>
 			alignContent={"center"}
 			spacing={2}
 		>
-			<Grid item>
+			<Grid item xs={6}>
+				<Typography variant={"h4"} align={"center"}>We are loading your data</Typography>
+			</Grid>
+			<Grid item xs={6}>
 				<CircularProgress />
 			</Grid>
 		</Grid>

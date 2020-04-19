@@ -9,6 +9,7 @@ import {callLambdaFunction, checkURLStatus} from "../../Hooks/getDatabase";
 import ContractPageLoading from "./ContractPages/ContractPageLoading";
 import ContractPageCreator from "./ContractPages/ContractPageCreator";
 import ContractPageOther from "./ContractPages/ContractPageOther";
+import ContractPageForbidden from "./ContractPages/ContractPageForbidden";
 
 const ContractPage = props =>
 {
@@ -67,8 +68,18 @@ const Layout = props =>
 
 	else if (props.isContractOwner !== null)
 	{
-		pageType = <ContractPageOther {...props}/>;
+		if (props.isASigner)
+		{
+			pageType = <ContractPageOther {...props}/>;
+		}
+
+		else
+		{
+			pageType = <ContractPageForbidden {...props}/>;
+		}
 	}
+
+
 
 	return(
 		<Container>
@@ -80,7 +91,7 @@ const Layout = props =>
 				style={{height: "100vh"}}
 			>
 				<Grid item>
-					<Paper>
+					<Paper elevation={2}>
 						<Box m={4} width={"75vw"} height={"75vh"}>
 							{pageType}
 						</Box>
