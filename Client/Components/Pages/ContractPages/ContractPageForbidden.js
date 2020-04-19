@@ -14,9 +14,7 @@ const ContractPageForbidden = props =>
 			spacing={4}
 		>
 			<Grid item>
-				<Paper>
-					<Typography variant={"h6"} align={"center"}>You are forbidden from accessing this page.</Typography>
-				</Paper>
+				<Typography variant={"h6"} align={"center"}>You are forbidden from accessing this page.</Typography>
 			</Grid>
 		</Grid>
 	)
