@@ -103,7 +103,8 @@ const generateNewURLAndGo = (creatorAddress) => {
 			address: creatorAddress,
 			status: 0
 		}],
-		contractOwner: creatorAddress
+		contractOwner: creatorAddress,
+		signers: []
 	}).then(r => console.log(r));
 
 	window.location.href = window.location + newRandomURL;

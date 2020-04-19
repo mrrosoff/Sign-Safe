@@ -14,6 +14,7 @@ const ContractPage = props =>
 	let { contractUrl } = useParams();
 	let [urlStatus, setUrlStatus] = useState(null);
 	let [isContractOwner, setIsContractOwner] = useState(null);
+	let [isSigner, setIsSigner] = useState(null);
 
 	const firstUpdate = useRef(true);
 
@@ -21,7 +22,7 @@ const ContractPage = props =>
 	{
 		if(props.ethAccount)
 		{
-			checkURLStatus(contractUrl, props.ethAccount, setUrlStatus, setIsContractOwner, props.produceSnackBar)
+			checkURLStatus(contractUrl, props.ethAccount, setUrlStatus, setIsContractOwner, setIsSigner, props.produceSnackBar)
 			.then(r => setUrlStatus(r));
 			firstUpdate.current = false;
 		}
@@ -50,6 +51,8 @@ const ContractPage = props =>
 			setUrlStatus={setUrlStatus}
 			isContractOwner={isContractOwner}
 			setIsContractOwner={setIsContractOwner}
+			isSigner={isSigner}
+			setIsSigner={setIsSigner}
 			{...props}
 		/>
 	);
@@ -66,7 +69,7 @@ const Layout = props =>
 
 	else if (props.isContractOwner !== null)
 	{
-		if (props.isASigner)
+		if (props.isSigner)
 		{
 			pageType = <ContractPageOther {...props}/>;
 		}

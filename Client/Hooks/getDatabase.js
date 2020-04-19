@@ -13,7 +13,7 @@ export const callLambdaFunction = async (requestType, requestBody) =>
   }
 };
 
-export const checkURLStatus = (contractUrl, ethAccount, setUrlStatus, setIsContractOwner, produceSnackBar) =>
+export const checkURLStatus = (contractUrl, ethAccount, setUrlStatus, setIsContractOwner, setIsSigner, produceSnackBar) =>
 {
   return callLambdaFunction("getURLStatus", { url: contractUrl })
   .then(r =>
@@ -23,6 +23,7 @@ export const checkURLStatus = (contractUrl, ethAccount, setUrlStatus, setIsContr
     if (r.data[0])
     {
       setIsContractOwner(ethAccount === r.data[0].contractOwner);
+      setIsSigner(r.data[0].signers.includes(ethAccount));
 
       // Look For Entry In Database, If Found, Restore Page
 
