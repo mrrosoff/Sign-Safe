@@ -22,9 +22,8 @@ const ContractPage = props =>
 	{
 		if(props.ethAccount)
 		{
-			checkURLStatus(contractUrl, props.ethAccount, setUrlStatus, setIsContractOwner, setIsSigner, props.produceSnackBar)
+			checkURLStatus(contractUrl, props.ethAccount, setIsContractOwner, setIsSigner, props.produceSnackBar)
 			.then(r => setUrlStatus(r));
-			firstUpdate.current = false;
 		}
 	}, [props.ethAccount]);
 

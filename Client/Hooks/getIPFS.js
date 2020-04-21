@@ -1,10 +1,10 @@
-import IPFS from 'ipfs-api';
+const IPFSClient = require('ipfs-http-client');
 
 export const getIPFS = async () =>
 {
 	try
 	{
-		return await new IPFS({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
+		return await new IPFSClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
 	}
 
 	catch(error)

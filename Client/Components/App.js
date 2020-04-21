@@ -6,7 +6,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 import { SnackbarProvider, useSnackbar } from 'notistack';
 
-import {getWeb3, loadWeb3AccountListener} from "../Hooks/getWeb3";
+import {loadWeb3AccountListener, testWeb3} from "../Hooks/getWeb3";
 
 import Router from "./Router";
 import {getIPFS} from "../Hooks/getIPFS";
@@ -18,21 +18,25 @@ const LoadApp = () => {
     const [IPFS, setIPFS] = useState();
 
     useEffect(() => {
-        getWeb3().then(web3Provider => {
-            if (web3Provider) {
-                setWeb3(web3Provider);
+        testWeb3().then(web3Provider => {
+
+            setWeb3(web3Provider);
+            if (web3Provider)
+            {
                 web3Provider.eth.getAccounts().then(e => setEthAccount(e[0].toLowerCase()));
                 loadWeb3AccountListener(setEthAccount);
-            } else {
-                setWeb3(web3Provider);
-                produceSnackBar("Failure To Acquire Web3 Provider. Please Refresh and Sign In.")
             }
         });
 
         getIPFS().then(IPFSProvider => {
-            if(IPFSProvider) {
+
+            if(IPFSProvider)
+            {
                 setIPFS(IPFSProvider);
-            } else {
+            }
+
+            else
+            {
                 setIPFS(IPFSProvider);
                 produceSnackBar("Failure To Connect To The IPFS Node. Please Refresh.")
             }
@@ -42,7 +46,16 @@ const LoadApp = () => {
     const { enqueueSnackbar } = useSnackbar();
     const produceSnackBar = (message, variant = "error") => enqueueSnackbar(message, { variant: variant });
 
-    return <Router web3={web3} ethAccount={ethAccount} IPFS={IPFS} produceSnackBar={produceSnackBar}/>;
+    return(
+        <Router
+            web3={web3}
+            setWeb3={setWeb3}
+            ethAccount={ethAccount}
+            setEthAccount={setEthAccount}
+            IPFS={IPFS}
+            produceSnackBar={produceSnackBar}
+        />
+    );
 };
 
 const App = () => {

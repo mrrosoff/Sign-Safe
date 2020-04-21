@@ -13,7 +13,7 @@ export const callLambdaFunction = async (requestType, requestBody) =>
   }
 };
 
-export const checkURLStatus = (contractUrl, ethAccount, setUrlStatus, setIsContractOwner, setIsSigner, produceSnackBar) =>
+export const checkURLStatus = (contractUrl, ethAccount, setIsContractOwner, setIsSigner, produceSnackBar) =>
 {
   return callLambdaFunction("getURLStatus", { url: contractUrl })
   .then(r =>
@@ -36,14 +36,9 @@ export const checkURLStatus = (contractUrl, ethAccount, setUrlStatus, setIsContr
         }
       }
 
-      // New User
+      // Forbidden User
 
-      callLambdaFunction("addAccountToExistingURL", { url: contractUrl, address: ethAccount })
-      .then(r =>
-      {
-        console.log(r);
-        setUrlStatus(0);
-      });
+      return null;
     }
 
     else

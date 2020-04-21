@@ -1,6 +1,24 @@
 import Web3 from "web3";
 import Torus from "@toruslabs/torus-embed";
 
+export const testWeb3 = async () =>
+{
+    try
+    {
+        if(window.web3)
+        {
+            window.web3 = new Web3(web3.currentProvider);
+            return web3;
+        }
+    }
+
+    catch(error)
+    {
+        return null;
+    }
+};
+
+
 export const getWeb3 = async () =>
 {
     try

@@ -2,7 +2,8 @@
   <configuration default="false" name="Netlify Development" type="js.build_tools.npm">
     <package-json value="$PROJECT_DIR$/package.json" />
     <command value="start" />
-    <node-interpreter value="project" />
+    <arguments value="--scripts-prepend-node-path" />
+    <node-interpreter value="$USER_HOME$/.nvm/versions/node/v14.0.0/bin/node" />
     <envs />
     <method v="2" />
   </configuration>

@@ -4,7 +4,7 @@
   "description": "An E-Contract Solution For A Modern World",
   "scripts": {
     "file-copy": "cp Client/Static/HTML/FaviconImages/* dist",
-    "dev": "webpack-dev-server --mode development --devtool inline-source-map && npm run file-copy",
+    "dev": "webpack-dev-server --mode development --devtool inline-source-map",
     "prod": "webpack --mode production && npm run file-copy",
     "start": "netlify dev"
   },
@@ -21,14 +21,14 @@
     "@toruslabs/torus-embed": "^1.3.0",
     "clsx": "latest",
     "framer-motion": "^1.10.3",
-    "ipfs-api": "^26.1.2",
     "mongodb": "^3.5.6",
-    "notistack": "^0.9.10",
+    "notistack": "^0.9.11",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-transition-group": "^4.3.0",
     "styled-components": "^5.1.0",
-    "web3": "^1.2.6"
+    "web3": "^1.2.6",
+    "ipfs-http-client": "^44.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -46,7 +46,7 @@
     "sass-loader": "^8.0.2",
     "style-loader": "^1.1.4",
     "url-loader": "^4.1.0",
-    "webpack": "^4.42.1",
+    "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
   }

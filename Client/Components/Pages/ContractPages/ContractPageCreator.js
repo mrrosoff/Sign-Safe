@@ -5,7 +5,7 @@ import {Grid, Step, StepButton, Stepper} from "@material-ui/core";
 
 import {UploadButton} from "../../Elements/Buttons";
 
-const useStyles = makeStyles((theme) => ({ root: { width: '100%' } }));
+const useStyles = makeStyles(() => ({ root: { width: '100%' } }));
 
 const ContractPageCreator = props =>
 {

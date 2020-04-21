@@ -33,8 +33,19 @@ const HomeContent = props =>
 			</Grid>
 			<Grid item>
 				<PrimaryButton
+					size={"large"}
 					text={"Create A New Contract"}
-					onClick={() => generateNewURLAndGo(props.ethAccount)}
+					onClick={() => {
+						if(props.ethAccount)
+						{
+							generateNewURLAndGo(props.ethAccount)
+						}
+
+						else
+						{
+							props.produceSnackBar("Please Log In To The Blockchain To Continue.")
+						}
+					}}
 				/>
 			</Grid>
 			<Grid item>
@@ -71,8 +82,19 @@ const ExistingURLSection = props =>
 			</Grid>
 			<Grid item>
 				<PrimaryButton
+					size={"large"}
 					text={"Go!"}
-					onClick={() => window.location.href = props.urlText}
+					onClick={() => {
+						if(props.ethAccount)
+						{
+							window.location.href = props.urlText
+						}
+
+						else
+						{
+							props.produceSnackBar("Please Log In To The Blockchain To Continue.")
+						}
+					}}
 				/>
 			</Grid>
 		</Grid>
