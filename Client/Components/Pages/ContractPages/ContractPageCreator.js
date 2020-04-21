@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 
 import { makeStyles } from '@material-ui/core/styles';
 import {Grid, Step, StepButton, Stepper} from "@material-ui/core";
@@ -9,23 +9,53 @@ const useStyles = makeStyles(() => ({ root: { width: '100%' } }));
 
 const ContractPageCreator = props =>
 {
-	let [contractUploaded, setContractUploaded] = useState(false);
+	let [hash, setHash] = useState(null);
+	let [image, setImage] = useState(null);
+	let [signers, setSigners] = useState([]);
+	let [finishedAddingSigners, setFinishedAddingSigners] = useState(false);
+
+	useEffect(() =>
+	{
+		if (hash)
+		{
+			setImage("https://ipfs.io/ipfs/" + hash)
+		}
+	}, [hash]);
 
 	let view;
 
 	if(props.urlStatus === 0)
 	{
-		view = <UploadContractView contractUploaded={contractUploaded} setContractUploaded={setContractUploaded} {...props} />;
+		view =
+			<UploadContractView
+				hash={hash}
+				setHash={setHash}
+				image={image}
+				setImage={setImage}
+				{...props}
+			/>;
 	}
 
 	else if(props.urlStatus === 1)
 	{
-		view = <AddSignersView contractUploaded={contractUploaded} {...props}/>;
+		view =
+			<AddSignersView
+				image={image}
+				signers={signers}
+				setSigners={setSigners}
+				setFinishedAddingSigners={setFinishedAddingSigners}
+				{...props}
+			/>;
 	}
 
 	else if(props.urlStatus === 2)
 	{
-		view = <CloseContractView contractUploaded={contractUploaded} {...props} />;
+		view =
+			<CloseContractView
+				image={image}
+				signers={signers}
+				{...props}
+			/>;
 	}
 
 	else
@@ -47,7 +77,7 @@ const ContractPageCreator = props =>
 				{view}
 			</Grid>
 			<Grid item style={{width: "100%"}}>
-				<CreatorStepper contractUploaded={contractUploaded} {...props}/>
+				<CreatorStepper hash={hash} finishedAddingSigners={finishedAddingSigners} {...props}/>
 			</Grid>
 		</Grid>
 	)
@@ -55,8 +85,6 @@ const ContractPageCreator = props =>
 
 const UploadContractView = props =>
 {
-	let [image, setImage] = useState();
-
 	return(
 		<Grid
 			container
@@ -67,13 +95,14 @@ const UploadContractView = props =>
 			spacing={2}
 		>
 			<Grid item xs={6}>
-				<UploadButton text={"Upload Contract"} accept={".png, .csv, .jpg"} onClick={(e) => {
-					setImage(URL.createObjectURL(e.target.files[0]));
-					props.setContractUploaded(true);
-				}}/>
+				<UploadButton
+					text={"Upload Contract"}
+					accept={".png, .jpg"}
+					onClick={(e) => sendToIPFS(props.IPFS, e.target.files[0]).then(fileHash => props.setHash(fileHash))}
+				/>
 			</Grid>
 			<Grid item xs={6} style={{width: "100%"}}>
-				<img width={"100%"} height={"auto"} src={image} alt={"temp"}/>
+				<img width={"100%"} height={"auto"} src={props.image} alt={"temp"}/>
 			</Grid>
 		</Grid>
 	);
@@ -114,20 +143,43 @@ const CloseContractView = props =>
 const CreatorStepper = props =>
 {
 	const classes = useStyles();
-	let steps = ['Upload Contract', 'Add Signers', 'Close Contract'];
 	return(
 		<div className={classes.root}>
 			<Stepper nonLinear activeStep={props.urlStatus} alternativeLabel>
-				{steps.map((label, index) => (
-					<Step key={label}>
-						<StepButton disabled={index !== 0 && !props.contractUploaded} onClick={() => props.setUrlStatus(index)} >
-							{label}
-						</StepButton>
-					</Step>
-				))}
+				<Step>
+					<StepButton onClick={() => props.setUrlStatus(0)}>
+						Upload Contract
+					</StepButton>
+				</Step>
+				<Step>
+					<StepButton disabled={!props.hash} onClick={() => props.setUrlStatus(1)}>
+						Add Signers
+					</StepButton>
+				</Step>
+				<Step>
+					<StepButton
+						disabled={!props.hash || !props.finishedAddingSigners}
+						onClick={() => props.setUrlStatus(2)}
+					>
+						Close Contract
+					</StepButton>
+				</Step>
 			</Stepper>
 		</div>
 	);
+};
+
+const sendToIPFS = async (IPFS, file) =>
+{
+	try
+	{
+		return (await IPFS.add(file).next()).value.path;
+	}
+
+	catch (error)
+	{
+		return null;
+	}
 };
 
 export default ContractPageCreator;
