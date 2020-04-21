@@ -1,31 +1,34 @@
 import Web3 from "web3";
+import Torus from "@toruslabs/torus-embed";
 
 export const getWeb3 = async () =>
 {
-    if (window.ethereum)
+    try
     {
-        window.web3 = new Web3(ethereum);
-
-        try
+        if (window.web3)
         {
+            window.web3 = new Web3(web3.currentProvider);
+            return web3;
+        }
+
+        else if (window.ethereum && ethereum.isMetaMask)
+        {
+            window.web3 = new Web3(ethereum);
             await ethereum.enable();
             return web3;
-
         }
 
-        catch (error)
+        else
         {
-            return error;
+            const torus = new Torus();
+            await torus.init({showTorusButton: false});
+            await torus.login();
+            window.web3 = new Web3(torus.provider);
+            return web3;
         }
     }
 
-    else if (window.web3)
-    {
-        window.web3 = new Web3(web3.currentProvider);
-        return web3;
-    }
-
-    else
+    catch(error)
     {
         return null;
     }
