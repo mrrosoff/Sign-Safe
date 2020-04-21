@@ -55,7 +55,11 @@ contract MultiplePartyContract is SignSafeContract{
         emit contractComplete(emit_message, true);
     }
 
-
+    function cancelContract() only_PENDING only_signatories public {
+        STATE = sign_safe_contract_state.CANCELLED;
+        string memory emit_messagte = "One of the signatories has rejected the contract. ";
+        emit contractCanceled(emit_messagte, true);
+    }
 
 
 }
