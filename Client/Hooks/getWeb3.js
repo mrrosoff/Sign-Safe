@@ -23,16 +23,16 @@ export const getWeb3 = async () =>
 {
     try
     {
-        if (window.web3)
-        {
-            window.web3 = new Web3(web3.currentProvider);
-            return web3;
-        }
-
-        else if (window.ethereum && ethereum.isMetaMask)
+        if (window.ethereum && ethereum.isMetaMask)
         {
             window.web3 = new Web3(ethereum);
             await ethereum.enable();
+            return web3;
+        }
+
+        else if (window.web3)
+        {
+            window.web3 = new Web3(web3.currentProvider);
             return web3;
         }
 

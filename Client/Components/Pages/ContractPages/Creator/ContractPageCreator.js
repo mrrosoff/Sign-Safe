@@ -3,7 +3,9 @@ import React, {useEffect, useState} from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import {Grid, Step, StepButton, Stepper} from "@material-ui/core";
 
-import {UploadButton} from "../../Elements/Buttons";
+import UploadContractView from "./UploadContractView";
+import AddSignersView from "./AddSignersView";
+import CloseContractView from "./CloseContractView";
 
 const useStyles = makeStyles(() => ({ root: { width: '100%' } }));
 
@@ -83,63 +85,6 @@ const ContractPageCreator = props =>
 	)
 };
 
-const UploadContractView = props =>
-{
-	return(
-		<Grid
-			container
-			justify={"center"}
-			alignItems={"center"}
-			alignContent={"center"}
-			style={{height: "100%"}}
-			spacing={2}
-		>
-			<Grid item xs={6}>
-				<UploadButton
-					text={"Upload Contract"}
-					accept={".png, .jpg"}
-					onClick={(e) => sendToIPFS(props.IPFS, e.target.files[0]).then(fileHash => props.setHash(fileHash))}
-				/>
-			</Grid>
-			<Grid item xs={6} style={{width: "100%"}}>
-				<img width={"100%"} height={"auto"} src={props.image} alt={"temp"}/>
-			</Grid>
-		</Grid>
-	);
-};
-
-const AddSignersView = props =>
-{
-	return(
-		<Grid
-			container
-			justify={"center"}
-			alignItems={"center"}
-			alignContent={"center"}
-			style={{height: "100%"}}
-			spacing={2}
-		>
-
-		</Grid>
-	);
-};
-
-const CloseContractView = props =>
-{
-	return(
-		<Grid
-			container
-			justify={"center"}
-			alignItems={"center"}
-			alignContent={"center"}
-			style={{height: "100%"}}
-			spacing={2}
-		>
-
-		</Grid>
-	);
-};
-
 const CreatorStepper = props =>
 {
 	const classes = useStyles();
@@ -167,19 +112,6 @@ const CreatorStepper = props =>
 			</Stepper>
 		</div>
 	);
-};
-
-const sendToIPFS = async (IPFS, file) =>
-{
-	try
-	{
-		return (await IPFS.add(file).next()).value.path;
-	}
-
-	catch (error)
-	{
-		return null;
-	}
 };
 
 export default ContractPageCreator;

@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 
-import {Box, CircularProgress, Container, Grid, Typography, Paper} from "@material-ui/core";
+import {Button, Box, CircularProgress, Container, Grid, Typography, Paper} from "@material-ui/core";
 
-import {PrimaryButton} from "./Elements/Buttons";
 import {getWeb3, loadWeb3AccountListener} from "../Hooks/getWeb3";
 
 const LayoutTemplate = props =>
@@ -36,9 +35,9 @@ const Web3Item = props =>
 	if(!props.ethAccount)
 	{
 		return(
-			<PrimaryButton
+			<Button
 				size={"small"}
-				text={"Log In"}
+				variant={"outlined"}
 				onClick={() => {
 					props.setLoading(true);
 					getWeb3().then(web3Provider => {
@@ -52,7 +51,9 @@ const Web3Item = props =>
 						props.setLoading(false)
 					})
 				}}
-			/>
+			>
+				Log In
+			</Button>
 		);
 	}
 

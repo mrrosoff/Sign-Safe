@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 
-import { Grid, TextField, Typography } from "@material-ui/core";
+import { Button, Grid, TextField, Typography } from "@material-ui/core";
 
-import { PrimaryButton } from "../Elements/Buttons";
 import { callLambdaFunction }from "../../Hooks/getDatabase"
 
 const Home = props =>
@@ -32,9 +31,10 @@ const HomeContent = props =>
 				<Typography variant={"h6"} align={"center"}>An E-Contract Solution For A Modern World</Typography>
 			</Grid>
 			<Grid item>
-				<PrimaryButton
+				<Button
 					size={"large"}
-					text={"Create A New Contract"}
+					color={"primary"}
+					variant={"contained"}
 					onClick={() => {
 						if(props.ethAccount)
 						{
@@ -46,7 +46,9 @@ const HomeContent = props =>
 							props.produceSnackBar("Please Log In To The Blockchain To Continue.")
 						}
 					}}
-				/>
+				>
+					Create A New Contract
+				</Button>
 			</Grid>
 			<Grid item>
 				<Typography variant={"h6"} align={"center"}>or</Typography>
@@ -81,9 +83,10 @@ const ExistingURLSection = props =>
 				<Typography variant={"h6"} align={"center"}>and</Typography>
 			</Grid>
 			<Grid item>
-				<PrimaryButton
+				<Button
 					size={"large"}
-					text={"Go!"}
+					color={"primary"}
+					variant={"contained"}
 					onClick={() => {
 						if(props.ethAccount)
 						{
@@ -95,7 +98,9 @@ const ExistingURLSection = props =>
 							props.produceSnackBar("Please Log In To The Blockchain To Continue.")
 						}
 					}}
-				/>
+				>
+					Go!
+				</Button>
 			</Grid>
 		</Grid>
 	)

@@ -5,8 +5,8 @@ import { useParams } from "react-router-dom";
 import {callLambdaFunction, checkURLStatus} from "../../Hooks/getDatabase";
 
 import ContractPageLoading from "./ContractPages/ContractPageLoading";
-import ContractPageCreator from "./ContractPages/ContractPageCreator";
-import ContractPageOther from "./ContractPages/ContractPageOther";
+import ContractPageCreator from "./ContractPages/Creator/ContractPageCreator";
+import ContractPageSigner from "./ContractPages/Signer/ContractPageSigner";
 import ContractPageForbidden from "./ContractPages/ContractPageForbidden";
 
 const ContractPage = props =>
@@ -70,7 +70,7 @@ const Layout = props =>
 	{
 		if (props.isSigner)
 		{
-			pageType = <ContractPageOther {...props}/>;
+			pageType = <ContractPageSigner {...props}/>;
 		}
 
 		else
