@@ -6,6 +6,7 @@ import {Grid, Step, StepButton, Stepper} from "@material-ui/core";
 import UploadContractView from "./UploadContractView";
 import AddSignersView from "./AddSignersView";
 import CloseContractView from "./CloseContractView";
+import {callLambdaFunction} from "../../../../Hooks/getDatabase";
 
 const useStyles = makeStyles(() => ({ root: { width: '100%' } }));
 
@@ -13,16 +14,28 @@ const ContractPageCreator = props =>
 {
 	let [hash, setHash] = useState(null);
 	let [image, setImage] = useState(null);
-	let [signers, setSigners] = useState([]);
+	let [signers, setSigners] = useState([{name: "", email: "", ethAddr: ""}]);
 	let [finishedAddingSigners, setFinishedAddingSigners] = useState(false);
 
 	useEffect(() =>
 	{
 		if (hash)
 		{
+			callLambdaFunction("updateIPFSHash", {url: props.contractUrl, hash: hash}).then(r => console.log(r));
 			setImage("https://ipfs.io/ipfs/" + hash)
 		}
 	}, [hash]);
+
+	useEffect(() =>
+	{
+		callLambdaFunction("getURLStatus", {url: props.contractUrl}).then(r =>
+		{
+			if(r.data[0].ipfsHash)
+			{
+				setHash(r.data[0].ipfsHash);
+			}
+		})
+	}, []);
 
 	let view;
 

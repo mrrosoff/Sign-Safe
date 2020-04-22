@@ -1,19 +1,18 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
 import {Button, ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Grid, TextField, Typography} from "@material-ui/core";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import {callLambdaFunction} from "../../../../Hooks/getDatabase";
 
 const AddSignersView = props =>
 {
 	const [expanded, setExpanded] = React.useState('panel1');
-	let [signerData, setSignerData] = useState([{name: "", email: "", ethAddr: ""}]);
-
 	const handleChange = (panel) => setExpanded(expanded === panel ? false : panel);
 
 	const addSigner = () =>
 	{
-		let currentSignerSize = signerData.length;
+		let currentSignerSize = props.signers.length;
 
 		if (currentSignerSize === 5)
 		{
@@ -22,10 +21,21 @@ const AddSignersView = props =>
 
 		else
 		{
-			setSignerData([...signerData, {name: "", email: "", ethAddr: ""}]);
+			props.setSigners([...props.signers, {name: "", email: "", ethAddr: ""}]);
 			setTimeout(() => handleChange('panel' + (currentSignerSize + 1)), 300);
 		}
 	};
+
+	useEffect(() =>
+	{
+		callLambdaFunction("getURLStatus", {url: props.contractUrl}).then(r =>
+		{
+			if (r.data[0].signers.length > 0)
+			{
+				props.setSigners(r.data[0].signers);
+			}
+		})
+	}, []);
 
 	return(
 		<Grid
@@ -39,10 +49,10 @@ const AddSignersView = props =>
 		>
 			<Grid item>
 				{
-					signerData.map((signer, i) => {
-						let setName = (name) => { let copy = [...signerData]; copy[i].name = name; setSignerData(copy) };
-						let setEmail = (email) => { let copy = [...signerData]; copy[i].email = email; setSignerData(copy) };
-						let setEthAddr = (ethAddr) => { let copy = [...signerData]; copy[i].ethAddr = ethAddr; setSignerData(copy) };
+					props.signers.map((signer, i) => {
+						let setName = (name) => { let copy = [...props.signers]; copy[i].name = name; props.setSigners(copy) };
+						let setEmail = (email) => { let copy = [...props.signers]; copy[i].email = email; props.setSigners(copy) };
+						let setEthAddr = (ethAddr) => { let copy = [...props.signers]; copy[i].ethAddr = ethAddr; props.setSigners(copy) };
 
 						let title = signer.name ? signer.name : "Signer " + (i + 1);
 
@@ -70,7 +80,7 @@ const AddSignersView = props =>
 					})}
 			</Grid>
 			<Grid item>
-				<ActionButtons addSigner={addSigner}/>
+				<ActionButtons addSigner={addSigner} {...props} />
 			</Grid>
 		</Grid>
 	);
@@ -158,7 +168,12 @@ const ActionButtons = props =>
 				<Button
 					variant={"contained"}
 					color={"primary"}
-					onClick={() => {}}
+					onClick={() =>
+					{
+						callLambdaFunction("addSigners", {url: props.contractUrl, signers: props.signers}).then(r => console.log(r));
+						props.setFinishedAddingSigners(true);
+						props.setUrlStatus(2);
+					}}
 				>
 					Finish Adding Signers
 				</Button>

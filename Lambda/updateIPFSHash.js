@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb');
 
-const deleteURL = async (data) => {
+const updateIPFSHash = async (data) => {
 
 	const uri = "mongodb+srv://mrosoff:zlysuHOUVJoUF8r5@sign-safe-zol3w.mongodb.net/test?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
@@ -9,10 +9,10 @@ const deleteURL = async (data) => {
 	{
 		await client.connect();
 		return await client.db('URL-Data').collection('URL-Status')
-	    .deleteOne( { url: data.url });
+		.updateOne({ url: data.url }, { $set: { "ipfsHash": data.hash } });
 	}
 
-	catch (err)
+catch (err)
 	{
 		console.log(err);
 	}
@@ -27,7 +27,7 @@ exports.handler = async function(event, context) {
 
 	try
 	{
-		const data = await deleteURL(JSON.parse(event.body));
+		const data = await updateIPFSHash(JSON.parse(event.body));
 		return (
 			{
 				statusCode: 200,

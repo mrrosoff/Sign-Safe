@@ -131,7 +131,9 @@ const generateNewURLAndGo = (creatorAddress) => {
 			status: 0
 		}],
 		contractOwner: creatorAddress,
-		signers: []
+		signers: [],
+		hash: "",
+		ipfsHash: ""
 	}).then(r => console.log(r));
 
 	window.location.href = window.location + newRandomURL;

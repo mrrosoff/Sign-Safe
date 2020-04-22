@@ -1,15 +1,23 @@
 const { MongoClient } = require('mongodb');
 
-const updateURLStatus = async (data) => {
+const addSigners = async (data) => {
 
 	const uri = "mongodb+srv://mrosoff:zlysuHOUVJoUF8r5@sign-safe-zol3w.mongodb.net/test?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
 
+	let newSigners = [];
+	data.signers.forEach(item =>
+	{
+		newSigners.push({address: item.ethAddr, status: 0})
+	});
+
 	try
 	{
 		await client.connect();
+		await client.db('URL-Data').collection('URL-Status')
+		.findOneAndUpdate({ url: data.url }, { $push: { urlStatus: { $each: newSigners }}});
 		return await client.db('URL-Data').collection('URL-Status')
-		.findOneAndUpdate({ url: data.url }, { $push: { urlStatus: { address: data.address, status: 0 }}});
+		.findOneAndUpdate({ url: data.url }, { $push: { signers: { $each: data.signers }}});
 	}
 
 catch (err)
@@ -27,7 +35,7 @@ exports.handler = async function(event, context) {
 
 	try
 	{
-		const data = await updateURLStatus(JSON.parse(event.body));
+		const data = await addSigners(JSON.parse(event.body));
 		return (
 			{
 				statusCode: 200,
