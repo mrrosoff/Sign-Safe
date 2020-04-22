@@ -27,8 +27,6 @@ const AddSignersView = props =>
 		}
 	};
 
-	console.log(expanded);
-
 	return(
 		<Grid
 			container
@@ -40,60 +38,39 @@ const AddSignersView = props =>
 			spacing={5}
 		>
 			<Grid item>
-				{signerData.map((signer, i) => {
+				{
+					signerData.map((signer, i) => {
+						let setName = (name) => { let copy = [...signerData]; copy[i].name = name; setSignerData(copy) };
+						let setEmail = (email) => { let copy = [...signerData]; copy[i].email = email; setSignerData(copy) };
+						let setEthAddr = (ethAddr) => { let copy = [...signerData]; copy[i].ethAddr = ethAddr; setSignerData(copy) };
 
-					let setName = (name) => { let copy = [...signerData]; copy[i].name = name; setSignerData(copy) };
-					let setEmail = (email) => { let copy = [...signerData]; copy[i].email = email; setSignerData(copy) };
-					let setEthAddr = (ethAddr) => { let copy = [...signerData]; copy[i].ethAddr = ethAddr; setSignerData(copy) };
+						let title = signer.name ? signer.name : "Signer " + (i + 1);
 
-					let title = signer.name ? signer.name : "Signer " + (i + 1);
-
-					return(
-						<ExpansionPanel key={'panel' + (i + 1)} expanded={expanded === ('panel' + (i + 1))} onChange={() => handleChange('panel' + (i + 1))}>
-							<ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-								<Typography>{title}</Typography>
-							</ExpansionPanelSummary>
-							<ExpansionPanelDetails>
-								<SignerLayout
-									name={signer.name}
-									setName={setName}
-									email={signer.email}
-									setEmail={setEmail}
-									ethAddr={signer.ethAddr}
-									setEthAddr={setEthAddr}
-								/>
-							</ExpansionPanelDetails>
-						</ExpansionPanel>
-					);
-				})}
+						return(
+							<ExpansionPanel
+								key={'panel' + (i + 1)}
+								expanded={expanded === ('panel' + (i + 1))}
+								onChange={() => handleChange('panel' + (i + 1))}
+							>
+								<ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+									<Typography>{title}</Typography>
+								</ExpansionPanelSummary>
+								<ExpansionPanelDetails>
+									<SignerLayout
+										name={signer.name}
+										setName={setName}
+										email={signer.email}
+										setEmail={setEmail}
+										ethAddr={signer.ethAddr}
+										setEthAddr={setEthAddr}
+									/>
+								</ExpansionPanelDetails>
+							</ExpansionPanel>
+						);
+					})}
 			</Grid>
 			<Grid item>
-				<Grid
-					container
-					justify={"center"}
-					alignItems={"center"}
-					alignContent={"center"}
-					spacing={4}
-				>
-					<Grid item>
-						<Button
-							variant={"contained"}
-							color={"primary"}
-							onClick={() => addSigner()}
-						>
-							Add Additional Signer
-						</Button>
-					</Grid>
-					<Grid item>
-						<Button
-							variant={"contained"}
-							color={"primary"}
-							onClick={() => {}}
-						>
-							Finish Adding Signers
-						</Button>
-					</Grid>
-				</Grid>
+				<ActionButtons addSigner={addSigner}/>
 			</Grid>
 		</Grid>
 	);
@@ -155,6 +132,38 @@ const EthAddrField = props =>
 			value={props.ethAddr}
 			onChange={(e) => props.setEthAddr(e.target.value)}
 		/>
+	)
+};
+
+const ActionButtons = props =>
+{
+	return(
+		<Grid
+			container
+			justify={"center"}
+			alignItems={"center"}
+			alignContent={"center"}
+			spacing={4}
+		>
+			<Grid item>
+				<Button
+					variant={"contained"}
+					color={"primary"}
+					onClick={() => props.addSigner()}
+				>
+					Add Additional Signer
+				</Button>
+			</Grid>
+			<Grid item>
+				<Button
+					variant={"contained"}
+					color={"primary"}
+					onClick={() => {}}
+				>
+					Finish Adding Signers
+				</Button>
+			</Grid>
+		</Grid>
 	)
 };
 
