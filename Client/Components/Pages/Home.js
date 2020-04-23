@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Button, Grid, TextField, Typography } from "@material-ui/core";
+import { Box, Button, Grid, TextField, Typography } from "@material-ui/core";
 
 import { callLambdaFunction }from "../../Hooks/getDatabase"
 
@@ -8,7 +8,11 @@ const Home = props =>
 {
 	let [urlText, setUrlText] = useState("");
 
-	return <HomeContent urlText={urlText} setUrlText={setUrlText} {...props} />;
+	return(
+		<Box m={4}>
+			<HomeContent urlText={urlText} setUrlText={setUrlText} {...props} />
+		</Box>
+	);
 };
 
 
@@ -71,8 +75,9 @@ const ExistingURLSection = props =>
 			alignContent={"center"}
 			spacing={2}
 		>
-			<Grid item>
+			<Grid item xs={12} sm={"auto"}>
 				<TextField
+					fullWidth
 					variant={"outlined"}
 					label={"Enter Contract Address"}
 					value={props.urlText}

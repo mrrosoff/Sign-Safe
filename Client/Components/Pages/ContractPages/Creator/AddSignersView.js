@@ -13,7 +13,8 @@ const useStyles = makeStyles((theme) => (
 				zIndex: theme.zIndex.drawer + 1,
 				color: '#fff',
 			},
-	}));
+	}
+));
 
 const AddSignersView = props =>
 {
@@ -24,7 +25,10 @@ const AddSignersView = props =>
 	const addSigner = () =>
 	{
 		props.setSigners([...props.signers, {name: "", email: "", ethAddr: ""}]);
-		setTimeout(() => handleChange('panel' + (props.signers.length + 1)), 300);
+		setTimeout(() => {
+			handleChange('panel' + (props.signers.length + 1));
+			document.getElementById('panel' + (props.signers.length + 1)).scrollIntoView({behavior: "smooth"});
+		}, 300);
 	};
 
 	return(
@@ -71,7 +75,7 @@ const BackdropConfirm = props =>
 						alignItems={"center"}
 						alignContent={"center"}
 						style={{height: "100%"}}
-						spacing={2}
+						spacing={4}
 					>
 						<Grid item>
 							<Typography variant={"h6"} align={"center"}>
@@ -133,6 +137,7 @@ const SignersTable = props =>
 			return(
 				<ExpansionPanel
 					key={'panel' + (i + 1)}
+					id={'panel' + (i + 1)}
 					style={{width: "100%"}}
 					expanded={props.expanded === ('panel' + (i + 1))}
 					onChange={() => props.handleChange('panel' + (i + 1))}

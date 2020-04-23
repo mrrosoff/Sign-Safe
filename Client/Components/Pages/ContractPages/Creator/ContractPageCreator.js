@@ -92,7 +92,7 @@ const ContractPageCreator = props =>
 				style={{minHeight: "75vh"}}
 				spacing={4}
 			>
-				<Grid item>
+				<Grid item style={{width: "100%"}}>
 					{view}
 				</Grid>
 			</Grid>

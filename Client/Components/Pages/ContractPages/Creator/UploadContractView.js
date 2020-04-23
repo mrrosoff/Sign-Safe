@@ -1,6 +1,8 @@
 import React, {useState} from "react";
 
-import {CircularProgress, Grid} from "@material-ui/core";
+import {Box, Button, CircularProgress, Grid, Typography} from "@material-ui/core";
+import {Skeleton} from "@material-ui/lab";
+import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 import {UploadButton} from "../../../Elements/Buttons";
 
@@ -17,27 +19,80 @@ const UploadContractView = props =>
 			style={{height: "100%"}}
 			spacing={2}
 		>
-			<Grid item>
-				<UploadButton
-					text={"Upload Contract"}
-					accept={".png, .jpg"}
-					onClick={(e) =>
-					{
-						setLoading(true);
-						sendToIPFS(props.IPFS, e.target.files[0]).then(fileHash =>
-						{
-							props.setHash(fileHash);
-							setLoading(false);
-						})
-					}}
+			<Grid item xs={12} md={5} align={"center"}>
+				<ButtonsSection
+					loading={loading}
+					setLoading={setLoading}
+					hash={props.hash}
+					setHash={props.setHash}
+					IPFS={props.IPFS}
+					setUrlStatus={props.setUrlStatus}
 				/>
 			</Grid>
-			<Grid item style={{width: "100%"}}>
-				<img width={"100%"} height={"auto"} src={props.image} alt={"temp"}/>
-				{props.hash}
+			<Grid item xs={12} md={7} align="center">
+				{props.image ?
+					<img width={"90%"} height={"auto"} src={props.image} alt={"temp"}/> :
+					<Box width={"90%"}>
+						<Skeleton height={"70vh"} variant="rect"/>
+					</Box>
+				}
 			</Grid>
-			<Grid item xs={6} style={{width: "100%"}}>
-				{loading ? <CircularProgress/> : null}
+		</Grid>
+	);
+};
+
+const ButtonsSection = props =>
+{
+	return(
+		<Grid
+			container
+			direction={"column"}
+			justify={"center"}
+			alignItems={"center"}
+			alignContent={"center"}
+			spacing={4}
+		>
+			<Grid item>
+				<Typography variant={"h6"} align={"center"}>
+					To Begin, Upload A Contract
+				</Typography>
+			</Grid>
+			<Grid item>
+				<Grid
+					container
+					justify={"center"}
+					alignItems={"center"}
+					alignContent={"center"}
+					spacing={4}
+				>
+					<Grid item>
+						<UploadButton
+							text={"Select Contract"}
+							accept={".png, .jpg"}
+							onClick={(e) =>
+							{
+								props.setLoading(true);
+								sendToIPFS(props.IPFS, e.target.files[0]).then(fileHash =>
+								{
+									props.setHash(fileHash);
+									props.setLoading(false);
+								})
+							}}
+						/>
+					</Grid>
+					{props.loading ? <Grid item><CircularProgress/></Grid> : null}
+					{props.hash ? <Grid item>
+						<Button
+							variant={"contained"}
+							color={"primary"}
+							onClick={() => props.setUrlStatus(1)}
+							endIcon={<NavigateNextIcon />}
+						>
+							Next
+						</Button>
+					</Grid> : null
+					}
+				</Grid>
 			</Grid>
 		</Grid>
 	);
