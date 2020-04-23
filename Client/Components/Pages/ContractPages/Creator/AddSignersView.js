@@ -17,25 +17,14 @@ const useStyles = makeStyles((theme) => (
 
 const AddSignersView = props =>
 {
-	const classes = useStyles();
 	const [expanded, setExpanded] = React.useState('panel1');
 	const handleChange = (panel) => setExpanded(expanded === panel ? false : panel);
 	const [openBackdrop, setOpenBackdrop] = useState(false);
 
 	const addSigner = () =>
 	{
-		let currentSignerSize = props.signers.length;
-
-		if (currentSignerSize === 5)
-		{
-			props.produceSnackBar("The Maximum Number Of Signers is Five.", "info");
-		}
-
-		else
-		{
-			props.setSigners([...props.signers, {name: "", email: "", ethAddr: ""}]);
-			setTimeout(() => handleChange('panel' + (currentSignerSize + 1)), 300);
-		}
+		props.setSigners([...props.signers, {name: "", email: "", ethAddr: ""}]);
+		setTimeout(() => handleChange('panel' + (props.signers.length + 1)), 300);
 	};
 
 	return(
@@ -63,12 +52,71 @@ const AddSignersView = props =>
 					</Grid>
 				</Grid>
 			</Box>
-			<Backdrop className={classes.backdrop} open={openBackdrop} onClick={() => setOpenBackdrop(false)}>
-				<Paper>
-					Are you sure?
-				</Paper>
-			</Backdrop>
+			<BackdropConfirm openBackdrop={openBackdrop} setOpenBackdrop={setOpenBackdrop} setUrlStatus={props.setUrlStatus}/>
 		</>
+	);
+};
+
+const BackdropConfirm = props =>
+{
+	const classes = useStyles();
+	return(
+		<Backdrop className={classes.backdrop} open={props.openBackdrop} onClick={() => props.setOpenBackdrop(false)}>
+			<Paper style={{minWidth: "20vw", minHeight: "20vh"}}>
+				<Box m={4}>
+					<Grid
+						container
+						direction={"column"}
+						justify={"center"}
+						alignItems={"center"}
+						alignContent={"center"}
+						style={{height: "100%"}}
+						spacing={2}
+					>
+						<Grid item>
+							<Typography variant={"h6"} align={"center"}>
+								Are you sure? You won't be able to come back to this page.
+							</Typography>
+						</Grid>
+						<Grid item>
+							<BackdropButtons setOpenBackdrop={props.setOpenBackdrop} setUrlStatus={props.setUrlStatus}/>
+						</Grid>
+					</Grid>
+				</Box>
+			</Paper>
+		</Backdrop>
+	);
+};
+
+const BackdropButtons = props =>
+{
+	return(
+		<Grid
+			container
+			justify={"center"}
+			alignItems={"center"}
+			alignContent={"center"}
+			spacing={4}
+		>
+			<Grid item>
+				<Button
+					variant={"contained"}
+					color={"primary"}
+					onClick={() => props.setOpenBackdrop(false)}
+				>
+					Go Back
+				</Button>
+			</Grid>
+			<Grid item>
+				<Button
+					variant={"contained"}
+					color={"primary"}
+					onClick={() => props.setUrlStatus(2)}
+				>
+					Confirm
+				</Button>
+			</Grid>
+		</Grid>
 	);
 };
 
@@ -169,37 +217,39 @@ const EthAddrField = props =>
 const ActionButtons = props =>
 {
 	return(
-		<Grid
-			container
-			justify={"center"}
-			alignItems={"center"}
-			alignContent={"center"}
-			spacing={4}
-		>
-			<Grid item>
-				<Button
-					variant={"contained"}
-					color={"primary"}
-					onClick={() => props.addSigner()}
-				>
-					Add Additional Signer
-				</Button>
+		<Box pb={2}>
+			<Grid
+				container
+				justify={"center"}
+				alignItems={"center"}
+				alignContent={"center"}
+				spacing={4}
+			>
+				<Grid item>
+					<Button
+						variant={"contained"}
+						color={"primary"}
+						onClick={() => props.addSigner()}
+					>
+						Add Additional Signer
+					</Button>
+				</Grid>
+				<Grid item>
+					<Button
+						variant={"contained"}
+						color={"primary"}
+						onClick={() =>
+						{
+							callLambdaFunction("addSigners", {url: props.contractUrl, signers: props.signers}).then(r => console.log(r));
+							props.setOpenBackDrop(true);
+						}}
+					>
+						Finish Adding Signers
+					</Button>
+				</Grid>
 			</Grid>
-			<Grid item>
-				<Button
-					variant={"contained"}
-					color={"primary"}
-					onClick={() =>
-					{
-						callLambdaFunction("addSigners", {url: props.contractUrl, signers: props.signers}).then(r => console.log(r));
-						props.setOpenBackDrop(true);
-					}}
-				>
-					Finish Adding Signers
-				</Button>
-			</Grid>
-		</Grid>
-	)
+		</Box>
+	);
 };
 
 export default AddSignersView;

@@ -10,7 +10,7 @@ const ContractPageForbidden = props =>
 			justify={"center"}
 			alignItems={"center"}
 			alignContent={"center"}
-			style={{height: "100%"}}
+			style={{minHeight: "70vh"}}
 			spacing={4}
 		>
 			<Grid item>

@@ -21,7 +21,7 @@ const HomeContent = props =>
 			alignItems={"center"}
 			alignContent={"center"}
 			direction={"column"}
-			style={{height: "100%"}}
+			style={{minHeight: "70vh"}}
 			spacing={4}
 		>
 			<Grid item>
