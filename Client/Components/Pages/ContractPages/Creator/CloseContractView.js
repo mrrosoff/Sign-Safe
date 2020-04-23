@@ -13,7 +13,12 @@ const CloseContractView = props =>
 			style={{height: "100%"}}
 			spacing={2}
 		>
-
+			<Grid item>
+				{props.image}
+			</Grid>
+			<Grid item>
+				{props.signers.map(signer => signer.name)}
+			</Grid>
 		</Grid>
 	);
 };

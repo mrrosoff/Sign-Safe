@@ -34,6 +34,11 @@ const ContractPageCreator = props =>
 			{
 				setHash(r.data[0].ipfsHash);
 			}
+
+			if (r.data[0].signers.length > 0)
+			{
+				setSigners(r.data[0].signers);
+			}
 		})
 	}, []);
 
@@ -105,12 +110,12 @@ const CreatorStepper = props =>
 		<div className={classes.root}>
 			<Stepper nonLinear activeStep={props.urlStatus} alternativeLabel>
 				<Step>
-					<StepButton onClick={() => props.setUrlStatus(0)}>
+					<StepButton disabled={props.urlStatus === 2} onClick={() => props.setUrlStatus(0)}>
 						Upload Contract
 					</StepButton>
 				</Step>
 				<Step>
-					<StepButton disabled={!props.hash} onClick={() => props.setUrlStatus(1)}>
+					<StepButton disabled={!props.hash || props.urlStatus === 2} onClick={() => props.setUrlStatus(1)}>
 						Add Signers
 					</StepButton>
 				</Step>

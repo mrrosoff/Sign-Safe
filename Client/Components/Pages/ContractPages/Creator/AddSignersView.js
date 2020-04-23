@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 
 import {Button, ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Grid, TextField, Typography} from "@material-ui/core";
 
@@ -25,17 +25,6 @@ const AddSignersView = props =>
 			setTimeout(() => handleChange('panel' + (currentSignerSize + 1)), 300);
 		}
 	};
-
-	useEffect(() =>
-	{
-		callLambdaFunction("getURLStatus", {url: props.contractUrl}).then(r =>
-		{
-			if (r.data[0].signers.length > 0)
-			{
-				props.setSigners(r.data[0].signers);
-			}
-		})
-	}, []);
 
 	return(
 		<Grid

@@ -7,6 +7,7 @@ const ContractPageLoading = props =>
 	return(
 		<Grid
 			container
+			direction={"column"}
 			justify={"center"}
 			alignItems={"center"}
 			alignContent={"center"}
@@ -15,6 +16,9 @@ const ContractPageLoading = props =>
 		>
 			<Grid item>
 				<Typography variant={"h6"} align={"center"}>We are loading your data. Please wait.</Typography>
+			</Grid>
+			<Grid item>
+				<Typography variant={"h6"} align={"center"}>You may also need to log in.</Typography>
 			</Grid>
 			<Grid item>
 				<CircularProgress />
