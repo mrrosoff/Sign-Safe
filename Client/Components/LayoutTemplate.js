@@ -15,12 +15,14 @@ const LayoutTemplate = props =>
 				justify={"center"}
 				alignItems={"center"}
 				alignContent={"center"}
-				style={{height: "100vh"}}
+				style={{minHeight: "100vh"}}
 			>
 				<Paper elevation={3}>
-					<Box m={4} width={"85vw"} height={"85vh"} style={{position: "relative"}}>
-						{props.innerComponent}
-						<div style={{position: 'absolute', top: 0, right: 0}}>
+					<Box width={"80vw"} style={{minHeight: "85vh", position: "relative"}}>
+						<Box pt={8}>
+							{props.innerComponent}
+						</Box>
+						<div style={{position: 'absolute', top: 20, right: 20}}>
 							{loading ? <CircularProgress /> : <Web3Item setLoading={setLoading} {...props} />}
 						</div>
 					</Box>

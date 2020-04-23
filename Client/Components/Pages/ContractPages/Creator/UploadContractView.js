@@ -17,7 +17,7 @@ const UploadContractView = props =>
 			style={{height: "100%"}}
 			spacing={2}
 		>
-			<Grid item xs={6}>
+			<Grid item>
 				<UploadButton
 					text={"Upload Contract"}
 					accept={".png, .jpg"}
@@ -32,7 +32,7 @@ const UploadContractView = props =>
 					}}
 				/>
 			</Grid>
-			<Grid item xs={6} style={{width: "100%"}}>
+			<Grid item style={{width: "100%"}}>
 				<img width={"100%"} height={"auto"} src={props.image} alt={"temp"}/>
 				{props.hash}
 			</Grid>

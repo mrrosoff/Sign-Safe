@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 
 import { makeStyles } from '@material-ui/core/styles';
-import {Grid, Step, StepButton, Stepper} from "@material-ui/core";
+import {Box, Grid, Step, StepButton, Stepper} from "@material-ui/core";
 
 import UploadContractView from "./UploadContractView";
 import AddSignersView from "./AddSignersView";
@@ -15,7 +15,6 @@ const ContractPageCreator = props =>
 	let [hash, setHash] = useState(null);
 	let [image, setImage] = useState(null);
 	let [signers, setSigners] = useState([{name: "", email: "", ethAddr: ""}]);
-	let [finishedAddingSigners, setFinishedAddingSigners] = useState(false);
 
 	useEffect(() =>
 	{
@@ -63,7 +62,6 @@ const ContractPageCreator = props =>
 				image={image}
 				signers={signers}
 				setSigners={setSigners}
-				setFinishedAddingSigners={setFinishedAddingSigners}
 				{...props}
 			/>;
 	}
@@ -84,22 +82,24 @@ const ContractPageCreator = props =>
 	}
 
 	return(
-		<Grid
-			container
-			justify={"center"}
-			alignItems={"center"}
-			alignContent={"center"}
-			direction={"column"}
-			style={{height: "100%"}}
-			spacing={4}
-		>
-			<Grid item xs={9}>
-				{view}
+		<Box width={"100%"}>
+			<Grid
+				container
+				justify={"center"}
+				alignItems={"center"}
+				alignContent={"center"}
+				direction={"column"}
+				style={{minHeight: "75vh"}}
+				spacing={4}
+			>
+				<Grid item>
+					{view}
+				</Grid>
 			</Grid>
-			<Grid item style={{width: "100%"}}>
-				<CreatorStepper hash={hash} finishedAddingSigners={finishedAddingSigners} {...props}/>
-			</Grid>
-		</Grid>
+			<Box style={{width: "100%"}}>
+				<CreatorStepper hash={hash} urlStatus={props.urlStatus} setUrlStatus={props.setUrlStatus}/>
+			</Box>
+		</Box>
 	)
 };
 
@@ -120,10 +120,7 @@ const CreatorStepper = props =>
 					</StepButton>
 				</Step>
 				<Step>
-					<StepButton
-						disabled={!props.hash || !props.finishedAddingSigners}
-						onClick={() => props.setUrlStatus(2)}
-					>
+					<StepButton disabled={true}>
 						Close Contract
 					</StepButton>
 				</Step>
