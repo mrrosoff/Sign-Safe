@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 
 import { makeStyles } from '@material-ui/core/styles';
 import {Box, Grid, Step, StepButton, Stepper} from "@material-ui/core";
@@ -12,68 +12,30 @@ const useStyles = makeStyles(() => ({ root: { width: '100%' } }));
 
 const ContractPageCreator = props =>
 {
-	let [hash, setHash] = useState(null);
-	let [image, setImage] = useState(null);
-	let [signers, setSigners] = useState([{name: "", email: "", ethAddr: ""}]);
-
 	useEffect(() =>
 	{
-		if (hash)
+		if (props.hash)
 		{
-			callLambdaFunction("updateIPFSHash", {url: props.contractUrl, hash: hash}).then(r => console.log(r));
-			setImage("https://ipfs.io/ipfs/" + hash)
+			callLambdaFunction("updateIPFSHash", {url: props.contractUrl, hash: props.hash}).then(r => console.log(r));
+			props.setImage("https://ipfs.io/ipfs/" + props.hash)
 		}
-	}, [hash]);
-
-	useEffect(() =>
-	{
-		callLambdaFunction("getURLStatus", {url: props.contractUrl}).then(r =>
-		{
-			if(r.data[0].ipfsHash)
-			{
-				setHash(r.data[0].ipfsHash);
-			}
-
-			if (r.data[0].signers.length > 0)
-			{
-				setSigners(r.data[0].signers);
-			}
-		})
-	}, []);
+	}, [props.hash]);
 
 	let view;
 
 	if(props.urlStatus === 0)
 	{
-		view =
-			<UploadContractView
-				hash={hash}
-				setHash={setHash}
-				image={image}
-				setImage={setImage}
-				{...props}
-			/>;
+		view = <UploadContractView {...props} />;
 	}
 
 	else if(props.urlStatus === 1)
 	{
-		view =
-			<AddSignersView
-				image={image}
-				signers={signers}
-				setSigners={setSigners}
-				{...props}
-			/>;
+		view = <AddSignersView {...props} />;
 	}
 
 	else if(props.urlStatus === 2)
 	{
-		view =
-			<CloseContractView
-				image={image}
-				signers={signers}
-				{...props}
-			/>;
+		view = <CloseContractView {...props} />;
 	}
 
 	else
@@ -97,7 +59,7 @@ const ContractPageCreator = props =>
 				</Grid>
 			</Grid>
 			<Box style={{width: "100%"}}>
-				<CreatorStepper hash={hash} urlStatus={props.urlStatus} setUrlStatus={props.setUrlStatus}/>
+				<CreatorStepper hash={props.hash} urlStatus={props.urlStatus} setUrlStatus={props.setUrlStatus}/>
 			</Box>
 		</Box>
 	)

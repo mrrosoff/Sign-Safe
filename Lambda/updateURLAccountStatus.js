@@ -9,7 +9,7 @@ const updateURLAccountStatus = async (data) => {
 	{
 		await client.connect();
 		return await client.db('URL-Data').collection('URL-Status')
-		.updateOne({ url: data.url, "urlStatus.address": data.address }, { $set: { "urlStatus.$.status": data.urlStatus } });
+		.updateOne({ url: data.url, "urlStatus.ethAccount": data.ethAccount }, { $set: { "urlStatus.$.status": data.urlStatus } });
 	}
 
 catch (err)

@@ -1,24 +1,15 @@
 const { MongoClient } = require('mongodb');
 
-const addSigners = async (data) => {
+const updateIPFSHash = async (data) => {
 
 	const uri = "mongodb+srv://mrosoff:zlysuHOUVJoUF8r5@sign-safe-zol3w.mongodb.net/test?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
 
-	let newSigners = [];
-	data.signers.forEach(item =>
-	{
-		item.ethAccount = item.ethAccount.toLowerCase();
-		newSigners.push({ethAccount: item.ethAccount, status: 0})
-	});
-
 	try
 	{
 		await client.connect();
-		await client.db('URL-Data').collection('URL-Status')
-		.findOneAndUpdate({ url: data.url }, { $push: { urlStatus: { $each: newSigners }}});
 		return await client.db('URL-Data').collection('URL-Status')
-		.findOneAndUpdate({ url: data.url }, { $push: { signers: { $each: data.signers }}});
+		.updateOne({ url: data.url, "signers.ethAccount": data.ethAccount }, { $set: { "signers.$.signed": data.signed } });
 	}
 
 catch (err)
@@ -36,7 +27,7 @@ exports.handler = async function(event, context) {
 
 	try
 	{
-		const data = await addSigners(JSON.parse(event.body));
+		const data = await updateIPFSHash(JSON.parse(event.body));
 		return (
 			{
 				statusCode: 200,

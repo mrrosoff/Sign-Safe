@@ -26,7 +26,7 @@ const AddSignersView = props =>
 
 	const addSigner = () =>
 	{
-		props.setSigners([...props.signers, {name: "", email: "", ethAddr: ""}]);
+		props.setSigners([...props.signers, {name: "", email: "", ethAccount: ""}]);
 		setInvalidSigners([...invalidSigners, null]);
 		setTimeout(() => {
 			handleChange('panel' + (props.signers.length + 1));
@@ -154,7 +154,7 @@ const SignersTable = props =>
 		props.signers.map((signer, i) => {
 			let setName = (name) => { let copy = [...props.signers]; copy[i].name = name; props.setSigners(copy); };
 			let setEmail = (email) => { let copy = [...props.signers]; copy[i].email = email; props.setSigners(copy); };
-			let setEthAddr = (ethAddr) => { let copy = [...props.signers]; copy[i].ethAddr = ethAddr; props.setSigners(copy); };
+			let setEthAccount = (ethAccount) => { let copy = [...props.signers]; copy[i].ethAccount = ethAccount; props.setSigners(copy); };
 			let setInvalidSigner = (valid) => { let copy = [...props.invalidSigners]; copy[i] = valid; props.setInvalidSigners(copy); };
 			let title = signer.name ? signer.name : "Signer " + (i + 1);
 
@@ -175,8 +175,8 @@ const SignersTable = props =>
 							setName={setName}
 							email={signer.email}
 							setEmail={setEmail}
-							ethAddr={signer.ethAddr}
-							setEthAddr={setEthAddr}
+							ethAccount={signer.ethAccount}
+							setEthAccount={setEthAccount}
 							web3={props.web3}
 							invalidSigner={props.invalidSigners[i]}
 							setInvalidSigner={setInvalidSigner}
@@ -202,8 +202,8 @@ const SignerLayout = props =>
 			</Grid>
 			<Grid item>
 				<EthAddrField
-					ethAddr={props.ethAddr}
-					setEthAddr={props.setEthAddr}
+					ethAccount={props.ethAccount}
+					setEthAccount={props.setEthAccount}
 					web3={props.web3}
 					invalidSigner={props.invalidSigner}
 					setInvalidSigner={props.setInvalidSigner}
@@ -245,12 +245,12 @@ const EthAddrField = props =>
 			variant={"filled"}
 			label={"Ethereum Address"}
 			error={props.invalidSigner}
-			value={props.ethAddr}
+			value={props.ethAccount}
 			onChange={(e) =>
 			{
 				try { props.web3.utils.toChecksumAddress(e.target.value); props.setInvalidSigner(false); }
 				catch(e) { props.setInvalidSigner(true); }
-				props.setEthAddr(e.target.value)
+				props.setEthAccount(e.target.value)
 			}}
 		/>
 	)

@@ -6,11 +6,9 @@ import { callLambdaFunction }from "../../Hooks/getDatabase"
 
 const Home = props =>
 {
-	let [urlText, setUrlText] = useState("");
-
 	return(
 		<Box m={4}>
-			<HomeContent urlText={urlText} setUrlText={setUrlText} {...props} />
+			<HomeContent ethAccount={props.ethAccount} />
 		</Box>
 	);
 };
@@ -48,7 +46,7 @@ const HomeContent = props =>
 				<Typography variant={"h6"} align={"center"}>or</Typography>
 			</Grid>
 			<Grid item>
-				<ExistingURLSection {...props} />
+				<ExistingURLSection />
 			</Grid>
 		</Grid>
 	)
@@ -57,6 +55,8 @@ const HomeContent = props =>
 
 const ExistingURLSection = props =>
 {
+	let [urlText, setUrlText] = useState("");
+
 	return(
 		<Grid
 			container
@@ -70,8 +70,8 @@ const ExistingURLSection = props =>
 					fullWidth
 					variant={"outlined"}
 					label={"Enter Contract Address"}
-					value={props.urlText}
-					onChange={(e) => props.setUrlText(e.target.value)}
+					value={urlText}
+					onChange={(e) => setUrlText(e.target.value)}
 				/>
 			</Grid>
 			<Grid item>
@@ -82,7 +82,7 @@ const ExistingURLSection = props =>
 					size={"large"}
 					color={"primary"}
 					variant={"contained"}
-					onClick={() => window.location.href = props.urlText}
+					onClick={() => window.location.href = urlText}
 				>
 					Go!
 				</Button>
@@ -92,7 +92,7 @@ const ExistingURLSection = props =>
 };
 
 
-const generateNewURLAndGo = (creatorAddress) => {
+const generateNewURLAndGo = (ethAccount) => {
 
 	function randomStr(len) {
 
@@ -111,11 +111,8 @@ const generateNewURLAndGo = (creatorAddress) => {
 
 	callLambdaFunction("createURL", {
 		url: newRandomURL,
-		urlStatus: [{
-			address: creatorAddress,
-			status: 0
-		}],
-		contractOwner: creatorAddress,
+		urlStatus: [{ ethAccount: ethAccount, status: 0}],
+		contractOwner: ethAccount,
 		signers: [],
 		hash: "",
 		ipfsHash: ""

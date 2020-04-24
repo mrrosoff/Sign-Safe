@@ -35,7 +35,7 @@ const CloseContractView = props =>
 				</Button>
 			</Grid>
 			<Grid item xs={12} md={7} align="center">
-				<img width={"90%"} height={"auto"} src={props.image} alt={"temp"}/> :
+				<img width={"90%"} height={"auto"} src={props.image} alt={"Document"}/> :
 			</Grid>
 		</Grid>
 	);
@@ -48,8 +48,8 @@ const CloseContractSignerStateView = props =>
 	for (let i = 0; i < props.signers.length; i++)
 	{
 		signersTable.push(
-			<Grid item align={"center"}>
-				<Card key={props.signers[i].name}>
+			<Grid item align={"center"} key={props.signers[i].name}>
+				<Card>
 					<SignerView signer={props.signers[i]}/>
 				</Card>
 			</Grid>
@@ -73,10 +73,10 @@ const SignerView = props =>
 				<Typography variant={"h6"}>{props.signer.name}</Typography>
 			</Grid>
 			<Grid item>
-				<Typography variant={"subtitle1"}>{props.signer.ethAddr}</Typography>
+				<Typography variant={"subtitle1"}>{props.signer.ethAccount}</Typography>
 			</Grid>
 			<Grid item>
-				<DoneIcon />
+				{props.signer.signed ? <DoneIcon /> : <LoopIcon />}
 			</Grid>
 		</Grid>
 	)

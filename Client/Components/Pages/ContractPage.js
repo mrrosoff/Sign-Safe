@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 
 import { useParams } from "react-router-dom";
 
-import {callLambdaFunction, checkURLStatus} from "../../Hooks/getDatabase";
+import {callLambdaFunction} from "../../Hooks/getDatabase";
 
 import ContractPageLoading from "./ContractPages/ContractPageLoading";
 import ContractPageCreator from "./ContractPages/Creator/ContractPageCreator";
@@ -15,6 +15,9 @@ const ContractPage = props =>
 	let [urlStatus, setUrlStatus] = useState(null);
 	let [isContractOwner, setIsContractOwner] = useState(null);
 	let [isSigner, setIsSigner] = useState(null);
+	let [signers, setSigners] = useState([{name: "", email: "", ethAccount: ""}]);
+	let [image, setImage] = useState(null);
+	let [hash, setHash] = useState(null);
 
 	const firstUpdate = useRef(true);
 
@@ -22,8 +25,72 @@ const ContractPage = props =>
 	{
 		if(props.ethAccount)
 		{
-			checkURLStatus(contractUrl, props.ethAccount, setIsContractOwner, setIsSigner, props.produceSnackBar)
-			.then(r => setUrlStatus(r));
+			callLambdaFunction("getURLStatus", { url: contractUrl })
+			.then(r =>
+			{
+				console.log(r);
+
+				if(r.data[0])
+				{
+					if(r.data[0].ipfsHash)
+					{
+						setHash(r.data[0].ipfsHash);
+						setImage("https://ipfs.io/ipfs/" + r.data[0].ipfsHash)
+					}
+
+					if(r.data[0].signers.length > 0)
+					{
+						setSigners(r.data[0].signers);
+					}
+
+					setIsContractOwner(props.ethAccount === r.data[0].contractOwner);
+
+					let isSigner = false;
+
+					for(let i = 0; i < r.data[0].signers.length; i++)
+					{
+						if(r.data[0].signers[i].ethAccount === props.ethAccount)
+						{
+							isSigner = true;
+							setIsSigner(isSigner);
+						}
+					}
+
+					if(!isSigner)
+					{
+						setIsSigner(isSigner);
+					}
+
+					let restored = false;
+
+					for(let i = 0; i < r.data[0].urlStatus.length; i++)
+					{
+						let item = r.data[0].urlStatus[i];
+						if(item.ethAccount === props.ethAccount)
+						{
+							restored = true;
+							setUrlStatus(item.status);
+						}
+					}
+
+					// Forbidden User
+
+					if(!restored)
+					{
+						setUrlStatus(null);
+					}
+				}
+
+				else
+				{
+					props.produceSnackBar("This Contract Address Does Not Exist, Redirecting...");
+
+					setTimeout(() =>
+					{
+						window.location.href = window.location.protocol + "//" + window.location.host
+					}, 3000)
+				}
+			});
 		}
 	}, [props.ethAccount]);
 
@@ -32,7 +99,7 @@ const ContractPage = props =>
 		if (!firstUpdate.current)
 		{
 			callLambdaFunction("updateURLAccountStatus", {
-				url: contractUrl, urlStatus: urlStatus, address: props.ethAccount
+				url: contractUrl, urlStatus: urlStatus, ethAccount: props.ethAccount
 			})
 			.then(r => console.log(r));
 		}
@@ -41,6 +108,7 @@ const ContractPage = props =>
 		{
 			firstUpdate.current = false;
 		}
+
 	}, [urlStatus]);
 
 	return (
@@ -52,6 +120,12 @@ const ContractPage = props =>
 			setIsContractOwner={setIsContractOwner}
 			isSigner={isSigner}
 			setIsSigner={setIsSigner}
+			signers={signers}
+			setSigners={setSigners}
+			image={image}
+			setImage={setImage}
+			hash={hash}
+			setHash={setHash}
 			{...props}
 		/>
 	);

@@ -31,7 +31,7 @@ const UploadContractView = props =>
 			</Grid>
 			<Grid item xs={12} md={7} align="center">
 				{props.image ?
-					<img width={"90%"} height={"auto"} src={props.image} alt={"temp"}/> :
+					<img width={"90%"} height={"auto"} src={props.image} alt={"Document"}/> :
 					<Box width={"90%"}>
 						<Skeleton height={"70vh"} variant="rect"/>
 					</Box>
