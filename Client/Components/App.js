@@ -6,12 +6,12 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 import { SnackbarProvider, useSnackbar } from 'notistack';
 
-import {getWeb3, loadWeb3AccountListener, testWeb3} from "../Hooks/getWeb3";
+import {loadWeb3AccountListener, testWeb3} from "../Hooks/getWeb3";
 
 import Router from "./Router";
 import {getIPFS} from "../Hooks/getIPFS";
 
-const LoadApp = () => {
+const LoadApp = props => {
 
     const [web3, setWeb3] = useState();
     let [ethAccount, setEthAccount] = useState("");
@@ -55,10 +55,11 @@ const LoadApp = () => {
         <Router
             web3={web3}
             setWeb3={setWeb3}
+            IPFS={IPFS}
             ethAccount={ethAccount}
             setEthAccount={setEthAccount}
-            IPFS={IPFS}
             produceSnackBar={produceSnackBar}
+            {...props}
         />
     );
 };
@@ -66,24 +67,25 @@ const LoadApp = () => {
 const App = () => {
 
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+    const [darkMode, setDarkMode] = useState(prefersDarkMode);
 
     const theme = React.useMemo(
         () =>
             createMuiTheme({
                 palette: {
-                    type: prefersDarkMode ? 'dark' : 'light',
-                    primary: { main: "#157F1F" },
+                    type: darkMode ? 'dark' : 'light',
+                    primary: { main: "#157F1F", dark: "#FFFFFF"},
                     secondary: { main: "#00A5CF"}
                 },
             }),
-        [prefersDarkMode],
+        [darkMode],
     );
 
     return(
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <SnackbarProvider maxSnack={3} preventDuplicate>
-                <LoadApp />
+                <LoadApp darkMode={darkMode} setDarkMode={setDarkMode}/>
             </SnackbarProvider>
         </ThemeProvider>
     );

@@ -23,7 +23,21 @@ export const checkURLStatus = (contractUrl, ethAccount, setIsContractOwner, setI
     if (r.data[0])
     {
       setIsContractOwner(ethAccount === r.data[0].contractOwner);
-      setIsSigner(r.data[0].signers.includes(ethAccount));
+      let isSigner = false;
+
+      for (let i = 0; i < r.data[0].signers.length; i++)
+      {
+        if(r.data[0].signers[i].ethAddr.toLowerCase() === ethAccount)
+        {
+          isSigner = true;
+          setIsSigner(isSigner);
+        }
+      }
+
+      if(!isSigner)
+      {
+        setIsSigner(isSigner);
+      }
 
       // Look For Entry In Database, If Found, Restore Page
 

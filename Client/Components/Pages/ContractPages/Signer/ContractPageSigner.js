@@ -1,10 +1,9 @@
 import React from "react";
 
-import {Button, Grid, Step, StepLabel, Stepper} from "@material-ui/core";
+import {Button, Grid} from "@material-ui/core";
 
 const ContractPageSigner = props =>
 {
-	let steps = ['View Contract', 'Sign'];
 	return(
 		<Grid
 			container
@@ -14,7 +13,7 @@ const ContractPageSigner = props =>
 			style={{height: "100%"}}
 			spacing={4}
 		>
-
+			You are a signer!
 		</Grid>
 	)
 };

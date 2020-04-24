@@ -5,6 +5,7 @@ import {Backdrop, Box, Button, ExpansionPanel, ExpansionPanelDetails, ExpansionP
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {callLambdaFunction} from "../../../../Hooks/getDatabase";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles((theme) => (
 	{
@@ -21,10 +22,12 @@ const AddSignersView = props =>
 	const [expanded, setExpanded] = React.useState('panel1');
 	const handleChange = (panel) => setExpanded(expanded === panel ? false : panel);
 	const [openBackdrop, setOpenBackdrop] = useState(false);
+	const [invalidSigners, setInvalidSigners] = useState([null]);
 
 	const addSigner = () =>
 	{
 		props.setSigners([...props.signers, {name: "", email: "", ethAddr: ""}]);
+		setInvalidSigners([...invalidSigners, null]);
 		setTimeout(() => {
 			handleChange('panel' + (props.signers.length + 1));
 			document.getElementById('panel' + (props.signers.length + 1)).scrollIntoView({behavior: "smooth"});
@@ -43,20 +46,29 @@ const AddSignersView = props =>
 					style={{height: "100%"}}
 					spacing={5}
 				>
-					<Grid item>
-						<SignersTable signers={props.signers} setSigners={props.setSigners} expanded={expanded} handleChange={handleChange}/>
-					</Grid>
-					<Grid item>
-						<ActionButtons
-							contractUrl={props.contractUrl}
+					<Grid item align={"center"}>
+						<SignersTable
+							web3={props.web3}
 							signers={props.signers}
-							addSigner={addSigner}
-							setOpenBackDrop={setOpenBackdrop}
+							setSigners={props.setSigners}
+							invalidSigners={invalidSigners}
+							setInvalidSigners={setInvalidSigners}
+							expanded={expanded}
+							handleChange={handleChange}
 						/>
+					</Grid>
+					<Grid item align={"center"}>
+						<ActionButtons addSigner={addSigner} setOpenBackDrop={setOpenBackdrop} invalidSigners={invalidSigners}/>
 					</Grid>
 				</Grid>
 			</Box>
-			<BackdropConfirm openBackdrop={openBackdrop} setOpenBackdrop={setOpenBackdrop} setUrlStatus={props.setUrlStatus}/>
+			<BackdropConfirm
+				openBackdrop={openBackdrop}
+				setOpenBackdrop={setOpenBackdrop}
+				setUrlStatus={props.setUrlStatus}
+				signers={props.signers}
+				contractUrl={props.contractUrl}
+			/>
 		</>
 	);
 };
@@ -83,7 +95,13 @@ const BackdropConfirm = props =>
 							</Typography>
 						</Grid>
 						<Grid item>
-							<BackdropButtons setOpenBackdrop={props.setOpenBackdrop} setUrlStatus={props.setUrlStatus}/>
+							<BackdropButtons
+								setOpenBackdrop={props.setOpenBackdrop}
+								urlStatus={props.urlStatus}
+								setUrlStatus={props.setUrlStatus}
+								signers={props.signers}
+								contractUrl={props.contractUrl}
+							/>
 						</Grid>
 					</Grid>
 				</Box>
@@ -115,7 +133,11 @@ const BackdropButtons = props =>
 				<Button
 					variant={"contained"}
 					color={"primary"}
-					onClick={() => props.setUrlStatus(2)}
+					onClick={() =>
+					{
+						callLambdaFunction("addSigners", {url: props.contractUrl, signers: props.signers}).then(r => console.log(r));
+						props.setUrlStatus(2)
+					}}
 				>
 					Confirm
 				</Button>
@@ -126,19 +148,21 @@ const BackdropButtons = props =>
 
 const SignersTable = props =>
 {
+	const small = useMediaQuery(theme => theme.breakpoints.down('sm'));
+
 	return(
 		props.signers.map((signer, i) => {
-			let setName = (name) => { let copy = [...props.signers]; copy[i].name = name; props.setSigners(copy) };
-			let setEmail = (email) => { let copy = [...props.signers]; copy[i].email = email; props.setSigners(copy) };
-			let setEthAddr = (ethAddr) => { let copy = [...props.signers]; copy[i].ethAddr = ethAddr; props.setSigners(copy) };
-
+			let setName = (name) => { let copy = [...props.signers]; copy[i].name = name; props.setSigners(copy); };
+			let setEmail = (email) => { let copy = [...props.signers]; copy[i].email = email; props.setSigners(copy); };
+			let setEthAddr = (ethAddr) => { let copy = [...props.signers]; copy[i].ethAddr = ethAddr; props.setSigners(copy); };
+			let setInvalidSigner = (valid) => { let copy = [...props.invalidSigners]; copy[i] = valid; props.setInvalidSigners(copy); };
 			let title = signer.name ? signer.name : "Signer " + (i + 1);
 
 			return(
 				<ExpansionPanel
 					key={'panel' + (i + 1)}
 					id={'panel' + (i + 1)}
-					style={{width: "100%"}}
+					style={{width: small ? "95%" : "100%"}}
 					expanded={props.expanded === ('panel' + (i + 1))}
 					onChange={() => props.handleChange('panel' + (i + 1))}
 				>
@@ -153,6 +177,9 @@ const SignersTable = props =>
 							setEmail={setEmail}
 							ethAddr={signer.ethAddr}
 							setEthAddr={setEthAddr}
+							web3={props.web3}
+							invalidSigner={props.invalidSigners[i]}
+							setInvalidSigner={setInvalidSigner}
 						/>
 					</ExpansionPanelDetails>
 				</ExpansionPanel>
@@ -165,10 +192,7 @@ const SignerLayout = props =>
 	return(
 		<Grid
 			container
-			justify={"center"}
-			alignItems={"center"}
-			alignContent={"center"}
-			spacing={4}
+			spacing={2}
 		>
 			<Grid item>
 				<NameField name={props.name} setName={props.setName}/>
@@ -177,7 +201,13 @@ const SignerLayout = props =>
 				<EmailField email={props.email} setEmail={props.setEmail}/>
 			</Grid>
 			<Grid item>
-				<EthAddrField ethAddr={props.ethAddr} setEthAddr={props.setEthAddr}/>
+				<EthAddrField
+					ethAddr={props.ethAddr}
+					setEthAddr={props.setEthAddr}
+					web3={props.web3}
+					invalidSigner={props.invalidSigner}
+					setInvalidSigner={props.setInvalidSigner}
+				/>
 			</Grid>
 		</Grid>
 	);
@@ -187,7 +217,7 @@ const NameField = props =>
 {
 	return(
 		<TextField
-			variant={"outlined"}
+			variant={"filled"}
 			label={"Name"}
 			value={props.name}
 			onChange={(e) => props.setName(e.target.value)}
@@ -199,7 +229,7 @@ const EmailField = props =>
 {
 	return(
 		<TextField
-			variant={"outlined"}
+			variant={"filled"}
 			label={"Email"}
 			value={props.email}
 			onChange={(e) => props.setEmail(e.target.value)}
@@ -211,10 +241,17 @@ const EthAddrField = props =>
 {
 	return(
 		<TextField
-			variant={"outlined"}
+			required
+			variant={"filled"}
 			label={"Ethereum Address"}
+			error={props.invalidSigner}
 			value={props.ethAddr}
-			onChange={(e) => props.setEthAddr(e.target.value)}
+			onChange={(e) =>
+			{
+				try { props.web3.utils.toChecksumAddress(e.target.value); props.setInvalidSigner(false); }
+				catch(e) { props.setInvalidSigner(true); }
+				props.setEthAddr(e.target.value)
+			}}
 		/>
 	)
 };
@@ -243,11 +280,8 @@ const ActionButtons = props =>
 					<Button
 						variant={"contained"}
 						color={"primary"}
-						onClick={() =>
-						{
-							callLambdaFunction("addSigners", {url: props.contractUrl, signers: props.signers}).then(r => console.log(r));
-							props.setOpenBackDrop(true);
-						}}
+						disabled={props.invalidSigners.includes(true) || props.invalidSigners.includes(null)}
+						onClick={() => props.setOpenBackDrop(true)}
 					>
 						Finish Adding Signers
 					</Button>

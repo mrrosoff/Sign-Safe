@@ -1,15 +1,19 @@
 import React, {useState} from "react";
 
-import {Button, Box, CircularProgress, Container, Grid, Typography, Paper} from "@material-ui/core";
-
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import {Button, Box, CircularProgress, Container, Grid, IconButton, Tooltip, Typography, Paper} from "@material-ui/core";
 import {getWeb3, loadWeb3AccountListener} from "../Hooks/getWeb3";
+
+import Brightness7Icon from '@material-ui/icons/Brightness7'; // Light
+import Brightness4Icon from '@material-ui/icons/Brightness4'; // Dark
 
 const LayoutTemplate = props =>
 {
+	const small = useMediaQuery(theme => theme.breakpoints.down('sm'));
 	let [loading, setLoading] = useState(false);
 
 	return(
-		<Container>
+		<Container disableGutters>
 			<Grid
 				container
 				justify={"center"}
@@ -18,12 +22,29 @@ const LayoutTemplate = props =>
 				style={{minHeight: "100vh"}}
 			>
 				<Paper elevation={3}>
-					<Box width={"80vw"} style={{minHeight: "85vh", position: "relative"}}>
-						<Box pt={8}>
+					<Box width={small ? "90vw" : "80vw"} style={{minHeight: "85vh", position: "relative"}}>
+						<Box pt={10}>
 							{props.innerComponent}
 						</Box>
 						<div style={{position: 'absolute', top: 20, right: 20}}>
-							{loading ? <CircularProgress /> : <Web3Item setLoading={setLoading} {...props} />}
+							<Grid
+								container
+								justify={"center"}
+								alignItems={"center"}
+								alignContent={"center"}
+								spacing={2}
+							>
+								<Grid item>
+									{loading ? <CircularProgress /> : <Web3Item setLoading={setLoading} {...props} />}
+								</Grid>
+								<Grid item>
+									<Tooltip title={props.darkMode ? "Light Theme" : "Dark Theme"}>
+										<IconButton onClick={() => props.setDarkMode(!props.darkMode)}>
+											{props.darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+										</IconButton>
+									</Tooltip>
+								</Grid>
+							</Grid>
 						</div>
 					</Box>
 				</Paper>
