@@ -39,17 +39,7 @@ const HomeContent = props =>
 					size={"large"}
 					color={"primary"}
 					variant={"contained"}
-					onClick={() => {
-						if(props.ethAccount)
-						{
-							generateNewURLAndGo(props.ethAccount)
-						}
-
-						else
-						{
-							props.produceSnackBar("Please Log In To The Blockchain To Continue.")
-						}
-					}}
+					onClick={() => generateNewURLAndGo(props.ethAccount)}
 				>
 					Create A New Contract
 				</Button>
@@ -92,17 +82,7 @@ const ExistingURLSection = props =>
 					size={"large"}
 					color={"primary"}
 					variant={"contained"}
-					onClick={() => {
-						if(props.ethAccount)
-						{
-							window.location.href = props.urlText
-						}
-
-						else
-						{
-							props.produceSnackBar("Please Log In To The Blockchain To Continue.")
-						}
-					}}
+					onClick={() => window.location.href = props.urlText}
 				>
 					Go!
 				</Button>
