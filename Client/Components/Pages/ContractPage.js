@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
 import {callLambdaFunction} from "../../Hooks/getDatabase";
 
@@ -12,6 +12,8 @@ import ContractPageForbidden from "./ContractPages/ContractPageForbidden";
 const ContractPage = props =>
 {
 	let { contractUrl } = useParams();
+	let history = useHistory();
+
 	let [urlStatus, setUrlStatus] = useState(null);
 	let [isContractOwner, setIsContractOwner] = useState(null);
 	let [isSigner, setIsSigner] = useState(null);
@@ -87,7 +89,7 @@ const ContractPage = props =>
 
 					setTimeout(() =>
 					{
-						window.location.href = window.location.protocol + "//" + window.location.host
+						history.push("/");
 					}, 3000)
 				}
 			});

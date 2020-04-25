@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
-import { Box, Button, Grid, TextField, Typography } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+
+import { Box, Button, CircularProgress, Grid, TextField, Typography } from "@material-ui/core";
 
 import { callLambdaFunction }from "../../Hooks/getDatabase"
 
@@ -8,7 +10,7 @@ const Home = props =>
 {
 	return(
 		<Box m={4}>
-			<HomeContent ethAccount={props.ethAccount} />
+			<HomeContent ethAccount={props.ethAccount} history={props.history}/>
 		</Box>
 	);
 };
@@ -16,6 +18,9 @@ const Home = props =>
 
 const HomeContent = props =>
 {
+	const history = useHistory();
+	let [loading, setLoading] = useState(false);
+
 	return(
 		<Grid
 			container
@@ -33,20 +38,31 @@ const HomeContent = props =>
 				<Typography variant={"h6"} align={"center"}>An E-Contract Solution For A Modern World</Typography>
 			</Grid>
 			<Grid item>
-				<Button
-					size={"large"}
-					color={"primary"}
-					variant={"contained"}
-					onClick={() => generateNewURLAndGo(props.ethAccount)}
-				>
-					Create A New Contract
-				</Button>
+				<Grid
+					container
+					justify={"center"}
+					alignContent={"center"}
+					alignItems={"center"}
+					spacing={4}
+					>
+					<Grid item>
+						<Button
+							size={"large"}
+							color={"primary"}
+							variant={"contained"}
+							onClick={() => generateNewURLAndGo(props.ethAccount, history, setLoading)}
+						>
+							Create A New Contract
+						</Button>
+					</Grid>
+					{loading ? <Grid item><CircularProgress/></Grid> : null}
+				</Grid>
 			</Grid>
 			<Grid item>
 				<Typography variant={"h6"} align={"center"}>or</Typography>
 			</Grid>
 			<Grid item>
-				<ExistingURLSection />
+				<ExistingURLSection history={history}/>
 			</Grid>
 		</Grid>
 	)
@@ -82,7 +98,7 @@ const ExistingURLSection = props =>
 					size={"large"}
 					color={"primary"}
 					variant={"contained"}
-					onClick={() => window.location.href = urlText}
+					onClick={() => props.history.push("/" + urlText)}
 				>
 					Go!
 				</Button>
@@ -92,7 +108,9 @@ const ExistingURLSection = props =>
 };
 
 
-const generateNewURLAndGo = (ethAccount) => {
+const generateNewURLAndGo = (ethAccount, history, setLoading) => {
+
+	setLoading(true);
 
 	function randomStr(len) {
 
@@ -116,9 +134,12 @@ const generateNewURLAndGo = (ethAccount) => {
 		signers: [],
 		hash: "",
 		ipfsHash: ""
-	}).then(r => console.log(r));
-
-	window.location.href = window.location + newRandomURL;
+	}).then(r =>
+	{
+		console.log(r);
+		setLoading(false);
+		history.push("/" + newRandomURL);
+	});
 };
 
 
