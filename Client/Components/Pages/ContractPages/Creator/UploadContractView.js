@@ -79,6 +79,13 @@ const ButtonsSection = props =>
 								})
 							}}
 						/>
+						<Button
+							onClick={ ()=> deployContract(props.web3)}
+							variant={"contained"}
+							color={"primary"}
+						>
+							Deploy to Blockchain
+						</Button>
 					</Grid>
 					{props.loading ? <Grid item><CircularProgress/></Grid> : null}
 					{props.hash ? <Grid item>
@@ -109,6 +116,41 @@ const sendToIPFS = async (IPFS, file) =>
 	{
 		return null;
 	}
+};
+
+const deployContract = async (x) => {
+	console.log("we are here");
+	console.log(x);
+	const accounts = x.eth.getAccounts();
+	console.log((accounts[0]));
+	const MPContract = require('../../../../contract_ABI/MultiplePartyContract.json');
+	const deployable = new web3.eth.Contract(MPContract.abi);
+
+
+	const gas = await deployable.deploy({
+		data: MPContract.bytecode
+	}).estimateGas();
+
+	deployable.deploy({
+		data: MPContract.bytecode
+	}).send({
+		from: accounts[0],
+		gas: gas,
+	})
+		.on('error', (error) => {
+			console.log(error)
+		})
+		.on('transactionHash', (transactionHash) => {
+			console.log(transactionHash)
+		})
+		.on('receipt', (receipt) => {
+			// receipt will contain deployed contract address
+			console.log(receipt)
+		})
+		.on('confirmation', (confirmationNumber, receipt) => {
+			console.log(receipt)
+		})
+
 };
 
 export default UploadContractView;
