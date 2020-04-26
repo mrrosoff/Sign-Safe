@@ -22,6 +22,7 @@ contract MultiplePartyContract is SignSafeContract{
         who_has_signed[_owner] = false;
         numberOfSignatures = 0;
         numberOfSignatoriesAdded = 0;
+        creation_date = now;
     }
 
     function addSignatory(address _newSignatory) only_SETUP only_owner public {
@@ -43,7 +44,8 @@ contract MultiplePartyContract is SignSafeContract{
     function sign() only_PENDING only_unsigned_signatories only_signatories only_hash_match public {
         numberOfSignatures++;
         who_has_signed[msg.sender] = true;
-        emit signature(msg.sender, true);
+        signature_timestamps[msg.sender] = now;
+        emit signature(msg.sender, true, now);
         if(numberOfSignatures == numberOfParties){
             completeContract();
         }
@@ -51,14 +53,16 @@ contract MultiplePartyContract is SignSafeContract{
 
     function completeContract() only_PENDING private {
         STATE = sign_safe_contract_state.COMPLETED;
+        contract_completed_date = now;
         string memory emit_message = "All signatories have signed the contract. ";
-        emit contractComplete(emit_message, true);
+        emit contractComplete(emit_message, true, now);
     }
 
     function cancelContract() only_PENDING only_signatories public {
         STATE = sign_safe_contract_state.CANCELLED;
-        string memory emit_messagte = "One of the signatories has rejected the contract. ";
-        emit contractCanceled(emit_messagte, true);
+        contract_cancelled_date = now;
+        string memory emit_message = "One of the signatories has rejected the contract. ";
+        emit contractCanceled(emit_message, true, now);
     }
 
 
