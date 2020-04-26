@@ -21,6 +21,7 @@ const UploadContractView = props =>
 		>
 			<Grid item xs={12} md={5} align={"center"}>
 				<ButtonsSection
+					web3={props.web3}
 					loading={loading}
 					setLoading={setLoading}
 					hash={props.hash}
@@ -121,7 +122,8 @@ const sendToIPFS = async (IPFS, file) =>
 const deployContract = async (x) => {
 	console.log("we are here");
 	console.log(x);
-	const accounts = x.eth.getAccounts();
+	const accounts = await x.eth.getAccounts();
+	console.log(accounts);
 	console.log((accounts[0]));
 	const MPContract = require('../../../../contract_ABI/MultiplePartyContract.json');
 	const deployable = new web3.eth.Contract(MPContract.abi);
@@ -129,7 +131,9 @@ const deployContract = async (x) => {
 
 	const gas = await deployable.deploy({
 		data: MPContract.bytecode
-	}).estimateGas();
+	}).estimateGas() + 500000;
+
+	console.log("est gas is: ", gas);
 
 	deployable.deploy({
 		data: MPContract.bytecode
@@ -138,16 +142,20 @@ const deployContract = async (x) => {
 		gas: gas,
 	})
 		.on('error', (error) => {
+			console.log('we have an error')
 			console.log(error)
 		})
 		.on('transactionHash', (transactionHash) => {
+			console.log('Transaction Hash:')
 			console.log(transactionHash)
 		})
 		.on('receipt', (receipt) => {
 			// receipt will contain deployed contract address
+			console.log('Receipt')
 			console.log(receipt)
 		})
 		.on('confirmation', (confirmationNumber, receipt) => {
+			console.log('Confirmation')
 			console.log(receipt)
 		})
 
