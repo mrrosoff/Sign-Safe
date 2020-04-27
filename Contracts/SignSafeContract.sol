@@ -60,6 +60,8 @@ contract SignSafeContract{
         _;
     }
 
+
+
     event contractComplete(string message, bool complete, uint timestamp);
     event signature(address indexed signatory, bool has_signed, uint timestamp);
     event contractCanceled(string message, bool canceled, uint timestamp);

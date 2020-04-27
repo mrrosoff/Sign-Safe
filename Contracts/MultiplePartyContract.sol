@@ -6,23 +6,27 @@ contract MultiplePartyContract is SignSafeContract{
 
     function () external {}
 
-    uint256 private numberOfParties;
+    uint256 internal numberOfParties;
     uint256 private numberOfSignatures;
     uint256 private numberOfSignatoriesAdded;
 
     modifier all_signatories_added(){
+        require(numberOfParties >= 2);
         require(numberOfParties == numberOfSignatoriesAdded);
         _;
     }
 
-    constructor (uint256 _numParties, address _owner) public{
-        numberOfParties = _numParties;
-        contract_owner = _owner;
+    constructor () public{
+        contract_owner = msg.sender;
         STATE = sign_safe_contract_state.SETUP;
-        who_has_signed[_owner] = false;
         numberOfSignatures = 0;
         numberOfSignatoriesAdded = 0;
+        numberOfParties = 0;
         creation_date = now;
+    }
+
+    function setNumberOfParties(uint _numParties) only_SETUP only_owner public {
+        numberOfParties = _numParties;
     }
 
     function addSignatory(address _newSignatory) only_SETUP only_owner public {

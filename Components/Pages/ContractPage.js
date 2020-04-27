@@ -17,9 +17,13 @@ const ContractPage = props =>
 	let [urlStatus, setUrlStatus] = useState(null);
 	let [isContractOwner, setIsContractOwner] = useState(null);
 	let [isSigner, setIsSigner] = useState(null);
+
 	let [signers, setSigners] = useState([{name: "", email: "", ethAccount: ""}]);
 	let [image, setImage] = useState(null);
 	let [hash, setHash] = useState(null);
+	let [fileInformation, setFileInformation] = useState();
+
+	let [deployedContract, setDeployedContract] = useState();
 
 	const firstUpdate = useRef(true);
 
@@ -128,6 +132,10 @@ const ContractPage = props =>
 			setImage={setImage}
 			hash={hash}
 			setHash={setHash}
+			fileInformation={fileInformation}
+			setFileInformation={setFileInformation}
+			deployedContract={deployedContract}
+			setDeployedContract={setDeployedContract}
 			{...props}
 		/>
 	);

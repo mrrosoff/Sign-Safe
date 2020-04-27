@@ -21,12 +21,14 @@ const UploadContractView = props =>
 		>
 			<Grid item xs={12} md={5} align={"center"}>
 				<ButtonsSection
+					web3={props.web3}
 					loading={loading}
 					setLoading={setLoading}
 					hash={props.hash}
 					setHash={props.setHash}
 					IPFS={props.IPFS}
 					setUrlStatus={props.setUrlStatus}
+					setFileInformation={props.setFileInformation}
 				/>
 			</Grid>
 			<Grid item xs={12} md={7} align="center">
@@ -43,6 +45,7 @@ const UploadContractView = props =>
 
 const ButtonsSection = props =>
 {
+
 	return(
 		<Grid
 			container
@@ -76,7 +79,11 @@ const ButtonsSection = props =>
 								{
 									props.setHash(fileHash);
 									props.setLoading(false);
-								})
+								});
+
+								let reader = new FileReader();
+								reader.readAsText(e.target.files[0]);
+								reader.onload = () => props.setFileInformation();
 							}}
 						/>
 					</Grid>
