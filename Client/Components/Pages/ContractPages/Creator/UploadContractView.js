@@ -5,7 +5,6 @@ import {Skeleton} from "@material-ui/lab";
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 import {UploadButton} from "../../../Elements/Buttons";
-import DeployToBlockChain from "./DeployToBlockchain";
 
 const UploadContractView = props =>
 {
@@ -82,9 +81,6 @@ const ButtonsSection = props =>
 								})
 							}}
 						/>
-						<DeployToBlockChain web3={props.web3} />
-
-
 					</Grid>
 					{props.loading ? <Grid item><CircularProgress/></Grid> : null}
 					{props.hash ? <Grid item>

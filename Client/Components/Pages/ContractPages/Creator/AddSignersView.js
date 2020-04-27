@@ -7,6 +7,8 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {callLambdaFunction} from "../../../../Hooks/getDatabase";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
+import MultiplePartyContract from "../../../../contract_ABI/MultiplePartyContract";
+
 const useStyles = makeStyles((theme) => (
 	{
 		backdrop:
@@ -63,86 +65,18 @@ const AddSignersView = props =>
 				</Grid>
 			</Box>
 			<BackdropConfirm
-				openBackdrop={openBackdrop}
-				setOpenBackdrop={setOpenBackdrop}
-				setUrlStatus={props.setUrlStatus}
+				web3={props.web3}
+				ethAccount={props.ethAccount}
 				signers={props.signers}
 				contractUrl={props.contractUrl}
+				setUrlStatus={props.setUrlStatus}
+				deployedContract={props.deployedContract}
+				setDeployedContract={props.setDeployedContract}
+				fileInformation={props.fileInformation}
+				openBackdrop={openBackdrop}
+				setOpenBackdrop={setOpenBackdrop}
 			/>
 		</>
-	);
-};
-
-const BackdropConfirm = props =>
-{
-	const classes = useStyles();
-	return(
-		<Backdrop className={classes.backdrop} open={props.openBackdrop} onClick={() => props.setOpenBackdrop(false)}>
-			<Paper style={{minWidth: "20vw", minHeight: "20vh"}}>
-				<Box m={4}>
-					<Grid
-						container
-						direction={"column"}
-						justify={"center"}
-						alignItems={"center"}
-						alignContent={"center"}
-						style={{height: "100%"}}
-						spacing={4}
-					>
-						<Grid item>
-							<Typography variant={"h6"} align={"center"}>
-								Are you sure? You won't be able to come back to this page.
-							</Typography>
-						</Grid>
-						<Grid item>
-							<BackdropButtons
-								setOpenBackdrop={props.setOpenBackdrop}
-								urlStatus={props.urlStatus}
-								setUrlStatus={props.setUrlStatus}
-								signers={props.signers}
-								contractUrl={props.contractUrl}
-							/>
-						</Grid>
-					</Grid>
-				</Box>
-			</Paper>
-		</Backdrop>
-	);
-};
-
-const BackdropButtons = props =>
-{
-	return(
-		<Grid
-			container
-			justify={"center"}
-			alignItems={"center"}
-			alignContent={"center"}
-			spacing={4}
-		>
-			<Grid item>
-				<Button
-					variant={"contained"}
-					color={"primary"}
-					onClick={() => props.setOpenBackdrop(false)}
-				>
-					Go Back
-				</Button>
-			</Grid>
-			<Grid item>
-				<Button
-					variant={"contained"}
-					color={"primary"}
-					onClick={() =>
-					{
-						callLambdaFunction("addSigners", {url: props.contractUrl, signers: props.signers}).then(r => console.log(r));
-						props.setUrlStatus(2)
-					}}
-				>
-					Confirm
-				</Button>
-			</Grid>
-		</Grid>
 	);
 };
 
@@ -290,5 +224,134 @@ const ActionButtons = props =>
 		</Box>
 	);
 };
+
+const BackdropConfirm = props =>
+{
+	const classes = useStyles();
+	return(
+		<Backdrop className={classes.backdrop} open={props.openBackdrop} onClick={() => props.setOpenBackdrop(false)}>
+			<Paper style={{minWidth: "20vw", minHeight: "20vh"}}>
+				<Box m={4}>
+					<Grid
+						container
+						direction={"column"}
+						justify={"center"}
+						alignItems={"center"}
+						alignContent={"center"}
+						style={{height: "100%"}}
+						spacing={4}
+					>
+						<Grid item>
+							<Typography variant={"h6"} align={"center"}>
+								Are you sure? You won't be able to come back to this page.
+							</Typography>
+						</Grid>
+						<Grid item>
+							<BackdropButtons
+								web3={props.web3}
+								ethAccount={props.ethAccount}
+								signers={props.signers}
+								contractUrl={props.contractUrl}
+								setUrlStatus={props.setUrlStatus}
+								fileInformation={props.fileInformation}
+								deployedContract={props.deployedContract}
+								setDeployedContract={props.setDeployedContract}
+								setOpenBackdrop={props.setOpenBackdrop}
+							/>
+						</Grid>
+					</Grid>
+				</Box>
+			</Paper>
+		</Backdrop>
+	);
+};
+
+const BackdropButtons = props =>
+{
+	return(
+		<Grid
+			container
+			justify={"center"}
+			alignItems={"center"}
+			alignContent={"center"}
+			spacing={4}
+		>
+			<Grid item>
+				<Button
+					variant={"contained"}
+					color={"primary"}
+					onClick={() => props.setOpenBackdrop(false)}
+				>
+					Go Back
+				</Button>
+			</Grid>
+			<Grid item>
+				<Button
+					variant={"contained"}
+					color={"primary"}
+					onClick={() =>
+					{
+						callLambdaFunction("addSigners", {url: props.contractUrl, signers: props.signers}).then(r => console.log(r));
+						deployContract(props.web3, props.ethAccount).then(r =>
+						{
+							props.setDeployedContract(r);
+							submitNumberOfParties(props.ethAccount, props.deployedContract, props.signers.length);
+							hashContract(props.ethAccount, props.deployedContract, props.fileInformation);
+						});
+
+						props.setUrlStatus(2)
+					}}
+				>
+					Confirm
+				</Button>
+			</Grid>
+		</Grid>
+	);
+};
+
+const deployContract  = async (web3, ethAccount) =>
+{
+	const MPContract = require('../../../../contract_ABI/MultiplePartyContract.json');
+	const deployable = new web3.eth.Contract(MPContract.abi);
+
+	const gas = await deployable.deploy({ data: MPContract.bytecode }).estimateGas() + 500000;
+
+	return deployable.deploy({ data: MPContract.bytecode })
+	.send({ from: ethAccount, gas: gas })
+	.on('error', (error) => console.error(error))
+	.on('transactionHash', (transactionHash) => console.log('Transaction Hash:', transactionHash))
+	.on('receipt', (receipt) => console.log('Receipt', receipt));
+};
+
+const submitNumberOfParties = async (ethAccount, deployedContract, numberOfParties) =>
+{
+	try
+	{
+		return await deployedContract.methods.setNumberOfParties(numberOfParties)
+		.send({ from: ethAccount })
+		.on('receipt', (receipt) => console.log('Receipt', receipt));
+	}
+
+	catch (err)
+	{
+		console.log(err);
+	}
+};
+
+const hashContract = async (ethAccount, deployedContract, contractString) =>
+{
+	try
+	{
+		return await deployedContract.methods.hashContract(contractString)
+		.send({ from: ethAccount })
+		.on('receipt', (receipt) => console.log('Receipt', receipt));
+	}
+
+	catch (err)
+	{
+		console.log(err);
+	}
+};
+
 
 export default AddSignersView;
