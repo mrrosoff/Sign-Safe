@@ -296,10 +296,12 @@ const BackdropButtons = props =>
 						{
 							props.setDeployedContract(r);
 							submitNumberOfParties(props.ethAccount, props.deployedContract, props.signers.length);
-							hashContract(props.ethAccount, props.deployedContract, props.fileInformation);
-						});
+							hashContract(props.ethAccount, props.deployedContract, props.fileInformation).then(r =>
+							{
+								props.setUrlStatus(2)
+							});
 
-						props.setUrlStatus(2)
+						});
 					}}
 				>
 					Confirm
