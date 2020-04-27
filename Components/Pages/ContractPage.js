@@ -104,6 +104,7 @@ const ContractPage = props =>
 	{
 		if (!firstUpdate.current)
 		{
+			console.log(contractUrl, urlStatus, props.ethAccount);
 			callLambdaFunction("updateURLAccountStatus", {
 				url: contractUrl, urlStatus: urlStatus, ethAccount: props.ethAccount
 			})
