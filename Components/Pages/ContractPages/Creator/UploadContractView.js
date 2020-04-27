@@ -28,6 +28,7 @@ const UploadContractView = props =>
 					setHash={props.setHash}
 					IPFS={props.IPFS}
 					setUrlStatus={props.setUrlStatus}
+					setFileInformation={props.setFileInformation}
 				/>
 			</Grid>
 			<Grid item xs={12} md={7} align="center">
@@ -79,6 +80,8 @@ const ButtonsSection = props =>
 									props.setHash(fileHash);
 									props.setLoading(false);
 								})
+
+								props.setFileInformation(e.target.files[0]);
 							}}
 						/>
 					</Grid>
