@@ -317,42 +317,42 @@ const deployContract  = async (web3, ethAccount) =>
 
 	const gas = await deployable.deploy({ data: MultiplePartyContract.bytecode }).estimateGas() + 500000;
 
-	return deployable.deploy({ data: MultiplePartyContract.bytecode })
+	return deployable.deploy({ data: MultiplePartyContract.bytecode, arguments: [] })
 	.send({ from: ethAccount, gas: gas })
 	.on('error', (error) => console.error(error))
 	.on('transactionHash', (transactionHash) => console.log('Transaction Hash:', transactionHash))
 	.on('receipt', (receipt) => console.log('Receipt', receipt));
 };
 
-const submitNumberOfParties = async (ethAccount, deployedContract, numberOfParties) =>
-{
-	try
-	{
-		return await deployedContract.methods.setNumberOfParties(numberOfParties)
-		.send({ from: ethAccount })
-		.on('receipt', (receipt) => console.log('Receipt', receipt));
-	}
-
-	catch (err)
-	{
-		console.log(err);
-	}
-};
-
-const hashContract = async (ethAccount, deployedContract, contractString) =>
-{
-	try
-	{
-		return await deployedContract.methods.hashContract(contractString)
-		.send({ from: ethAccount })
-		.on('receipt', (receipt) => console.log('Receipt', receipt));
-	}
-
-	catch (err)
-	{
-		console.log(err);
-	}
-};
+// const submitNumberOfParties = async (ethAccount, deployedContract, numberOfParties) =>
+// {
+// 	try
+// 	{
+// 		return await deployedContract.methods.setNumberOfParties(numberOfParties)
+// 		.send({ from: ethAccount })
+// 		.on('receipt', (receipt) => console.log('Receipt', receipt));
+// 	}
+//
+// 	catch (err)
+// 	{
+// 		console.log(err);
+// 	}
+// };
+//
+// const hashContract = async (ethAccount, deployedContract, contractString) =>
+// {
+// 	try
+// 	{
+// 		return await deployedContract.methods.hashContract(contractString)
+// 		.send({ from: ethAccount })
+// 		.on('receipt', (receipt) => console.log('Receipt', receipt));
+// 	}
+//
+// 	catch (err)
+// 	{
+// 		console.log(err);
+// 	}
+// };
 
 
 export default AddSignersView;

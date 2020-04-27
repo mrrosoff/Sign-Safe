@@ -11,18 +11,22 @@ contract MultiplePartyContract is SignSafeContract{
     uint256 private numberOfSignatoriesAdded;
 
     modifier all_signatories_added(){
-        require(numberOfParties >= 2);
         require(numberOfParties == numberOfSignatoriesAdded);
         _;
     }
 
-    constructor () public{
+    constructor (string memory _contractText, address[] memory _signatoryAddresses) public{
         contract_owner = msg.sender;
         STATE = sign_safe_contract_state.SETUP;
         numberOfSignatures = 0;
-        numberOfSignatoriesAdded = 0;
-        numberOfParties = 0;
+        numberOfSignatoriesAdded = _signatoryAddresses.length;
+        numberOfParties = _signatoryAddresses.length;
         creation_date = now;
+        contractHash = uint(keccak256(abi.encodePacked(_contractText)));
+        contractUploaded = true;
+        for(uint i = 0; i < _signatoryAddresses.length; i++){
+            signatories[_signatoryAddresses[i]] = true;
+        }
     }
 
     function setNumberOfParties(uint _numParties) only_SETUP only_owner public {
