@@ -2,7 +2,7 @@
 
   # Directory of Built Files
 
-  publish = "dist/"
+  publish = "Dist/"
 
   # Production Build Command
 
@@ -23,7 +23,7 @@
 
   targetPort = 3000
 
-  publish = "dist/"
+  publish = "Dist/"
   autoLaunch = true
 
 [[redirects]]
