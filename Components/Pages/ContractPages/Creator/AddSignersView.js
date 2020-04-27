@@ -7,7 +7,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {callLambdaFunction} from "../../../../Hooks/getDatabase";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
-import MultiplePartyContract from "../../../../contract_ABI/MultiplePartyContract";
+import MultiplePartyContract from "../../../../Contracts/build/MultiplePartyContract";
 
 const useStyles = makeStyles((theme) => (
 	{
@@ -311,12 +311,11 @@ const BackdropButtons = props =>
 
 const deployContract  = async (web3, ethAccount) =>
 {
-	const MPContract = require('../../../../contract_ABI/MultiplePartyContract.json');
-	const deployable = new web3.eth.Contract(MPContract.abi);
+	const deployable = new web3.eth.Contract(MultiplePartyContract.abi);
 
-	const gas = await deployable.deploy({ data: MPContract.bytecode }).estimateGas() + 500000;
+	const gas = await deployable.deploy({ data: MultiplePartyContract.bytecode }).estimateGas() + 500000;
 
-	return deployable.deploy({ data: MPContract.bytecode })
+	return deployable.deploy({ data: MultiplePartyContract.bytecode })
 	.send({ from: ethAccount, gas: gas })
 	.on('error', (error) => console.error(error))
 	.on('transactionHash', (transactionHash) => console.log('Transaction Hash:', transactionHash))
