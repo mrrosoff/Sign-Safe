@@ -6,7 +6,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const outputDirectory = "dist";
 
 module.exports = {
-	entry: ['@babel/polyfill', './Client/index.js'],
+	entry: ['@babel/polyfill', './index.js'],
 	devServer: { port: 3000, open: false, hot: true, historyApiFallback: true },
 	module: {
 		rules: [
@@ -18,7 +18,7 @@ module.exports = {
 	},
 	plugins: [
 		new CleanWebpackPlugin(),
-		new HtmlWebpackPlugin({ template: "Client/Static/HTML/index.html", favicon: "Client/Static/HTML/favicon.ico"}),
+		new HtmlWebpackPlugin({ template: "Static/HTML/index.html", favicon: "Static/HTML/favicon.ico"}),
 		new webpack.HotModuleReplacementPlugin()
 	],
 	output: { filename: "bundle.js", path: path.join(__dirname, outputDirectory) },
