@@ -5,6 +5,7 @@ import {Skeleton} from "@material-ui/lab";
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 
 import {UploadButton} from "../../../Elements/Buttons";
+import DeployToBlockChain from "./DeployToBlockchain";
 
 const UploadContractView = props =>
 {
@@ -44,6 +45,7 @@ const UploadContractView = props =>
 
 const ButtonsSection = props =>
 {
+
 	return(
 		<Grid
 			container
@@ -80,13 +82,9 @@ const ButtonsSection = props =>
 								})
 							}}
 						/>
-						<Button
-							onClick={ ()=> deployContract(props.web3)}
-							variant={"contained"}
-							color={"primary"}
-						>
-							Deploy to Blockchain
-						</Button>
+						<DeployToBlockChain web3={props.web3} />
+
+
 					</Grid>
 					{props.loading ? <Grid item><CircularProgress/></Grid> : null}
 					{props.hash ? <Grid item>
@@ -119,46 +117,48 @@ const sendToIPFS = async (IPFS, file) =>
 	}
 };
 
-const deployContract = async (x) => {
-	console.log("we are here");
-	console.log(x);
-	const accounts = await x.eth.getAccounts();
-	console.log(accounts);
-	console.log((accounts[0]));
-	const MPContract = require('../../../../contract_ABI/MultiplePartyContract.json');
-	const deployable = new web3.eth.Contract(MPContract.abi);
+// const deployContract = async (x) => {
+// 	console.log(x);
+// 	const accounts = await x.eth.getAccounts();
+// 	console.log(accounts);
+// 	console.log((accounts[0]));
+// 	const MPContract = require('../../../../contract_ABI/MultiplePartyContract.json');
+// 	const deployable = new web3.eth.Contract(MPContract.abi);
+//
+//
+// 	const gas = await deployable.deploy({
+// 		data: MPContract.bytecode
+// 	}).estimateGas() + 500000;
+//
+// 	console.log("est gas is: ", gas);
+//
+// 	deployable.deploy({
+// 		data: MPContract.bytecode
+// 	}).send({
+// 		from: accounts[0],
+// 		gas: gas,
+// 	})
+// 		.on('error', (error) => {
+// 			console.log('we have an error')
+// 			console.log(error)
+// 		})
+// 		.on('transactionHash', (transactionHash) => {
+// 			console.log('Transaction Hash:')
+// 			console.log(transactionHash)
+// 		})
+// 		.on('receipt', (receipt) => {
+// 			// receipt will contain deployed contract address
+// 			console.log('Receipt')
+// 			console.log(receipt)
+// 		})
+// 		// .on('confirmation', (confirmationNumber, receipt) => {
+// 		// 	console.log('Confirmation')
+// 		// 	console.log(receipt)
+// 		// })
+//
+//
+// };
 
 
-	const gas = await deployable.deploy({
-		data: MPContract.bytecode
-	}).estimateGas() + 500000;
-
-	console.log("est gas is: ", gas);
-
-	deployable.deploy({
-		data: MPContract.bytecode
-	}).send({
-		from: accounts[0],
-		gas: gas,
-	})
-		.on('error', (error) => {
-			console.log('we have an error')
-			console.log(error)
-		})
-		.on('transactionHash', (transactionHash) => {
-			console.log('Transaction Hash:')
-			console.log(transactionHash)
-		})
-		.on('receipt', (receipt) => {
-			// receipt will contain deployed contract address
-			console.log('Receipt')
-			console.log(receipt)
-		})
-		.on('confirmation', (confirmationNumber, receipt) => {
-			console.log('Confirmation')
-			console.log(receipt)
-		})
-
-};
 
 export default UploadContractView;

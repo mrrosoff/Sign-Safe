@@ -7,7 +7,7 @@ export const testWeb3 = async () =>
     {
         if(window.web3)
         {
-            window.web3 = new Web3(web3.currentProvider);
+            window.web3 = new Web3(web3.currentProvider, null, {transactionConfirmationBlocks: 1});
             return web3;
         }
     }

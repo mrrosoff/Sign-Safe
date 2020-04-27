@@ -44,6 +44,7 @@
     "html-webpack-plugin": "^4.2.0",
     "node-sass": "^4.13.1",
     "react-router-dom": "^5.1.2",
+    "reactstrap": "^8.4.1",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.1.4",
     "url-loader": "^4.1.0",
