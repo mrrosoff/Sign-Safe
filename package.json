@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "An E-Contract Solution For A Modern World",
   "scripts": {
-    "file-copy": "cp Client/Static/HTML/FaviconImages/* dist",
+    "file-copy": "cp Static/HTML/FaviconImages/* Dist",
     "dev": "webpack-dev-server --mode development --devtool inline-source-map",
     "prod": "webpack --mode production && npm run file-copy",
     "start": "netlify dev"
