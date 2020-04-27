@@ -295,8 +295,8 @@ const BackdropButtons = props =>
 						deployContract(props.web3, props.ethAccount).then(r =>
 						{
 							props.setDeployedContract(r);
-							submitNumberOfParties(props.ethAccount, props.deployedContract, props.signers.length);
-							hashContract(props.ethAccount, props.deployedContract, props.fileInformation).then(r =>
+							submitNumberOfParties(props.ethAccount, r, props.signers.length);
+							hashContract(props.ethAccount, r, props.fileInformation).then(r =>
 							{
 								props.setUrlStatus(2)
 							});
