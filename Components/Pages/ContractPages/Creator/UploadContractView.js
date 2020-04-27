@@ -79,9 +79,11 @@ const ButtonsSection = props =>
 								{
 									props.setHash(fileHash);
 									props.setLoading(false);
-								})
+								});
 
-								props.setFileInformation(e.target.files[0]);
+								let reader = new FileReader();
+								reader.readAsText(e.target.files[0]);
+								reader.onload = () => props.setFileInformation();
 							}}
 						/>
 					</Grid>
