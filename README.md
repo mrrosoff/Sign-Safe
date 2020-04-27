@@ -30,3 +30,4 @@ The following resources are used in this project.
 
 * [React](https://reactjs.org/), [MongoDB](https://www.mongodb.com/)
 * [Material UI](https://material-ui.com/), [Notistack](https://github.com/iamhosseindhv/notistack)
+* [Ethereum](), [Truffle]()
