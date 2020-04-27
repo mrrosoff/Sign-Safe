@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {Backdrop, Box, Button, ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Grid, Paper, TextField, Typography} from "@material-ui/core";
+import {Backdrop, Box, Button, CircularProgress, ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Grid, Paper, TextField, Typography} from "@material-ui/core";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {callLambdaFunction} from "../../../../Hooks/getDatabase";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 import MultiplePartyContract from "../../../../Contracts/build/MultiplePartyContract";
 
@@ -268,6 +268,8 @@ const BackdropConfirm = props =>
 
 const BackdropButtons = props =>
 {
+	let [loading, setLoading] = useState(false);
+
 	return(
 		<Grid
 			container
@@ -292,67 +294,33 @@ const BackdropButtons = props =>
 					onClick={() =>
 					{
 						callLambdaFunction("addSigners", {url: props.contractUrl, signers: props.signers}).then(r => console.log(r));
-						deployContract(props.web3, props.ethAccount).then(r =>
+						deployContract(props.web3, props.ethAccount, props.fileInformation, props.signers.map(signer => signer.ethAccount)).then(r =>
 						{
+							setLoading(false);
 							props.setDeployedContract(r);
-							submitNumberOfParties(props.ethAccount, r, props.signers.length);
-							hashContract(props.ethAccount, r, props.fileInformation).then(r =>
-							{
-								props.setUrlStatus(2)
-							});
-
+							props.setUrlStatus(2)
 						});
 					}}
 				>
 					Confirm
 				</Button>
 			</Grid>
+			{loading ? <Grid item><CircularProgress/></Grid> : null}
 		</Grid>
 	);
 };
 
-const deployContract  = async (web3, ethAccount) =>
+const deployContract  = async (web3, ethAccount, fileInformation, addresses) =>
 {
 	const deployable = new web3.eth.Contract(MultiplePartyContract.abi);
 
 	const gas = await deployable.deploy({ data: MultiplePartyContract.bytecode }).estimateGas() + 500000;
 
-	return deployable.deploy({ data: MultiplePartyContract.bytecode, arguments: [] })
+	return deployable.deploy({ data: MultiplePartyContract.bytecode, arguments: [fileInformation, addresses] })
 	.send({ from: ethAccount, gas: gas })
 	.on('error', (error) => console.error(error))
 	.on('transactionHash', (transactionHash) => console.log('Transaction Hash:', transactionHash))
 	.on('receipt', (receipt) => console.log('Receipt', receipt));
 };
-
-// const submitNumberOfParties = async (ethAccount, deployedContract, numberOfParties) =>
-// {
-// 	try
-// 	{
-// 		return await deployedContract.methods.setNumberOfParties(numberOfParties)
-// 		.send({ from: ethAccount })
-// 		.on('receipt', (receipt) => console.log('Receipt', receipt));
-// 	}
-//
-// 	catch (err)
-// 	{
-// 		console.log(err);
-// 	}
-// };
-//
-// const hashContract = async (ethAccount, deployedContract, contractString) =>
-// {
-// 	try
-// 	{
-// 		return await deployedContract.methods.hashContract(contractString)
-// 		.send({ from: ethAccount })
-// 		.on('receipt', (receipt) => console.log('Receipt', receipt));
-// 	}
-//
-// 	catch (err)
-// 	{
-// 		console.log(err);
-// 	}
-// };
-
 
 export default AddSignersView;
