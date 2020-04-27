@@ -12,7 +12,7 @@ const updateURLAccountStatus = async (data) => {
 		.updateOne({ url: data.url, "urlStatus.ethAccount": data.ethAccount }, { $set: { "urlStatus.$.status": data.urlStatus } });
 	}
 
-catch (err)
+	catch (err)
 	{
 		console.log(err);
 	}
