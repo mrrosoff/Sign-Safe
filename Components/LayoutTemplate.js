@@ -21,7 +21,7 @@ const LayoutTemplate = props =>
 				alignContent={"center"}
 				style={{minHeight: "100vh"}}
 			>
-				<Paper elevation={3}>
+				<Paper elevation={4}>
 					<Box width={small ? "90vw" : "80vw"} style={{minHeight: "85vh", position: "relative"}}>
 						<Box pt={10}>
 							{props.innerComponent}
