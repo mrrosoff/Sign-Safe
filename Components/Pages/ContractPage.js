@@ -23,7 +23,7 @@ const ContractPage = props =>
 	let [hash, setHash] = useState(null);
 	let [fileInformation, setFileInformation] = useState();
 
-	let [deployedContract, setDeployedContract] = useState();
+	let [deployedContract, setDeployedContract] = useState(null);
 
 	const firstUpdate = useRef(true);
 

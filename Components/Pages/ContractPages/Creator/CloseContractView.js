@@ -30,6 +30,8 @@ const CloseContractView = props =>
 				<Button
 					variant={"contained"}
 					color={"primary"}
+
+					onClick={()=> closeContract(props.web3, props.ethAccount, props.deployedContract)}
 				>
 					Close Contract
 				</Button>
@@ -81,5 +83,22 @@ const SignerView = props =>
 		</Grid>
 	)
 };
+
+const closeContract = async (web3, ethAccount, deployedContract)=> {
+	console.log(deployedContract);
+	try {
+		await deployedContract.methods.contractReadyForSignatures()
+			.send({
+				from: ethAccount,
+			})
+			.on('receipt', (receipt) => {
+				// receipt will contain deployed contract address
+				console.log('Receipt')
+				console.log(receipt)});
+	} catch (err) {
+		console.log(err);
+	}
+
+}
 
 export default CloseContractView;
