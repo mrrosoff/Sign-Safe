@@ -50,7 +50,18 @@ const HomeContent = props =>
 							size={"large"}
 							color={"primary"}
 							variant={"contained"}
-							onClick={() => generateNewURLAndGo(props.ethAccount, history, setLoading)}
+							onClick={() =>
+							{
+								if(props.ethAccount)
+								{
+									generateNewURLAndGo(props.ethAccount, history, setLoading);
+								}
+
+								else
+								{
+									props.produceSnackBar("You must log in to continue");
+								}
+							}}
 						>
 							Create A New Contract
 						</Button>
