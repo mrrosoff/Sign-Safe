@@ -6,7 +6,7 @@ import {callLambdaFunction} from "../../Hooks/getDatabase";
 
 import ContractPageLoading from "./ContractPages/ContractPageLoading";
 import ContractPageCreator from "./ContractPages/Creator/ContractPageCreator";
-import ContractPageSigner from "./ContractPages/Signer/ContractPageSigner";
+import ContractSigner from "./ContractPages/Signer/ContractSigner";
 import ContractPageForbidden from "./ContractPages/ContractPageForbidden";
 
 const ContractPage = props =>
@@ -15,6 +15,7 @@ const ContractPage = props =>
 	let history = useHistory();
 
 	let [urlStatus, setUrlStatus] = useState(null);
+	let [contractOwner, setContractOwner] = useState(null);
 	let [isContractOwner, setIsContractOwner] = useState(null);
 	let [isSigner, setIsSigner] = useState(null);
 
@@ -49,6 +50,7 @@ const ContractPage = props =>
 						setSigners(r.data[0].signers);
 					}
 
+					setContractOwner(r.data[0].contractOwner);
 					setIsContractOwner(props.ethAccount === r.data[0].contractOwner);
 
 					let isSigner = false;
@@ -122,6 +124,7 @@ const ContractPage = props =>
 			contractUrl={contractUrl}
 			urlStatus={urlStatus}
 			setUrlStatus={setUrlStatus}
+			contractOwner={contractOwner}
 			isContractOwner={isContractOwner}
 			setIsContractOwner={setIsContractOwner}
 			isSigner={isSigner}
@@ -154,7 +157,7 @@ const Layout = props =>
 	{
 		if (props.isSigner)
 		{
-			pageType = <ContractPageSigner {...props}/>;
+			pageType = <ContractSigner {...props}/>;
 		}
 
 		else

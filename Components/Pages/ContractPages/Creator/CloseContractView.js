@@ -50,7 +50,7 @@ const CloseContractSignerStateView = props =>
 	for (let i = 0; i < props.signers.length; i++)
 	{
 		signersTable.push(
-			<Grid item align={"center"} key={props.signers[i].name}>
+			<Grid item align={"center"} key={props.signers[i].ethAccount}>
 				<Card>
 					<SignerView signer={props.signers[i]}/>
 				</Card>
@@ -69,16 +69,17 @@ const SignerView = props =>
 			justify={"center"}
 			alignContent={"center"}
 			alignItems={"center"}
+			style={{padding: '10px'}}
 			spacing={2}
 		>
 			<Grid item>
 				<Typography variant={"h6"}>{props.signer.name}</Typography>
 			</Grid>
 			<Grid item>
-				<Typography variant={"subtitle1"}>{props.signer.ethAccount}</Typography>
+				{props.signer.signed ? <DoneIcon /> : <LoopIcon />}
 			</Grid>
 			<Grid item>
-				{props.signer.signed ? <DoneIcon /> : <LoopIcon />}
+				<Typography variant={"subtitle1"}>{props.signer.ethAccount}</Typography>
 			</Grid>
 		</Grid>
 	)
