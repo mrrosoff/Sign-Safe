@@ -6,7 +6,7 @@ contract SignSafeContract{
     uint256 public creation_date;
     uint256 public contract_completed_date;
     uint256 public contract_cancelled_date;
-    uint internal contractHash;
+    string internal contractHash;
     bool internal contractUploaded = false;
 
 
@@ -61,19 +61,14 @@ contract SignSafeContract{
     }
 
 
-
+    event contractCreated(string contractHash, uint timestamp);
     event contractComplete(string message, bool complete, uint timestamp);
     event signature(address indexed signatory, bool has_signed, uint timestamp);
     event contractCanceled(string message, bool canceled, uint timestamp);
 
-    function hashContract(string memory kontract) only_owner only_SETUP public {
-        contractHash = uint(keccak256(abi.encodePacked(kontract)));
-        contractUploaded = true;
-    }
 
     function confirmContract(string memory kontract) only_contract_uploaded only_PENDING only_signatories public returns(bool) {
-        uint hash = uint(keccak256(abi.encodePacked(kontract)));
-        if(hash == contractHash){
+        if(keccak256(abi.encodePacked((kontract))) == keccak256(abi.encodePacked((contractHash)))){
             hashMatch[msg.sender] = true;
             return true;
         }
@@ -83,7 +78,7 @@ contract SignSafeContract{
         }
     }
 
-    function getContractHash() only_contract_uploaded public returns(uint) {
+    function getContractHash() only_contract_uploaded public returns(string memory) {
         return contractHash;
     }
 
