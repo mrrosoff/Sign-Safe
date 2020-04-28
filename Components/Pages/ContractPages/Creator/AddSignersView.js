@@ -293,6 +293,7 @@ const BackdropButtons = props =>
 					color={"primary"}
 					onClick={() =>
 					{
+						setLoading(true);
 						callLambdaFunction("addSigners", {url: props.contractUrl, signers: props.signers}).then(r => console.log(r));
 						deployContract(props.web3, props.ethAccount, props.fileInformation, props.signers.map(signer => signer.ethAccount)).then(r =>
 						{
