@@ -247,6 +247,11 @@ const BackdropConfirm = props =>
 							</Typography>
 						</Grid>
 						<Grid item>
+							<Typography variant={"body1"} align={"center"}>
+								Clicking confirm will save your contract to the Ethereum blockchain. Your Ethereum wallet provider will ask for payment.
+							</Typography>
+						</Grid>
+						<Grid item>
 							<BackdropButtons
 								web3={props.web3}
 								ethAccount={props.ethAccount}
