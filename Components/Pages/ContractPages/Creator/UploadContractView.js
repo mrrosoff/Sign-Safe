@@ -3,6 +3,7 @@ import React, {useState} from "react";
 import {Box, Button, CircularProgress, Grid, Typography} from "@material-ui/core";
 import {Skeleton} from "@material-ui/lab";
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import CryptoJS from 'crypto-js';
 
 import {UploadButton} from "../../../Elements/Buttons";
 
@@ -47,6 +48,7 @@ const ButtonsSection = props =>
 {
 
 	return(
+
 		<Grid
 			container
 			direction={"column"}
@@ -82,8 +84,15 @@ const ButtonsSection = props =>
 								});
 
 								let reader = new FileReader();
-								reader.readAsText(e.target.files[0]);
-								reader.onload = (e) => props.setFileInformation(e.target.result);
+
+								reader.onload = function (event) {
+									let file = CryptoJS.lib.WordArray.create(event.target.result);
+									let hash = CryptoJS.SHA256(file);
+									//console.log('hash: ' + hash);
+									props.setFileInformation(hash);
+								};
+								reader.readAsArrayBuffer(e.target.files[0]);
+
 							}}
 						/>
 					</Grid>
