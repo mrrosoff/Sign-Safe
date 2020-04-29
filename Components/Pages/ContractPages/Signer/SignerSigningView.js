@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 
 import {Button, Grid, Typography} from "@material-ui/core";
 import {callLambdaFunction} from "../../../../Hooks/getDatabase";
@@ -7,6 +7,8 @@ import CryptoJS from "crypto-js";
 
 const SignerSigningView = props =>
 {
+	let [disableButton, setDisableButton] = useState(true);
+
 	return(
 		<Grid
 			container
@@ -26,15 +28,80 @@ const SignerSigningView = props =>
 					spacing={4}
 				>
 					<Grid item>
-						<SignSection {...props}/>
+						<SignSection disableButton={disableButton} setDisableButton={setDisableButton} {...props}/>
 					</Grid>
 					<Grid item>
-						<VerifyContractSection {...props}/>
+						<VerifyContractSection disableButton={disableButton} setDisableButton={setDisableButton} {...props}/>
 					</Grid>
 				</Grid>
 			</Grid>
 			<Grid item xs={12} md={7} align="center">
 				<img width={"90%"} height={"auto"} src={props.image} alt={"Document"}/> :
+			</Grid>
+		</Grid>
+	);
+};
+
+const getDocHash = async (web3, ethAccount, deployedContract)=> {
+	console.log(deployedContract);
+	try {
+		return await deployedContract.methods.getContractHash()
+			.call().then(function(documentHash) {
+				return documentHash;
+			});
+
+	} catch (err) {
+		console.log(err);
+	}
+}
+
+const VerifyContractSection = props =>
+{
+	return (
+		<Grid
+			container
+			justify={"center"}
+			alignItems={"center"}
+			alignContent={"center"}
+			style={{height: "100%", width: "80%"}}
+			spacing={5}
+		>
+
+			<Grid item>
+				<UploadButton
+					text={"Verify Document Match"}
+					accept={".png, .jpg, .pdf"}
+					onClick={(e) =>
+					{
+						var hash;
+						let reader = new FileReader();
+						reader.onload = function (event) {
+							let file = CryptoJS.lib.WordArray.create(event.target.result);
+							hash = CryptoJS.SHA256(file);
+						};
+						reader.readAsArrayBuffer(e.target.files[0]);
+						console.log("Uploaded doc hash:");
+						console.log(props.fileInformation);
+
+						getDocHash(props.web3, props.ethAccount, props.deployedContract).then(
+							function(r){
+								console.log("Blockchain doc hash:")
+								console.log(r)
+
+								if( r === hash.toString() ){
+									// check mark
+									console.log("match")
+									props.setDisableButton(false);
+								}
+								else{
+									// red circle with line
+									console.log("no match")
+									props.setDisableButton(true);
+								}
+							}
+						);
+					}}
+				/>
 			</Grid>
 		</Grid>
 	);
@@ -56,12 +123,13 @@ const SignSection = props =>
 			</Grid>
 			<Grid item>
 				<Button
+					disabled={ props.disableButton }
 					variant={"contained"}
 					color={"primary"}
 					onClick={() =>
 					{
 						callLambdaFunction("updateSignerSignStatus", {url: props.contractUrl, ethAccount: props.ethAccount, signed: true})
-						.then(r => console.log(r));
+							.then(r => console.log(r));
 						props.setUrlStatus(1);
 					}}
 				>
@@ -71,72 +139,5 @@ const SignSection = props =>
 		</Grid>
 	);
 };
-
-const VerifyContractSection = props =>
-{
-
-	return (
-		<Grid
-			container
-			justify={"center"}
-			alignItems={"center"}
-			alignContent={"center"}
-			style={{height: "100%", width: "80%"}}
-			spacing={5}
-		>
-
-			<Grid item>
-				<UploadButton
-					text={"Select Contract"}
-					accept={".png, .jpg, .pdf"}
-					onClick={(e) =>
-						{
-							let reader = new FileReader();
-							reader.onload = function (event) {
-								let file = CryptoJS.lib.WordArray.create(event.target.result);
-								let hash = CryptoJS.SHA256(file);
-								props.setFileInformation(hash.toString());
-							};
-							reader.readAsArrayBuffer(e.target.files[0]);
-							console.log("Uploaded doc hash:");
-							console.log(props.fileInformation);
-
-							getDocHash(props.web3, props.ethAccount, props.deployedContract).then(
-								function(r){
-									console.log("Blockchain doc hash:")
-									console.log(r)
-
-									if( r === props.fileInformation.toString() )
-									{
-										// check mark
-										console.log("match")
-									}
-									else{
-										// red circle with line
-										console.log("no match")
-									}
-								}
-							);
-						}
-					}
-				/>
-			</Grid>
-		</Grid>
-	);
-};
-
-const getDocHash = async (web3, ethAccount, deployedContract)=> {
-	console.log(deployedContract);
-	try {
-		 return await deployedContract.methods.getContractHash()
-			.call().then(function(documentHash) {
-				 return documentHash;
-		});
-
-	} catch (err) {
-		console.log(err);
-	}
-
-}
 
 export default SignerSigningView;
