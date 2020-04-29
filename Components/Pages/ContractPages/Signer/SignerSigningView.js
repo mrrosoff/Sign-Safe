@@ -88,7 +88,7 @@ const VerifyContractSection = props =>
 			<Grid item>
 				<UploadButton
 					text={"Select Contract"}
-					accept={".png, .jpg"}
+					accept={".png, .jpg, .pdf"}
 					onClick={(e) =>
 						{
 							let reader = new FileReader();
