@@ -2,6 +2,8 @@ import React from "react";
 
 import {Button, Grid, Typography} from "@material-ui/core";
 import {callLambdaFunction} from "../../../../Hooks/getDatabase";
+import {UploadButton} from "../../../Elements/Buttons";
+import CryptoJS from "crypto-js";
 
 const SignerSigningView = props =>
 {
@@ -27,7 +29,7 @@ const SignerSigningView = props =>
 						<SignSection {...props}/>
 					</Grid>
 					<Grid item>
-						<VerifyContractSection/>
+						<VerifyContractSection {...props}/>
 					</Grid>
 				</Grid>
 			</Grid>
@@ -72,7 +74,7 @@ const SignSection = props =>
 
 const VerifyContractSection = props =>
 {
-	// Tom, add the Verification functionality here.
+
 	return (
 		<Grid
 			container
@@ -82,20 +84,59 @@ const VerifyContractSection = props =>
 			style={{height: "100%", width: "80%"}}
 			spacing={5}
 		>
-			<Grid item>
-				<Button
-					variant={"contained"}
-					color={"primary"}
-					onClick={() =>
-					{
 
-					}}
-				>
-					Verify Contract Contents
-				</Button>
+			<Grid item>
+				<UploadButton
+					text={"Select Contract"}
+					accept={".png, .jpg"}
+					onClick={(e) =>
+						{
+							let reader = new FileReader();
+							reader.onload = function (event) {
+								let file = CryptoJS.lib.WordArray.create(event.target.result);
+								let hash = CryptoJS.SHA256(file);
+								props.setFileInformation(hash.toString());
+							};
+							reader.readAsArrayBuffer(e.target.files[0]);
+							console.log("Uploaded doc hash:");
+							console.log(props.fileInformation);
+
+							getDocHash(props.web3, props.ethAccount, props.deployedContract).then(
+								function(r){
+									console.log("Blockchain doc hash:")
+									console.log(r)
+
+									if( r === props.fileInformation.toString() )
+									{
+										// check mark
+										console.log("match")
+									}
+									else{
+										// red circle with line
+										console.log("no match")
+									}
+								}
+							);
+						}
+					}
+				/>
 			</Grid>
 		</Grid>
 	);
 };
+
+const getDocHash = async (web3, ethAccount, deployedContract)=> {
+	console.log(deployedContract);
+	try {
+		 return await deployedContract.methods.getContractHash()
+			.call().then(function(documentHash) {
+				 return documentHash;
+		});
+
+	} catch (err) {
+		console.log(err);
+	}
+
+}
 
 export default SignerSigningView;
