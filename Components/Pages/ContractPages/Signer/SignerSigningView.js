@@ -3,6 +3,7 @@ import React from "react";
 import {Button, Grid, Typography} from "@material-ui/core";
 import {callLambdaFunction} from "../../../../Hooks/getDatabase";
 import {UploadButton} from "../../../Elements/Buttons";
+
 import CryptoJS from "crypto-js";
 
 const SignerSigningView = props =>
