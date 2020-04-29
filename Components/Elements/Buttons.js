@@ -8,7 +8,7 @@ export const UploadButton = props =>
 		<Button
 			color={"primary"}
 			variant={"contained"}
-			component={"label"}
+			component={"label"}{...props}
 		>
 			{props.text}
 			<input
