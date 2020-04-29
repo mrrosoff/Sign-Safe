@@ -23,7 +23,12 @@ const SignerSigningView = props =>
 					alignContent={"center"}
 					spacing={4}
 				>
-					<SignSection {...props}/>
+					<Grid item>
+						<SignSection {...props}/>
+					</Grid>
+					<Grid item>
+						<VerifyContractSection/>
+					</Grid>
 				</Grid>
 			</Grid>
 			<Grid item xs={12} md={7} align="center">
@@ -59,6 +64,34 @@ const SignSection = props =>
 					}}
 				>
 					Sign Contract
+				</Button>
+			</Grid>
+		</Grid>
+	);
+};
+
+const VerifyContractSection = props =>
+{
+	// Tom, add the Verification functionality here.
+	return (
+		<Grid
+			container
+			justify={"center"}
+			alignItems={"center"}
+			alignContent={"center"}
+			style={{height: "100%", width: "80%"}}
+			spacing={5}
+		>
+			<Grid item>
+				<Button
+					variant={"contained"}
+					color={"primary"}
+					onClick={() =>
+					{
+
+					}}
+				>
+					Verify Contract Contents
 				</Button>
 			</Grid>
 		</Grid>
