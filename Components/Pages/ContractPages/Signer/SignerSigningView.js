@@ -71,8 +71,7 @@ const VerifyContractSection = props =>
 				<UploadButton
 					text={"Verify Document Match"}
 					accept={".png, .jpg, .pdf"}
-					onClick={(e) =>
-					{
+					onClick={(e) => {
 						var hash;
 						let reader = new FileReader();
 						reader.onload = function (event) {
@@ -89,12 +88,10 @@ const VerifyContractSection = props =>
 								console.log(r)
 
 								if( r === hash.toString() ){
-									// check mark
 									console.log("match")
 									props.setDisableButton(false);
 								}
 								else{
-									// red circle with line
 									console.log("no match")
 									props.setDisableButton(true);
 								}
