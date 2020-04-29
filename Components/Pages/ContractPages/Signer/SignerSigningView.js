@@ -102,8 +102,7 @@ const VerifyContractSection = props =>
 						console.log("Uploaded doc hash:");
 						console.log(props.fileInformation);
 
-						getDocHash(props.web3, props.ethAccount, props.deployedContract).then(r =>
-							{
+						getDocHash(props.web3, props.ethAccount, props.deployedContract).then(r => {
 								console.log("Blockchain doc hash:")
 								console.log(r)
 
@@ -118,8 +117,7 @@ const VerifyContractSection = props =>
 								}
 							}
 						);
-					}
-					}
+					}}
 				/>
 			</Grid>
 		</Grid>
