@@ -91,34 +91,34 @@ const VerifyContractSection = props =>
 					text={"Select Contract"}
 					accept={".png, .jpg, .pdf"}
 					onClick={(e) =>
-						{
-							let reader = new FileReader();
-							reader.onload = function (event) {
-								let file = CryptoJS.lib.WordArray.create(event.target.result);
-								let hash = CryptoJS.SHA256(file);
-								props.setFileInformation(hash.toString());
-							};
-							reader.readAsArrayBuffer(e.target.files[0]);
-							console.log("Uploaded doc hash:");
-							console.log(props.fileInformation);
+					{
+						let reader = new FileReader();
+						reader.onload = function (event) {
+							let file = CryptoJS.lib.WordArray.create(event.target.result);
+							let hash = CryptoJS.SHA256(file);
+							props.setFileInformation(hash.toString());
+						};
+						reader.readAsArrayBuffer(e.target.files[0]);
+						console.log("Uploaded doc hash:");
+						console.log(props.fileInformation);
 
-							getDocHash(props.web3, props.ethAccount, props.deployedContract).then(
-								function(r){
-									console.log("Blockchain doc hash:")
-									console.log(r)
+						getDocHash(props.web3, props.ethAccount, props.deployedContract).then(r =>
+							{
+								console.log("Blockchain doc hash:")
+								console.log(r)
 
-									if( r === props.fileInformation.toString() )
-									{
-										// check mark
-										console.log("match")
-									}
-									else{
-										// red circle with line
-										console.log("no match")
-									}
+								if( r === props.fileInformation.toString() )
+								{
+									// check mark
+									console.log("match")
 								}
-							);
-						}
+								else{
+									// red circle with line
+									console.log("no match")
+								}
+							}
+						);
+					}
 					}
 				/>
 			</Grid>
@@ -126,18 +126,17 @@ const VerifyContractSection = props =>
 	);
 };
 
-const getDocHash = async (web3, ethAccount, deployedContract)=> {
-	console.log(deployedContract);
-	try {
-		 return await deployedContract.methods.getContractHash()
-			.call().then(function(documentHash) {
-				 return documentHash;
-		});
+const getDocHash = async (web3, ethAccount, deployedContract) => {
 
-	} catch (err) {
-		console.log(err);
+	try
+	{
+		return await deployedContract.methods.getContractHash().call().then(documentHash => documentHash);
 	}
 
-}
+	catch (err)
+	{
+		console.log(err);
+	}
+};
 
 export default SignerSigningView;
