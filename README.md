@@ -1,4 +1,7 @@
 # Sign Safe
+https://docs.google.com/document/d/1NMEDvyeMeL0vrld0iNPopdqHAaNpXt4-BOnHLMOX5y4/edit
+
+https://www.overleaf.com/project/5e9f0ff446ac4d00017a1051
 
 ### An E-Contract Solution For A Modern World
 
