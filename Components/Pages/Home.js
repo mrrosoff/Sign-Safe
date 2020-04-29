@@ -10,7 +10,7 @@ const Home = props =>
 {
 	return(
 		<Box m={4}>
-			<HomeContent ethAccount={props.ethAccount} history={props.history}/>
+			<HomeContent ethAccount={props.ethAccount} history={props.history} produceSnackBar={props.produceSnackBar}/>
 		</Box>
 	);
 };
@@ -59,7 +59,7 @@ const HomeContent = props =>
 
 								else
 								{
-									props.produceSnackBar("You must log in to continue");
+									props.produceSnackBar("You must log in to continue.");
 								}
 							}}
 						>

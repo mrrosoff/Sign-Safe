@@ -2,9 +2,12 @@ import React, {useState} from "react";
 
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import {Backdrop, Box, Button, CircularProgress, ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Grid, Paper, TextField, Typography} from "@material-ui/core";
+import withStyles from "@material-ui/core/styles/withStyles";
+import {Backdrop, Box, Button, CircularProgress, ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Grid, IconButton, Paper, TextField, Typography} from "@material-ui/core";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+
 import {callLambdaFunction} from "../../../../Hooks/getDatabase";
 
 import MultiplePartyContract from "../../../../Contracts/build/MultiplePartyContract";
@@ -18,6 +21,15 @@ const useStyles = makeStyles((theme) => (
 			},
 	}
 ));
+
+const NoHoverButton = withStyles({
+	root: {
+		'&:hover': {
+			backgroundColor: '#FFFFFF',
+		}
+	}
+})(IconButton);
+
 
 const AddSignersView = props =>
 {
@@ -60,7 +72,12 @@ const AddSignersView = props =>
 						/>
 					</Grid>
 					<Grid item align={"center"}>
-						<ActionButtons addSigner={addSigner} setOpenBackDrop={setOpenBackdrop} invalidSigners={invalidSigners}/>
+						<ActionButtons
+							addSigner={addSigner}
+							setOpenBackDrop={setOpenBackdrop}
+							invalidSigners={invalidSigners}
+							signers={props.signers}
+						/>
 					</Grid>
 				</Grid>
 			</Box>
@@ -86,10 +103,13 @@ const SignersTable = props =>
 
 	return(
 		props.signers.map((signer, i) => {
+
 			let setName = (name) => { let copy = [...props.signers]; copy[i].name = name; props.setSigners(copy); };
 			let setEmail = (email) => { let copy = [...props.signers]; copy[i].email = email; props.setSigners(copy); };
 			let setEthAccount = (ethAccount) => { let copy = [...props.signers]; copy[i].ethAccount = ethAccount; props.setSigners(copy); };
 			let setInvalidSigner = (valid) => { let copy = [...props.invalidSigners]; copy[i] = valid; props.setInvalidSigners(copy); };
+			let removeSigner = (i) => { let copy = [...props.signers]; copy.splice(i); props.setSigners(copy); };
+
 			let title = signer.name ? signer.name : "Signer " + (i + 1);
 
 			return(
@@ -101,7 +121,19 @@ const SignersTable = props =>
 					onChange={() => props.handleChange('panel' + (i + 1))}
 				>
 					<ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-						<Typography>{title}</Typography>
+						<Grid
+							container
+							alignItems={"center"}
+						>
+							<Grid item>
+								<Typography>{title}</Typography>
+							</Grid>
+							<Grid item style={{marginLeft: 'auto'}}>
+								<NoHoverButton disableRipple style={{paddingTop: '0px', paddingBottom: '0px'}} onClick={() => removeSigner(i)}>
+									<HighlightOffIcon/>
+								</NoHoverButton>
+							</Grid>
+						</Grid>
 					</ExpansionPanelSummary>
 					<ExpansionPanelDetails>
 						<SignerLayout
@@ -151,7 +183,6 @@ const NameField = props =>
 {
 	return(
 		<TextField
-			variant={"filled"}
 			label={"Name"}
 			value={props.name}
 			onChange={(e) => props.setName(e.target.value)}
@@ -163,7 +194,6 @@ const EmailField = props =>
 {
 	return(
 		<TextField
-			variant={"filled"}
 			label={"Email"}
 			value={props.email}
 			onChange={(e) => props.setEmail(e.target.value)}
@@ -176,7 +206,6 @@ const EthAddrField = props =>
 	return(
 		<TextField
 			required
-			variant={"filled"}
 			label={"Ethereum Address"}
 			error={props.invalidSigner}
 			value={props.ethAccount}
@@ -207,7 +236,7 @@ const ActionButtons = props =>
 						color={"primary"}
 						onClick={() => props.addSigner()}
 					>
-						Add Additional Signer
+						{props.signers.length === 0 ? 'Add A Signer' : 'Add Additional Signer'}
 					</Button>
 				</Grid>
 				<Grid item>
