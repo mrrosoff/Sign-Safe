@@ -129,7 +129,7 @@ const SignersTable = props =>
 								<Typography>{title}</Typography>
 							</Grid>
 							<Grid item style={{marginLeft: 'auto'}}>
-								<NoHoverButton disableRipple style={{paddingTop: '0px', paddingBottom: '0px'}} onClick={() => removeSigner(i)}>
+								<NoHoverButton disableRipple style={{paddingTop: '0px', paddingBottom: '0px'}} onClick={() => removeSigner(i, 1)}>
 									<HighlightOffIcon/>
 								</NoHoverButton>
 							</Grid>
