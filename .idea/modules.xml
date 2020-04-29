@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/blockchain-document-dapp.iml" filepath="$PROJECT_DIR$/.idea/blockchain-document-dapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/sign-safe.iml" filepath="$PROJECT_DIR$/.idea/sign-safe.iml" />
     </modules>
   </component>
 </project>

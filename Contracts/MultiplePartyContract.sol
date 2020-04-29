@@ -17,16 +17,17 @@ contract MultiplePartyContract is SignSafeContract{
 
     constructor (string memory _contractText, address[] memory _signatoryAddresses) public{
         contract_owner = msg.sender;
-        STATE = sign_safe_contract_state.SETUP;
+        STATE = sign_safe_contract_state.PENDING;
         numberOfSignatures = 0;
         numberOfSignatoriesAdded = _signatoryAddresses.length;
         numberOfParties = _signatoryAddresses.length;
         creation_date = now;
-        contractHash = uint(keccak256(abi.encodePacked(_contractText)));
+        contractHash = _contractText;
         contractUploaded = true;
         for(uint i = 0; i < _signatoryAddresses.length; i++){
             signatories[_signatoryAddresses[i]] = true;
         }
+        emit contractCreated(contractHash, creation_date);
     }
 
     function setNumberOfParties(uint _numParties) only_SETUP only_owner public {
