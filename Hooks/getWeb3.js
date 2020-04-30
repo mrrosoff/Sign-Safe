@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import UniLogin from '@unilogin/provider';
+import Onboard from 'bnc-onboard'
 
 export const testWeb3 = async () =>
 {
@@ -19,22 +19,26 @@ export const testWeb3 = async () =>
 };
 
 
-export const getWeb3 = async () =>
+export const getWeb3 = async (setEthAccount) =>
 {
-    const unilogin = UniLogin.createPicker(window.ethereum);
-    const web3 = new Web3(unilogin);
-    web3.currentProvider.enable();
+    let web3 = null;
+
+    const onboard = Onboard(
+        {
+            dappId: "d8557b0d-3b65-4826-b336-d502f90f1b6f",
+            networkId: 4,
+            subscriptions:
+                {
+                    address: address => setEthAccount(address.toLowerCase()),
+                    wallet: wallet => web3 = new Web3(wallet.provider)
+                }
+        }
+    );
+
+    await onboard.walletSelect();
+    await onboard.walletCheck();
+
     return web3;
 };
 
-export const loadWeb3AccountListener = (callback) =>
-{
-    if (window.ethereum)
-    {
-        window.ethereum.on('accountsChanged', function(accounts)
-        {
-            callback(accounts[0].toLowerCase())
-        });
-    }
-};
 

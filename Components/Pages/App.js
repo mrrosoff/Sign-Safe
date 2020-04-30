@@ -6,7 +6,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 import { SnackbarProvider, useSnackbar } from 'notistack';
 
-import {loadWeb3AccountListener, testWeb3} from "../../Hooks/getWeb3";
+import {testWeb3} from "../../Hooks/getWeb3";
 
 import Router from "../Router";
 import {getIPFS} from "../../Hooks/getIPFS";
@@ -30,7 +30,6 @@ const LoadApp = props => {
                     if(e.length !== 0)
                     {
                         setEthAccount(e[0].toLowerCase());
-                        loadWeb3AccountListener(setEthAccount);
                     }
                 });
             }
