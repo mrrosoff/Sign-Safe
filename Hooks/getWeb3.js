@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import Onboard from 'bnc-onboard'
+import UniLogin from '@unilogin/provider';
 
 export const testWeb3 = async () =>
 {
@@ -21,19 +21,8 @@ export const testWeb3 = async () =>
 
 export const getWeb3 = async () =>
 {
-    let web3 = null;
-
-    const onboard = Onboard(
-        {
-            dappId: "d8557b0d-3b65-4826-b336-d502f90f1b6f",
-            networkId: 4,
-            subscriptions: { wallet: wallet => web3 = new Web3(wallet.provider) }
-        }
-    );
-
-    await onboard.walletSelect();
-    await onboard.walletCheck();
-
+    let web3 = new Web3(UniLogin.createPicker(window.ethereum));
+    web3.currentProvider.enable();
     return web3;
 };
 
