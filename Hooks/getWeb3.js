@@ -40,7 +40,8 @@ export const getWeb3 = async () =>
         {
             const torus = new Torus({buttonPosition: "top-right"});
             await torus.init({showTorusButton: true, enableLogging: true});
-            await torus.login();
+            await torus.ethereum.enable();
+            console.log("Torus Login Complete");
             window.web3 = new Web3(torus.provider);
             return web3;
         }
