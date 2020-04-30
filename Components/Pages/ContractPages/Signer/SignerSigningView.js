@@ -4,6 +4,7 @@ import {Button, Grid, Typography} from "@material-ui/core";
 import {callLambdaFunction} from "../../../../Hooks/getDatabase";
 import {UploadButton} from "../../../Elements/Buttons";
 import CryptoJS from "crypto-js";
+import MultiplePartyContract from "../../../../Contracts/build/MultiplePartyContract.json";
 
 const SignerSigningView = props =>
 {
@@ -55,6 +56,21 @@ const getDocHash = async (web3, ethAccount, deployedContract)=> {
 	}
 }
 
+const signContract = async (web3, ethAccount, deployedContract)=> {
+	console.log(deployedContract);
+	// const deployable = new web3.eth.Contract(MultiplePartyContract.abi);
+	// const gas = await deployable.deploy({ data: MultiplePartyContract.bytecode, arguments: [fileInformation, addresses] }).estimateGas() + 500000;
+	try {
+		return await deployedContract.methods.sign()
+			.send({ from: ethAccount, gas: 5000000 })
+			.on('error', (error) => console.error(error))
+			.on('transactionHash', (transactionHash) => console.log('Transaction Hash:', transactionHash))
+			.on('receipt', (receipt) => console.log('Receipt', receipt));
+	} catch (err) {
+		console.log(err);
+	}
+}
+
 const VerifyContractSection = props =>
 {
 	return (
@@ -88,11 +104,11 @@ const VerifyContractSection = props =>
 								console.log(r)
 
 								if( r === hash.toString() ){
-									console.log("match")
+									props.produceSnackBar("Document hashes match!", "success");
 									props.setDisableButton(false);
 								}
 								else{
-									console.log("no match")
+									props.produceSnackBar("Document hashes DO NOT match!");
 									props.setDisableButton(true);
 								}
 							}
@@ -126,7 +142,13 @@ const SignSection = props =>
 					onClick={() =>
 					{
 						callLambdaFunction("updateSignerSignStatus", {url: props.contractUrl, ethAccount: props.ethAccount, signed: true})
-							.then(r => console.log(r));
+							.then(r => console.log(r)
+							);
+
+						signContract(props.web3, props.ethAccount, props.deployedContract).then(
+							r => console.log(r)
+						);
+
 						props.setUrlStatus(1);
 					}}
 				>
