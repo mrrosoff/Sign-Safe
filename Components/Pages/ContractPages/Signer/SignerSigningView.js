@@ -118,10 +118,12 @@ const SignSection = props =>
 						callLambdaFunction("updateSignerSignStatus", {url: props.contractUrl, ethAccount: props.ethAccount, signed: true})
 						.then(r => console.log(r));
 
-						signContract(props.ethAccount, props.contract)
-						.then(r => console.log(r));
-
-						props.setUrlStatus(1);
+						signContract(props.ethAccount, props.contract, props.notify)
+						.then(r =>
+						{
+							console.log(r);
+							props.setUrlStatus(1);
+						});
 					}}
 				>
 					Sign Contract
@@ -144,14 +146,14 @@ const getDocHash = async (contract) =>
 	}
 };
 
-const signContract = async (ethAccount, contract) =>
+const signContract = async (ethAccount, contract, notify) =>
 {
 	try
 	{
 		return await contract.methods.sign()
 		.send({ from: ethAccount, gas: 5000000 })
 		.on('error', error => console.error(error))
-		.on('transactionHash', transactionHash => console.log('Transaction Hash:', transactionHash))
+		.on('transactionHash', transactionHash => { console.log('Transaction Hash:', transactionHash); notify.hash(transactionHash); })
 		.on('receipt', receipt => console.log('Receipt', receipt));
 	}
 

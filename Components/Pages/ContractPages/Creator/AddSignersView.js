@@ -358,14 +358,14 @@ const BackdropButtons = props =>
 	);
 };
 
-const deployContract  = async (web3, ethAccount, contractHash, addresses, notifyInstance) =>
+const deployContract  = async (web3, ethAccount, contractHash, addresses, notify) =>
 {
 	const contract = new web3.eth.Contract(MultiplePartyContract.abi);
 	const gas = await contract.deploy({ data: MultiplePartyContract.bytecode, arguments: [contractHash, addresses] }).estimateGas() + 500000;
 	return contract.deploy({ data: MultiplePartyContract.bytecode, arguments: [contractHash, addresses] })
 	.send({ from: ethAccount, gas: gas })
 	.on('error', (error) => console.error(error))
-	.on('transactionHash', (transactionHash) => { console.log('Transaction Hash:', transactionHash); notifyInstance.hash(transactionHash); })
+	.on('transactionHash', (transactionHash) => { console.log('Transaction Hash:', transactionHash); notify.hash(transactionHash); })
 	.on('receipt', (receipt) => console.log('Receipt', receipt));
 };
 
