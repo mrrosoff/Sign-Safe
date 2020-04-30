@@ -71,8 +71,6 @@ const signContract = async (web3, ethAccount, deployedContract)=> {
 	}
 }
 
-0x6bc5355dF061DcF777422002904abA194657b346
-
 
 const VerifyContractSection = props =>
 {
