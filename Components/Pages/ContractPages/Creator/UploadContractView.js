@@ -97,7 +97,7 @@ const ButtonsSection = props =>
 						/>
 					</Grid>
 					{props.loading ? <Grid item><CircularProgress/></Grid> : null}
-					{props.hash ? <Grid item>
+					{props.ipfsHash ? <Grid item>
 						<Button
 							variant={"contained"}
 							color={"primary"}
