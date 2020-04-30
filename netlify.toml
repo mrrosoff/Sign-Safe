@@ -28,22 +28,9 @@
 
 [[redirects]]
 
-#   For React Router
+  # For React Router
 
   from = "/*"
   to = "/index.html"
   status = 200
-
-[[headers]]
-
-  for = "/*"
-
-  # Security Is Good
-
-  [headers.values]
-
-      X-Content-Type-Options = "nosniff"
-      X-Frame-Options = "SAMEORIGIN"
-      X-XSS-Protection = "1; mode=block"
-      Referrer-Policy = "same-origin"
 
