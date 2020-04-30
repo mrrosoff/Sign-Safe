@@ -19,7 +19,7 @@ const ContractPageCreator = props =>
 			callLambdaFunction("updateIPFSHash", {url: props.contractUrl, hash: props.hash}).then(r => console.log(r));
 			props.setImage("https://ipfs.io/ipfs/" + props.hash)
 		}
-	}, [props.hash]);
+	}, [props.ipfsHash]);
 
 	let view;
 
