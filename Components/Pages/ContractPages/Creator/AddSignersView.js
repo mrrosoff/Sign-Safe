@@ -346,7 +346,7 @@ const BackdropButtons = props =>
 							setLoading(false);
 							props.setContractAddress(contract._address);
 							props.setContract(new web3.eth.Contract(MultiplePartyContract.abi, contract._address));
-							callLambdaFunction("updateContractAddress", {url: props.contractUrl, address: contract.contractAddress})
+							callLambdaFunction("updateContractAddress", {url: props.contractUrl, address: contract._address})
 							.then(r => console.log(r));
 							props.setUrlStatus(2)
 						});

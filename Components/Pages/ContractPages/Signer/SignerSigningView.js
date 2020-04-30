@@ -135,7 +135,7 @@ const getDocHash = async (contract) =>
 {
 	try
 	{
-		return await contract.getContractHash().call();
+		return await contract.methods.getContractHash().call();
 	}
 
 	catch (err)
@@ -148,7 +148,7 @@ const signContract = async (ethAccount, contract) =>
 {
 	try
 	{
-		return await contract.sign()
+		return await contract.methods.sign()
 		.send({ from: ethAccount, gas: 5000000 })
 		.on('error', error => console.error(error))
 		.on('transactionHash', transactionHash => console.log('Transaction Hash:', transactionHash))
