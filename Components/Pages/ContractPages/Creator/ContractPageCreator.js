@@ -14,12 +14,12 @@ const ContractPageCreator = props =>
 {
 	useEffect(() =>
 	{
-		if (props.hash)
+		if (props.ipfsHash)
 		{
-			callLambdaFunction("updateIPFSHash", {url: props.contractUrl, hash: props.hash}).then(r => console.log(r));
-			props.setImage("https://ipfs.io/ipfs/" + props.hash)
+			callLambdaFunction("updateIPFSHash", {url: props.contractUrl, hash: props.ipfsHash}).then(r => console.log(r));
+			props.setImage("https://ipfs.io/ipfs/" + props.ipfsHash)
 		}
-	}, [props.hash]);
+	}, [props.ipfsHash]);
 
 	let view;
 
@@ -59,7 +59,7 @@ const ContractPageCreator = props =>
 				</Grid>
 			</Grid>
 			<Box style={{width: "100%"}}>
-				<CreatorStepper hash={props.hash} urlStatus={props.urlStatus} setUrlStatus={props.setUrlStatus}/>
+				<CreatorStepper ipfsHash={props.ipfsHash} urlStatus={props.urlStatus} setUrlStatus={props.setUrlStatus}/>
 			</Box>
 		</Box>
 	)
@@ -77,7 +77,7 @@ const CreatorStepper = props =>
 					</StepButton>
 				</Step>
 				<Step>
-					<StepButton disabled={!props.hash || props.urlStatus === 2} onClick={() => props.setUrlStatus(1)}>
+					<StepButton disabled={!props.ipfsHash || props.urlStatus === 2} onClick={() => props.setUrlStatus(1)}>
 						Add Signers
 					</StepButton>
 				</Step>
