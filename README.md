@@ -1,5 +1,6 @@
 # Sign Safe
-http://www.signsafe.technology
+Live site: http://www.signsafe.technology
+Research paper: [on github](https://github.com/tc30/sign-safe/blob/master/A_Document_Contract_Solution_For_A_Modern_World.pdf)
 
 ### An E-Contract Solution For A Modern World
 
