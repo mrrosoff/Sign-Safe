@@ -5,7 +5,7 @@ http://www.signsafe.technology
 
 ## About Project
 
-A simple to use, secure contract solution built on the Ethereum blockchain. Check out our live site 
+A simple to use, secure contract solution built on the Ethereum blockchain. Read our research paper [here](https://github.com/tc30/sign-safe/blob/master/A_Document_Contract_Solution_For_A_Modern_World.pdf) and check out our live site 
 [here](http://www.signsafe.technology). This site uses the security and immutablity of the blockchain to
 provide a secure contract experience. Users of the site must exchange their names, emails, and Ethereum addresses to 
 begin the contract creation. The contract creator can input these fields to initialize the signing process. The signers 
