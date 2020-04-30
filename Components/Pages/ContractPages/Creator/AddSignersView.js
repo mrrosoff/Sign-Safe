@@ -329,10 +329,10 @@ const BackdropButtons = props =>
 					{
 						setLoading(true);
 						callLambdaFunction("addSigners", {url: props.contractUrl, signers: props.signers}).then(r => console.log(r));
-						deployContract(props.web3, props.ethAccount, props.fileInformation, props.signers.map(signer => signer.ethAccount)).then(r =>
+						deployContract(props.web3, props.ethAccount, props.fileInformation, props.signers.map(signer => signer.ethAccount)).then(contract =>
 						{
 							setLoading(false);
-							props.setDeployedContract(r);
+							props.setContract(contract);
 							props.setUrlStatus(2)
 						});
 					}}
@@ -347,13 +347,15 @@ const BackdropButtons = props =>
 
 const deployContract  = async (web3, ethAccount, fileInformation, addresses) =>
 {
-	const deployable = new web3.eth.Contract(MultiplePartyContract.abi);
-	const gas = await deployable.deploy({ data: MultiplePartyContract.bytecode, arguments: [fileInformation, addresses] }).estimateGas() + 500000;
-	return deployable.deploy({ data: MultiplePartyContract.bytecode, arguments: [fileInformation, addresses] })
+	const contract = new web3.eth.Contract(MultiplePartyContract.abi);
+	const gas = await contract.deploy({ data: MultiplePartyContract.bytecode, arguments: [fileInformation, addresses] }).estimateGas() + 500000;
+	await contract.deploy({ data: MultiplePartyContract.bytecode, arguments: [fileInformation, addresses] })
 	.send({ from: ethAccount, gas: gas })
 	.on('error', (error) => console.error(error))
 	.on('transactionHash', (transactionHash) => console.log('Transaction Hash:', transactionHash))
 	.on('receipt', (receipt) => console.log('Receipt', receipt));
+
+	return contract;
 };
 
 export default AddSignersView;

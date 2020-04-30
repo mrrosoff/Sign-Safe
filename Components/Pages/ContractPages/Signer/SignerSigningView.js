@@ -72,7 +72,7 @@ const VerifyContractSection = props =>
 
 						reader.readAsArrayBuffer(e.target.files[0]);
 
-						getDocHash(props.web3, props.ethAccount, props.deployedContract)
+						getDocHash(props.contract)
 						.then(r =>
 						{
 							if (r === hash.toString())
@@ -118,7 +118,7 @@ const SignSection = props =>
 						callLambdaFunction("updateSignerSignStatus", {url: props.contractUrl, ethAccount: props.ethAccount, signed: true})
 						.then(r => console.log(r));
 
-						signContract(props.web3, props.ethAccount, props.deployedContract)
+						signContract(props.ethAccount, props.contract)
 						.then(r => console.log(r));
 
 						props.setUrlStatus(1);
@@ -131,12 +131,11 @@ const SignSection = props =>
 	);
 };
 
-const getDocHash = async (web3, ethAccount, deployedContract) =>
+const getDocHash = async (contract) =>
 {
 	try
 	{
-		return await deployedContract.methods.getContractHash().call()
-		.then(documentHash => documentHash);
+		return await contract.getContractHash().call();
 	}
 
 	catch (err)
@@ -145,15 +144,15 @@ const getDocHash = async (web3, ethAccount, deployedContract) =>
 	}
 };
 
-const signContract = async (web3, ethAccount, deployedContract) =>
+const signContract = async (ethAccount, contract) =>
 {
 	try
 	{
-		return await deployedContract.methods.sign()
+		return await contract.sign()
 		.send({ from: ethAccount, gas: 5000000 })
-		.on('error', (error) => console.error(error))
-		.on('transactionHash', (transactionHash) => console.log('Transaction Hash:', transactionHash))
-		.on('receipt', (receipt) => console.log('Receipt', receipt));
+		.on('error', error => console.error(error))
+		.on('transactionHash', transactionHash => console.log('Transaction Hash:', transactionHash))
+		.on('receipt', receipt => console.log('Receipt', receipt));
 	}
 
 	catch (err)

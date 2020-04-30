@@ -9,6 +9,8 @@ import ContractPageCreator from "./ContractPages/Creator/ContractPageCreator";
 import ContractSigner from "./ContractPages/Signer/ContractSigner";
 import ContractPageForbidden from "./ContractPages/ContractPageForbidden";
 
+import MultiplePartyContract from "../../Contracts/build/MultiplePartyContract";
+
 const ContractPage = props =>
 {
 	let { contractUrl } = useParams();
@@ -24,7 +26,7 @@ const ContractPage = props =>
 	let [hash, setHash] = useState(null);
 	let [fileInformation, setFileInformation] = useState();
 
-	let [deployedContract, setDeployedContract] = useState(null);
+	let [contract, setContract] = useState(null);
 
 	const firstUpdate = useRef(true);
 
@@ -39,6 +41,14 @@ const ContractPage = props =>
 
 				if(r.data[0])
 				{
+					const networkId = web3.eth.net.getId();
+					const networkData = MultiplePartyContract.networks[networkId];
+
+					if (networkData)
+					{
+						setContract(new web3.eth.Contract(MultiplePartyContract.abi, networkData.address));
+					}
+
 					if(r.data[0].ipfsHash)
 					{
 						setHash(r.data[0].ipfsHash);
@@ -106,9 +116,7 @@ const ContractPage = props =>
 	{
 		if (!firstUpdate.current)
 		{
-			callLambdaFunction("updateURLAccountStatus", {
-				url: contractUrl, urlStatus: urlStatus, ethAccount: props.ethAccount
-			})
+			callLambdaFunction("updateURLAccountStatus", {url: contractUrl, urlStatus: urlStatus, ethAccount: props.ethAccount})
 			.then(r => console.log(r));
 		}
 
@@ -137,8 +145,8 @@ const ContractPage = props =>
 			setHash={setHash}
 			fileInformation={fileInformation}
 			setFileInformation={setFileInformation}
-			deployedContract={deployedContract}
-			setDeployedContract={setDeployedContract}
+			contract={contract}
+			setContract={setContract}
 			{...props}
 		/>
 	);
