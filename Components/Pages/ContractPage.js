@@ -27,6 +27,7 @@ const ContractPage = props =>
 	let [fileInformation, setFileInformation] = useState();
 
 	let [contract, setContract] = useState(null);
+	let [contractAddress, setContractAddress] = useState(null);
 
 	const firstUpdate = useRef(true);
 
@@ -41,7 +42,11 @@ const ContractPage = props =>
 
 				if(r.data[0])
 				{
-					loadBlockchainData(props.web3, setContract);
+					if (r.data[0].contractAddress)
+					{
+						setContractAddress(r.data[0].contractAddress);
+						setContract(new web3.eth.Contract(MultiplePartyContract.abi, r.data[0].contractAddress));
+					}
 
 					if (r.data[0].contractHash)
 					{
@@ -146,6 +151,8 @@ const ContractPage = props =>
 			setFileInformation={setFileInformation}
 			contract={contract}
 			setContract={setContract}
+			contractAddress={contractAddress}
+			setContractAddress={setContractAddress}
 			{...props}
 		/>
 	);
@@ -174,22 +181,6 @@ const Layout = props =>
 	}
 
 	return pageType;
-};
-
-const loadBlockchainData = async (web3, setContract) =>
-{
-	const networkId = await web3.eth.net.getId();
-	const networkData = MultiplePartyContract.networks[networkId];
-
-	if(networkData)
-	{
-		setContract(new web3.eth.Contract(MultiplePartyContract.abi, networkData.address))
-	}
-
-	else
-	{
-		window.alert('Marketplace contract not deployed to detected network.')
-	}
 };
 
 export default ContractPage;

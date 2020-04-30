@@ -342,7 +342,7 @@ const BackdropButtons = props =>
 						deployContract(props.web3, props.ethAccount, props.fileInformation, props.signers.map(signer => signer.ethAccount)).then(contract =>
 						{
 							setLoading(false);
-							props.setContract(contract);
+							props.setContract(new web3.eth.Contract(MultiplePartyContract.abi, contract.contractAddress));
 							props.setUrlStatus(2)
 						});
 					}}

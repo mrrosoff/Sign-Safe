@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Button, Card, Grid, Typography} from "@material-ui/core";
+import {Card, Grid, Typography} from "@material-ui/core";
 
 import DoneIcon from '@material-ui/icons/Done';
 import LoopIcon from '@material-ui/icons/Loop';

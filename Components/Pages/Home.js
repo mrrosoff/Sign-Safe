@@ -143,6 +143,7 @@ const generateNewURLAndGo = (ethAccount, history, setLoading) => {
 		urlStatus: [{ ethAccount: ethAccount, status: 0}],
 		contractOwner: ethAccount,
 		signers: [],
+		contractAddress: "",
 		contractHash: "",
 		ipfsHash: ""
 	}).then(r =>
