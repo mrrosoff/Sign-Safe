@@ -1,14 +1,12 @@
 # Sign Safe
-https://docs.google.com/document/d/1NMEDvyeMeL0vrld0iNPopdqHAaNpXt4-BOnHLMOX5y4/edit
-
-https://www.overleaf.com/project/5e9f0ff446ac4d00017a1051
+http://www.signsafe.technology
 
 ### An E-Contract Solution For A Modern World
 
 ## About Project
 
 A simple to use, secure contract solution built on the Ethereum blockchain. Check out our live site 
-[here](https://agitated-poincare-c4d10d.netlify.app/). This site uses the security and immutablity of the blockchain to
+[here](http://www.signsafe.technology). This site uses the security and immutablity of the blockchain to
 provide a secure contract experience. Users of the site must exchange their names, emails, and Ethereum addresses to 
 begin the contract creation. The contract creator can input these fields to initialize the signing process. The signers 
 of the document can at that point securely sign the contract hosted on the EVM.
