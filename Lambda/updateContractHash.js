@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb');
 
-const updateIPFSHash = async (data) => {
+const updateContractHash = async (data) => {
 
 	const uri = "mongodb+srv://mrosoff:zlysuHOUVJoUF8r5@sign-safe-zol3w.mongodb.net/test?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
@@ -9,7 +9,7 @@ const updateIPFSHash = async (data) => {
 	{
 		await client.connect();
 		return await client.db('URL-Data').collection('URL-Status')
-		.updateOne({ url: data.url }, { $set: { "ipfsHash": data.hash } });
+		.updateOne({ url: data.url }, { $set: { "contractHash": data.hash } });
 	}
 
 	catch (err)
@@ -27,7 +27,7 @@ exports.handler = async function(event, context) {
 
 	try
 	{
-		const data = await updateIPFSHash(JSON.parse(event.body));
+		const data = await updateContractHash(JSON.parse(event.body));
 		return (
 			{
 				statusCode: 200,

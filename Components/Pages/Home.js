@@ -15,7 +15,6 @@ const Home = props =>
 	);
 };
 
-
 const HomeContent = props =>
 {
 	const history = useHistory();
@@ -109,7 +108,15 @@ const ExistingURLSection = props =>
 					size={"large"}
 					color={"primary"}
 					variant={"contained"}
-					onClick={() => props.history.push("/" + urlText)}
+					onClick={() =>
+					{
+						if (urlText.includes("http"))
+						{
+							urlText = urlText.substring(urlText.length - 8, urlText.length);
+						}
+
+						props.history.push("/" + urlText)
+					}}
 				>
 					Go!
 				</Button>
@@ -143,6 +150,8 @@ const generateNewURLAndGo = (ethAccount, history, setLoading) => {
 		urlStatus: [{ ethAccount: ethAccount, status: 0}],
 		contractOwner: ethAccount,
 		signers: [],
+		contractAddress: "",
+		contractHash: "",
 		ipfsHash: ""
 	}).then(r =>
 	{

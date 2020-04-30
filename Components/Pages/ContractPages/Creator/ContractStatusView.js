@@ -1,11 +1,11 @@
 import React from "react";
 
-import {Button, Card, Grid, Typography} from "@material-ui/core";
+import {Card, Grid, Typography} from "@material-ui/core";
 
 import DoneIcon from '@material-ui/icons/Done';
 import LoopIcon from '@material-ui/icons/Loop';
 
-const CloseContractView = props =>
+const ContractStatus = props =>
 {
 	return(
 		<Grid
@@ -25,15 +25,8 @@ const CloseContractView = props =>
 					alignContent={"center"}
 					spacing={4}
 				>
-					<CloseContractSignerStateView signers={props.signers}/>
+					<ContractStatusSignerStateView signers={props.signers}/>
 				</Grid>
-				<Button
-					variant={"contained"}
-					color={"primary"}
-
-				>
-					Close Contract
-				</Button>
 			</Grid>
 			<Grid item xs={12} md={7} align="center">
 				<img width={"90%"} height={"auto"} src={props.image} alt={"Document"}/> :
@@ -42,7 +35,7 @@ const CloseContractView = props =>
 	);
 };
 
-const CloseContractSignerStateView = props =>
+const ContractStatusSignerStateView = props =>
 {
 	let signersTable = [];
 
@@ -86,4 +79,4 @@ const SignerView = props =>
 
 
 
-export default CloseContractView;
+export default ContractStatus;

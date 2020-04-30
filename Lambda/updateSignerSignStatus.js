@@ -12,7 +12,7 @@ const updateIPFSHash = async (data) => {
 		.updateOne({ url: data.url, "signers.ethAccount": data.ethAccount }, { $set: { "signers.$.signed": data.signed } });
 	}
 
-catch (err)
+	catch (err)
 	{
 		console.log(err);
 	}

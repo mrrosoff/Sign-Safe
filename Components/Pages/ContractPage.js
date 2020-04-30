@@ -9,22 +9,27 @@ import ContractPageCreator from "./ContractPages/Creator/ContractPageCreator";
 import ContractSigner from "./ContractPages/Signer/ContractSigner";
 import ContractPageForbidden from "./ContractPages/ContractPageForbidden";
 
+import MultiplePartyContract from "../../Contracts/build/MultiplePartyContract";
+
 const ContractPage = props =>
 {
 	let { contractUrl } = useParams();
 	let history = useHistory();
 
 	let [urlStatus, setUrlStatus] = useState(null);
+
 	let [contractOwner, setContractOwner] = useState(null);
 	let [isContractOwner, setIsContractOwner] = useState(null);
 	let [isSigner, setIsSigner] = useState(null);
 
 	let [signers, setSigners] = useState([{name: "", email: "", ethAccount: ""}]);
-	let [image, setImage] = useState(null);
-	let [hash, setHash] = useState(null);
-	let [fileInformation, setFileInformation] = useState();
 
-	let [deployedContract, setDeployedContract] = useState(null);
+	let [image, setImage] = useState(null);
+	let [ipfsHash, setipfsHash] = useState(null);
+
+	let [contract, setContract] = useState(null);
+	let [contractAddress, setContractAddress] = useState(null);
+	let [contractHash, setContractHash] = useState();
 
 	const firstUpdate = useRef(true);
 
@@ -39,9 +44,20 @@ const ContractPage = props =>
 
 				if(r.data[0])
 				{
+					if (r.data[0].contractAddress)
+					{
+						setContractAddress(r.data[0].contractAddress);
+						setContract(new web3.eth.Contract(MultiplePartyContract.abi, r.data[0].contractAddress));
+					}
+
+					if (r.data[0].contractHash)
+					{
+						setContractHash(r.data[0].contractHash);
+					}
+
 					if(r.data[0].ipfsHash)
 					{
-						setHash(r.data[0].ipfsHash);
+						setipfsHash(r.data[0].ipfsHash);
 						setImage("https://ipfs.io/ipfs/" + r.data[0].ipfsHash)
 					}
 
@@ -106,9 +122,7 @@ const ContractPage = props =>
 	{
 		if (!firstUpdate.current)
 		{
-			callLambdaFunction("updateURLAccountStatus", {
-				url: contractUrl, urlStatus: urlStatus, ethAccount: props.ethAccount
-			})
+			callLambdaFunction("updateURLAccountStatus", {url: contractUrl, urlStatus: urlStatus, ethAccount: props.ethAccount})
 			.then(r => console.log(r));
 		}
 
@@ -118,6 +132,20 @@ const ContractPage = props =>
 		}
 
 	}, [urlStatus]);
+
+	useEffect(() =>
+	{
+		callLambdaFunction("updateContractAddress", {url: props.contractUrl, address: contractAddress})
+		.then(r => console.log(r));
+
+	}, [contractAddress]);
+
+	useEffect(() =>
+	{
+		callLambdaFunction("updateContractHash", {url: props.contractUrl, hash: contractHash})
+		.then(r => console.log(r));
+
+	}, [contractHash]);
 
 	return (
 		<Layout
@@ -133,12 +161,14 @@ const ContractPage = props =>
 			setSigners={setSigners}
 			image={image}
 			setImage={setImage}
-			hash={hash}
-			setHash={setHash}
-			fileInformation={fileInformation}
-			setFileInformation={setFileInformation}
-			deployedContract={deployedContract}
-			setDeployedContract={setDeployedContract}
+			ipfsHash={ipfsHash}
+			setipfsHash={setipfsHash}
+			contract={contract}
+			setContract={setContract}
+			contractAddress={contractAddress}
+			setContractAddress={setContractAddress}
+			contractHash={contractHash}
+			setContractHash={setContractHash}
 			{...props}
 		/>
 	);
@@ -168,6 +198,5 @@ const Layout = props =>
 
 	return pageType;
 };
-
 
 export default ContractPage;

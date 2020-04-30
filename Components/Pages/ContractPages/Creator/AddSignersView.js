@@ -75,8 +75,8 @@ const AddSignersView = props =>
 						<ActionButtons
 							addSigner={addSigner}
 							setOpenBackDrop={setOpenBackdrop}
-							invalidSigners={invalidSigners}
 							signers={props.signers}
+							invalidSigners={invalidSigners}
 						/>
 					</Grid>
 				</Grid>
@@ -84,12 +84,12 @@ const AddSignersView = props =>
 			<BackdropConfirm
 				web3={props.web3}
 				ethAccount={props.ethAccount}
-				signers={props.signers}
 				contractUrl={props.contractUrl}
 				setUrlStatus={props.setUrlStatus}
-				deployedContract={props.deployedContract}
-				setDeployedContract={props.setDeployedContract}
-				fileInformation={props.fileInformation}
+				signers={props.signers}
+				setContract={props.setContract}
+				setContractAddress={props.setContractAddress}
+				contractHash={props.contractHash}
 				openBackdrop={openBackdrop}
 				setOpenBackdrop={setOpenBackdrop}
 			/>
@@ -108,7 +108,17 @@ const SignersTable = props =>
 			let setEmail = (email) => { let copy = [...props.signers]; copy[i].email = email; props.setSigners(copy); };
 			let setEthAccount = (ethAccount) => { let copy = [...props.signers]; copy[i].ethAccount = ethAccount; props.setSigners(copy); };
 			let setInvalidSigner = (valid) => { let copy = [...props.invalidSigners]; copy[i] = valid; props.setInvalidSigners(copy); };
-			let removeSigner = (i) => { let copy = [...props.signers]; copy.splice(i, 1); props.setSigners(copy); };
+			let removeSigner = (i) =>
+			{
+				let copy = [...props.signers];
+				let copyInvalid = [...props.invalidSigners];
+
+				copy.splice(i, 1);
+				copyInvalid.splice(i, 1);
+
+				props.setSigners(copy);
+				props.setInvalidSigners(copyInvalid);
+			};
 
 			let title = signer.name ? signer.name : "Signer " + (i + 1);
 
@@ -284,12 +294,12 @@ const BackdropConfirm = props =>
 							<BackdropButtons
 								web3={props.web3}
 								ethAccount={props.ethAccount}
-								signers={props.signers}
 								contractUrl={props.contractUrl}
 								setUrlStatus={props.setUrlStatus}
-								fileInformation={props.fileInformation}
-								deployedContract={props.deployedContract}
-								setDeployedContract={props.setDeployedContract}
+								signers={props.signers}
+								setContract={props.setContract}
+								setContractAddress={props.setContractAddress}
+								contractHash={props.contractHash}
 								setOpenBackdrop={props.setOpenBackdrop}
 							/>
 						</Grid>
@@ -329,10 +339,11 @@ const BackdropButtons = props =>
 					{
 						setLoading(true);
 						callLambdaFunction("addSigners", {url: props.contractUrl, signers: props.signers}).then(r => console.log(r));
-						deployContract(props.web3, props.ethAccount, props.fileInformation, props.signers.map(signer => signer.ethAccount)).then(r =>
+						deployContract(props.web3, props.ethAccount, props.contractHash, props.signers.map(signer => signer.ethAccount)).then(contract =>
 						{
 							setLoading(false);
-							props.setDeployedContract(r);
+							props.setContractAddress(contract._address);
+							props.setContract(new web3.eth.Contract(MultiplePartyContract.abi, contract._address));
 							props.setUrlStatus(2)
 						});
 					}}
@@ -345,11 +356,11 @@ const BackdropButtons = props =>
 	);
 };
 
-const deployContract  = async (web3, ethAccount, fileInformation, addresses) =>
+const deployContract  = async (web3, ethAccount, contractHash, addresses) =>
 {
-	const deployable = new web3.eth.Contract(MultiplePartyContract.abi);
-	const gas = await deployable.deploy({ data: MultiplePartyContract.bytecode, arguments: [fileInformation, addresses] }).estimateGas() + 500000;
-	return deployable.deploy({ data: MultiplePartyContract.bytecode, arguments: [fileInformation, addresses] })
+	const contract = new web3.eth.Contract(MultiplePartyContract.abi);
+	const gas = await contract.deploy({ data: MultiplePartyContract.bytecode, arguments: [contractHash, addresses] }).estimateGas() + 500000;
+	return contract.deploy({ data: MultiplePartyContract.bytecode, arguments: [contractHash, addresses] })
 	.send({ from: ethAccount, gas: gas })
 	.on('error', (error) => console.error(error))
 	.on('transactionHash', (transactionHash) => console.log('Transaction Hash:', transactionHash))
