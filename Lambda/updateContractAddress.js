@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb');
 
-const updateContractHash = async (data) => {
+const updateContractAddress = async (data) => {
 
 	const uri = "mongodb+srv://mrosoff:zlysuHOUVJoUF8r5@sign-safe-zol3w.mongodb.net/test?retryWrites=true&w=majority";
 	const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true});
@@ -27,7 +27,7 @@ exports.handler = async function(event, context) {
 
 	try
 	{
-		const data = await updateContractHash(JSON.parse(event.body));
+		const data = await updateContractAddress(JSON.parse(event.body));
 		return (
 			{
 				statusCode: 200,

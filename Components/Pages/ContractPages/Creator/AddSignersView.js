@@ -89,6 +89,7 @@ const AddSignersView = props =>
 				setUrlStatus={props.setUrlStatus}
 				deployedContract={props.deployedContract}
 				setContract={props.setContract}
+				setContractAddress={props.setContractAddress}
 				fileInformation={props.fileInformation}
 				openBackdrop={openBackdrop}
 				setOpenBackdrop={setOpenBackdrop}
@@ -300,6 +301,7 @@ const BackdropConfirm = props =>
 								fileInformation={props.fileInformation}
 								deployedContract={props.deployedContract}
 								setContract={props.setContract}
+								setContractAddress={props.setContractAddress}
 								setOpenBackdrop={props.setOpenBackdrop}
 							/>
 						</Grid>
@@ -342,7 +344,10 @@ const BackdropButtons = props =>
 						deployContract(props.web3, props.ethAccount, props.fileInformation, props.signers.map(signer => signer.ethAccount)).then(contract =>
 						{
 							setLoading(false);
-							props.setContract(new web3.eth.Contract(MultiplePartyContract.abi, contract.contractAddress));
+							props.setContractAddress(contract._address);
+							props.setContract(new web3.eth.Contract(MultiplePartyContract.abi, contract._address));
+							callLambdaFunction("updateContractAddress", {url: props.contractUrl, address: contract.contractAddress})
+							.then(r => console.log(r));
 							props.setUrlStatus(2)
 						});
 					}}
@@ -359,13 +364,11 @@ const deployContract  = async (web3, ethAccount, fileInformation, addresses) =>
 {
 	const contract = new web3.eth.Contract(MultiplePartyContract.abi);
 	const gas = await contract.deploy({ data: MultiplePartyContract.bytecode, arguments: [fileInformation, addresses] }).estimateGas() + 500000;
-	await contract.deploy({ data: MultiplePartyContract.bytecode, arguments: [fileInformation, addresses] })
+	return contract.deploy({ data: MultiplePartyContract.bytecode, arguments: [fileInformation, addresses] })
 	.send({ from: ethAccount, gas: gas })
 	.on('error', (error) => console.error(error))
 	.on('transactionHash', (transactionHash) => console.log('Transaction Hash:', transactionHash))
 	.on('receipt', (receipt) => console.log('Receipt', receipt));
-
-	return contract;
 };
 
 export default AddSignersView;
