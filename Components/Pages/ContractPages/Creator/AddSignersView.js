@@ -33,7 +33,7 @@ const NoHoverButton = withStyles({
 
 const AddSignersView = props =>
 {
-	const [expanded, setExpanded] = React.useState('panel1');
+	const [expanded, setExpanded] = useState('panel1');
 	const handleChange = (panel) => setExpanded(expanded === panel ? false : panel);
 	const [openBackdrop, setOpenBackdrop] = useState(false);
 	const [invalidSigners, setInvalidSigners] = useState([null]);
@@ -108,7 +108,7 @@ const SignersTable = props =>
 			let setEmail = (email) => { let copy = [...props.signers]; copy[i].email = email; props.setSigners(copy); };
 			let setEthAccount = (ethAccount) => { let copy = [...props.signers]; copy[i].ethAccount = ethAccount; props.setSigners(copy); };
 			let setInvalidSigner = (valid) => { let copy = [...props.invalidSigners]; copy[i] = valid; props.setInvalidSigners(copy); };
-			let removeSigner = (i) => { let copy = [...props.signers]; copy.splice(i); props.setSigners(copy); };
+			let removeSigner = (i) => { let copy = [...props.signers]; copy.splice(i, 1); props.setSigners(copy); };
 
 			let title = signer.name ? signer.name : "Signer " + (i + 1);
 
@@ -129,7 +129,7 @@ const SignersTable = props =>
 								<Typography>{title}</Typography>
 							</Grid>
 							<Grid item style={{marginLeft: 'auto'}}>
-								<NoHoverButton disableRipple style={{paddingTop: '0px', paddingBottom: '0px'}} onClick={() => removeSigner(i, 1)}>
+								<NoHoverButton disableRipple style={{paddingTop: '0px', paddingBottom: '0px'}} onClick={() => removeSigner(i)}>
 									<HighlightOffIcon/>
 								</NoHoverButton>
 							</Grid>

@@ -46,9 +46,7 @@ const UploadContractView = props =>
 
 const ButtonsSection = props =>
 {
-
 	return(
-
 		<Grid
 			container
 			direction={"column"}
@@ -84,12 +82,13 @@ const ButtonsSection = props =>
 								});
 
 								let reader = new FileReader();
-
-								reader.onload = function (event) {
+								reader.onload = (event) =>
+								{
 									let file = CryptoJS.lib.WordArray.create(event.target.result);
 									let hash = CryptoJS.SHA256(file);
 									props.setFileInformation(hash.toString());
 								};
+
 								reader.readAsArrayBuffer(e.target.files[0]);
 
 							}}

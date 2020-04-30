@@ -8,6 +8,7 @@ const outputDirectory = "Dist";
 module.exports = {
 	entry: ['@babel/polyfill', './index.js'],
 	devServer: { port: 3000, open: false, hot: true, historyApiFallback: true },
+	devtool: 'cheap-module-source-map',
 	module: {
 		rules: [
 			{test: /\.js$/, exclude: /node_modules/, loader: "babel-loader", options: { presets: ["@babel/preset-env", "@babel/preset-react"]}},
