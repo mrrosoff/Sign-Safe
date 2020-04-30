@@ -11,9 +11,12 @@ import {loadWeb3AccountListener, testWeb3} from "../../Hooks/getWeb3";
 import Router from "../Router";
 import {getIPFS} from "../../Hooks/getIPFS";
 
+import Notify from "bnc-notify";
+
 const LoadApp = props => {
 
     const [web3, setWeb3] = useState();
+    const [notify, setNotify] = useState();
     let [ethAccount, setEthAccount] = useState("");
     const [IPFS, setIPFS] = useState();
 
@@ -46,6 +49,9 @@ const LoadApp = props => {
                 produceSnackBar("Failure To Connect To The IPFS Node. Please Refresh.")
             }
         });
+
+        setNotify(Notify({dappId: 'd8557b0d-3b65-4826-b336-d502f90f1b6f', networkId: 4 }));
+
     }, []);
 
     const { enqueueSnackbar } = useSnackbar();
@@ -55,6 +61,7 @@ const LoadApp = props => {
         <Router
             web3={web3}
             setWeb3={setWeb3}
+            notify={notify}
             IPFS={IPFS}
             ethAccount={ethAccount}
             setEthAccount={setEthAccount}

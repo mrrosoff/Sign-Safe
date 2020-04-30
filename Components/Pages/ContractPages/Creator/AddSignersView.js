@@ -83,6 +83,7 @@ const AddSignersView = props =>
 			</Box>
 			<BackdropConfirm
 				web3={props.web3}
+				notify={props.notify}
 				ethAccount={props.ethAccount}
 				contractUrl={props.contractUrl}
 				setUrlStatus={props.setUrlStatus}
@@ -293,6 +294,7 @@ const BackdropConfirm = props =>
 						<Grid item>
 							<BackdropButtons
 								web3={props.web3}
+								notify={props.notify}
 								ethAccount={props.ethAccount}
 								contractUrl={props.contractUrl}
 								setUrlStatus={props.setUrlStatus}
@@ -339,7 +341,7 @@ const BackdropButtons = props =>
 					{
 						setLoading(true);
 						callLambdaFunction("addSigners", {url: props.contractUrl, signers: props.signers}).then(r => console.log(r));
-						deployContract(props.web3, props.ethAccount, props.contractHash, props.signers.map(signer => signer.ethAccount)).then(contract =>
+						deployContract(props.web3, props.ethAccount, props.contractHash, props.signers.map(signer => signer.ethAccount), props.notify).then(contract =>
 						{
 							setLoading(false);
 							props.setContractAddress(contract._address);
@@ -356,14 +358,14 @@ const BackdropButtons = props =>
 	);
 };
 
-const deployContract  = async (web3, ethAccount, contractHash, addresses) =>
+const deployContract  = async (web3, ethAccount, contractHash, addresses, notifyInstance) =>
 {
 	const contract = new web3.eth.Contract(MultiplePartyContract.abi);
 	const gas = await contract.deploy({ data: MultiplePartyContract.bytecode, arguments: [contractHash, addresses] }).estimateGas() + 500000;
 	return contract.deploy({ data: MultiplePartyContract.bytecode, arguments: [contractHash, addresses] })
 	.send({ from: ethAccount, gas: gas })
 	.on('error', (error) => console.error(error))
-	.on('transactionHash', (transactionHash) => console.log('Transaction Hash:', transactionHash))
+	.on('transactionHash', (transactionHash) => { console.log('Transaction Hash:', transactionHash); notifyInstance.hash(transactionHash); })
 	.on('receipt', (receipt) => console.log('Receipt', receipt));
 };
 
