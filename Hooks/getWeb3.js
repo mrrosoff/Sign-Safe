@@ -38,8 +38,8 @@ export const getWeb3 = async () =>
 
         else
         {
-            const torus = new Torus();
-            await torus.init({showTorusButton: false});
+            const torus = new Torus({buttonPosition: "top-right"});
+            await torus.init({showTorusButton: true});
             await torus.login();
             window.web3 = new Web3(torus.provider);
             return web3;
