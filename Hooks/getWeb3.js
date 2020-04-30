@@ -21,7 +21,8 @@ export const testWeb3 = async () =>
 
 export const getWeb3 = async () =>
 {
-    let web3 = new Web3(UniLogin.createPicker(window.ethereum));
+    const unilogin = UniLogin.createPicker(window.ethereum);
+    const web3 = new Web3(unilogin);
     web3.currentProvider.enable();
     return web3;
 };
