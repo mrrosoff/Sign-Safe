@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import Torus from "@toruslabs/torus-embed";
+import Onboard from 'bnc-onboard'
 
 export const testWeb3 = async () =>
 {
@@ -21,35 +21,20 @@ export const testWeb3 = async () =>
 
 export const getWeb3 = async () =>
 {
-    try
-    {
-        if (window.ethereum && ethereum.isMetaMask)
-        {
-            window.web3 = new Web3(ethereum);
-            await ethereum.enable();
-            return web3;
-        }
+    let web3 = null;
 
-        else if (window.web3)
+    const onboard = Onboard(
         {
-            window.web3 = new Web3(web3.currentProvider);
-            return web3;
+            dappId: "d8557b0d-3b65-4826-b336-d502f90f1b6f",
+            networkId: 4,
+            subscriptions: { wallet: wallet => web3 = new Web3(wallet.provider) }
         }
+    );
 
-        else
-        {
-            const torus = new Torus({buttonPosition: "top-right"});
-            await torus.init({showTorusButton: true, enableLogging: true});
-            await torus.ethereum.enable();
-            window.web3 = new Web3(torus.provider);
-            return web3;
-        }
-    }
+    await onboard.walletSelect();
+    await onboard.walletCheck();
 
-    catch(error)
-    {
-        return null;
-    }
+    return web3;
 };
 
 export const loadWeb3AccountListener = (callback) =>
