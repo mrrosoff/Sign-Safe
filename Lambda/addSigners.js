@@ -21,7 +21,7 @@ const addSigners = async (data) => {
 		.findOneAndUpdate({ url: data.url }, { $push: { signers: { $each: data.signers }}});
 	}
 
-catch (err)
+	catch (err)
 	{
 		console.log(err);
 	}

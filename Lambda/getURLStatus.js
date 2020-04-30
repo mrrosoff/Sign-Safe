@@ -12,7 +12,7 @@ const getURLStatus = async (data) => {
 		.find({ url: data.url }).toArray();
 	}
 
-catch (err)
+	catch (err)
 	{
 		console.log(err);
 	}

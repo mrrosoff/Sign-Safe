@@ -6,6 +6,7 @@ import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import CryptoJS from 'crypto-js';
 
 import {UploadButton} from "../../../Elements/Buttons";
+import {callLambdaFunction} from "../../../../Hooks/getDatabase";
 
 const UploadContractView = props =>
 {
@@ -22,6 +23,7 @@ const UploadContractView = props =>
 		>
 			<Grid item xs={12} md={5} align={"center"}>
 				<ButtonsSection
+					contractUrl={props.contractUrl}
 					web3={props.web3}
 					loading={loading}
 					setLoading={setLoading}
@@ -87,6 +89,9 @@ const ButtonsSection = props =>
 									let file = CryptoJS.lib.WordArray.create(event.target.result);
 									let hash = CryptoJS.SHA256(file);
 									props.setFileInformation(hash.toString());
+
+									callLambdaFunction("updateContractHash", {url: props.contractUrl, hash: hash.toString()})
+									.then(r => console.log(r));
 								};
 
 								reader.readAsArrayBuffer(e.target.files[0]);

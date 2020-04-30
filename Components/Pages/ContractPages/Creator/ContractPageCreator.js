@@ -5,7 +5,7 @@ import {Box, Grid, Step, StepButton, Stepper} from "@material-ui/core";
 
 import UploadContractView from "./UploadContractView";
 import AddSignersView from "./AddSignersView";
-import CloseContractView from "./CloseContractView";
+import ContractStatus from "./ContractStatusView";
 import {callLambdaFunction} from "../../../../Hooks/getDatabase";
 
 const useStyles = makeStyles(() => ({ root: { width: '100%' } }));
@@ -35,7 +35,7 @@ const ContractPageCreator = props =>
 
 	else if(props.urlStatus === 2)
 	{
-		view = <CloseContractView {...props} />;
+		view = <ContractStatus {...props} />;
 	}
 
 	else
@@ -83,7 +83,7 @@ const CreatorStepper = props =>
 				</Step>
 				<Step>
 					<StepButton disabled={true}>
-						Close Contract
+						View Contract Status
 					</StepButton>
 				</Step>
 			</Stepper>

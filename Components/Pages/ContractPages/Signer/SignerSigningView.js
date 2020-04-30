@@ -62,7 +62,7 @@ const VerifyContractSection = props =>
 					accept={".png, .jpg, .pdf"}
 					onClick={(e) =>
 					{
-						let hash;
+						var hash;
 						let reader = new FileReader();
 						reader.onload = (event) =>
 						{

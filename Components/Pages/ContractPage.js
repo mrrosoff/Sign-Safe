@@ -41,12 +41,11 @@ const ContractPage = props =>
 
 				if(r.data[0])
 				{
-					const networkId = web3.eth.net.getId();
-					const networkData = MultiplePartyContract.networks[networkId];
+					loadBlockchainData(props.web3, setContract);
 
-					if (networkData)
+					if (r.data[0].contractHash)
 					{
-						setContract(new web3.eth.Contract(MultiplePartyContract.abi, networkData.address));
+						setFileInformation(r.data[0].contractHash);
 					}
 
 					if(r.data[0].ipfsHash)
@@ -177,5 +176,20 @@ const Layout = props =>
 	return pageType;
 };
 
+const loadBlockchainData = async (web3, setContract) =>
+{
+	const networkId = await web3.eth.net.getId();
+	const networkData = MultiplePartyContract.networks[networkId];
+
+	if(networkData)
+	{
+		setContract(new web3.eth.Contract(MultiplePartyContract.abi, networkData.address))
+	}
+
+	else
+	{
+		window.alert('Marketplace contract not deployed to detected network.')
+	}
+};
 
 export default ContractPage;

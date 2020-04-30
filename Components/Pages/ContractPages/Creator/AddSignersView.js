@@ -88,7 +88,7 @@ const AddSignersView = props =>
 				contractUrl={props.contractUrl}
 				setUrlStatus={props.setUrlStatus}
 				deployedContract={props.deployedContract}
-				setDeployedContract={props.setDeployedContract}
+				setContract={props.setContract}
 				fileInformation={props.fileInformation}
 				openBackdrop={openBackdrop}
 				setOpenBackdrop={setOpenBackdrop}
@@ -108,7 +108,17 @@ const SignersTable = props =>
 			let setEmail = (email) => { let copy = [...props.signers]; copy[i].email = email; props.setSigners(copy); };
 			let setEthAccount = (ethAccount) => { let copy = [...props.signers]; copy[i].ethAccount = ethAccount; props.setSigners(copy); };
 			let setInvalidSigner = (valid) => { let copy = [...props.invalidSigners]; copy[i] = valid; props.setInvalidSigners(copy); };
-			let removeSigner = (i) => { let copy = [...props.signers]; copy.splice(i, 1); props.setSigners(copy); };
+			let removeSigner = (i) =>
+			{
+				let copy = [...props.signers];
+				let copyInvalid = [...props.invalidSigners];
+
+				copy.splice(i, 1);
+				copyInvalid.splice(i, 1);
+
+				props.setSigners(copy);
+				props.setInvalidSigners(copyInvalid);
+			};
 
 			let title = signer.name ? signer.name : "Signer " + (i + 1);
 
@@ -289,7 +299,7 @@ const BackdropConfirm = props =>
 								setUrlStatus={props.setUrlStatus}
 								fileInformation={props.fileInformation}
 								deployedContract={props.deployedContract}
-								setDeployedContract={props.setDeployedContract}
+								setContract={props.setContract}
 								setOpenBackdrop={props.setOpenBackdrop}
 							/>
 						</Grid>
