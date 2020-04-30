@@ -88,7 +88,7 @@ const ButtonsSection = props =>
 								reader.onload = function (event) {
 									let file = CryptoJS.lib.WordArray.create(event.target.result);
 									let hash = CryptoJS.SHA256(file);
-									//console.log('hash: ' + hash);
+									//console.log('hash: ' + hash.toString());
 									props.setFileInformation(hash.toString());
 								};
 								reader.readAsArrayBuffer(e.target.files[0]);

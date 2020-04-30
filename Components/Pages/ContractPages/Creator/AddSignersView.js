@@ -349,7 +349,6 @@ const deployContract  = async (web3, ethAccount, fileInformation, addresses) =>
 {
 	const deployable = new web3.eth.Contract(MultiplePartyContract.abi);
 	const gas = await deployable.deploy({ data: MultiplePartyContract.bytecode, arguments: [fileInformation, addresses] }).estimateGas() + 500000;
-
 	return deployable.deploy({ data: MultiplePartyContract.bytecode, arguments: [fileInformation, addresses] })
 	.send({ from: ethAccount, gas: gas })
 	.on('error', (error) => console.error(error))

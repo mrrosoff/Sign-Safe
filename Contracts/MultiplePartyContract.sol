@@ -50,7 +50,7 @@ contract MultiplePartyContract is SignSafeContract{
         STATE = sign_safe_contract_state.PENDING;
     }
 
-    function sign() only_PENDING only_unsigned_signatories only_signatories only_hash_match public {
+    function sign() only_PENDING only_unsigned_signatories only_signatories public {
         numberOfSignatures++;
         who_has_signed[msg.sender] = true;
         signature_timestamps[msg.sender] = now;
