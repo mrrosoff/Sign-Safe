@@ -77,13 +77,13 @@ const VerifyContractSection = props =>
 						{
 							if (r === hash.toString())
 							{
-								props.produceSnackBar("Document hashes match!", "success");
+								props.produceSnackBar("Document Hashes Match!", "success");
 								props.setDisableButton(false);
 							}
 
 							else
 							{
-								props.produceSnackBar("Document hashes DO NOT match!");
+								props.produceSnackBar("Document Hashes DO NOT match!");
 								props.setDisableButton(true);
 							}
 						});

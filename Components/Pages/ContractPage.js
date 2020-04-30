@@ -17,17 +17,19 @@ const ContractPage = props =>
 	let history = useHistory();
 
 	let [urlStatus, setUrlStatus] = useState(null);
+
 	let [contractOwner, setContractOwner] = useState(null);
 	let [isContractOwner, setIsContractOwner] = useState(null);
 	let [isSigner, setIsSigner] = useState(null);
 
 	let [signers, setSigners] = useState([{name: "", email: "", ethAccount: ""}]);
+
 	let [image, setImage] = useState(null);
-	let [hash, setHash] = useState(null);
-	let [fileInformation, setFileInformation] = useState();
+	let [ipfsHash, setipfsHash] = useState(null);
 
 	let [contract, setContract] = useState(null);
 	let [contractAddress, setContractAddress] = useState(null);
+	let [contractHash, setContractHash] = useState();
 
 	const firstUpdate = useRef(true);
 
@@ -50,12 +52,12 @@ const ContractPage = props =>
 
 					if (r.data[0].contractHash)
 					{
-						setFileInformation(r.data[0].contractHash);
+						setContractHash(r.data[0].contractHash);
 					}
 
 					if(r.data[0].ipfsHash)
 					{
-						setHash(r.data[0].ipfsHash);
+						setipfsHash(r.data[0].ipfsHash);
 						setImage("https://ipfs.io/ipfs/" + r.data[0].ipfsHash)
 					}
 
@@ -131,6 +133,20 @@ const ContractPage = props =>
 
 	}, [urlStatus]);
 
+	useEffect(() =>
+	{
+		callLambdaFunction("updateContractAddress", {url: props.contractUrl, address: contractAddress})
+		.then(r => console.log(r));
+
+	}, [contractAddress]);
+
+	useEffect(() =>
+	{
+		callLambdaFunction("updateContractHash", {url: props.contractUrl, hash: contractHash})
+		.then(r => console.log(r));
+
+	}, [contractHash]);
+
 	return (
 		<Layout
 			contractUrl={contractUrl}
@@ -145,14 +161,14 @@ const ContractPage = props =>
 			setSigners={setSigners}
 			image={image}
 			setImage={setImage}
-			hash={hash}
-			setHash={setHash}
-			fileInformation={fileInformation}
-			setFileInformation={setFileInformation}
+			ipfsHash={ipfsHash}
+			setipfsHash={setipfsHash}
 			contract={contract}
 			setContract={setContract}
 			contractAddress={contractAddress}
 			setContractAddress={setContractAddress}
+			contractHash={contractHash}
+			setContractHash={setContractHash}
 			{...props}
 		/>
 	);

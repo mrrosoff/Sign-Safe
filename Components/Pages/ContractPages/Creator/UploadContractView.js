@@ -2,11 +2,12 @@ import React, {useState} from "react";
 
 import {Box, Button, CircularProgress, Grid, Typography} from "@material-ui/core";
 import {Skeleton} from "@material-ui/lab";
+
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import CryptoJS from 'crypto-js';
 
 import {UploadButton} from "../../../Elements/Buttons";
-import {callLambdaFunction} from "../../../../Hooks/getDatabase";
+
+import CryptoJS from 'crypto-js';
 
 const UploadContractView = props =>
 {
@@ -23,15 +24,15 @@ const UploadContractView = props =>
 		>
 			<Grid item xs={12} md={5} align={"center"}>
 				<ButtonsSection
-					contractUrl={props.contractUrl}
 					web3={props.web3}
+					IPFS={props.IPFS}
+					contractUrl={props.contractUrl}
+					setUrlStatus={props.setUrlStatus}
+					ipfsHash={props.ipfsHash}
+					setipfsHash={props.setipfsHash}
+					setContractHash={props.setContractHash}
 					loading={loading}
 					setLoading={setLoading}
-					hash={props.hash}
-					setHash={props.setHash}
-					IPFS={props.IPFS}
-					setUrlStatus={props.setUrlStatus}
-					setFileInformation={props.setFileInformation}
 				/>
 			</Grid>
 			<Grid item xs={12} md={7} align="center">
@@ -79,7 +80,7 @@ const ButtonsSection = props =>
 								props.setLoading(true);
 								sendToIPFS(props.IPFS, e.target.files[0]).then(fileHash =>
 								{
-									props.setHash(fileHash);
+									props.setipfsHash(fileHash);
 									props.setLoading(false);
 								});
 
@@ -88,14 +89,10 @@ const ButtonsSection = props =>
 								{
 									let file = CryptoJS.lib.WordArray.create(event.target.result);
 									let hash = CryptoJS.SHA256(file);
-									props.setFileInformation(hash.toString());
-
-									callLambdaFunction("updateContractHash", {url: props.contractUrl, hash: hash.toString()})
-									.then(r => console.log(r));
+									props.setContractHash(hash.toString());
 								};
 
 								reader.readAsArrayBuffer(e.target.files[0]);
-
 							}}
 						/>
 					</Grid>
