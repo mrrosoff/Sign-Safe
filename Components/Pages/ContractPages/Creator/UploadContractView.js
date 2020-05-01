@@ -74,7 +74,7 @@ const ButtonsSection = props =>
 					<Grid item>
 						<UploadButton
 							text={"Select Contract"}
-							accept={".png, .jpg"}
+							accept={".png, .jpg, .jpeg, .pdf"}
 							onClick={(e) =>
 							{
 								props.setLoading(true);

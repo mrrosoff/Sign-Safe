@@ -59,7 +59,7 @@ const VerifyContractSection = props =>
 			<Grid item>
 				<UploadButton
 					text={"Verify Document Match"}
-					accept={".png, .jpg, .pdf"}
+					accept={".png, .jpg, .jpeg, .pdf"}
 					onClick={(e) =>
 					{
 						var hash;
