@@ -38,7 +38,7 @@ const SignerSigningView = props =>
 				</Grid>
 			</Grid>
 			<Grid item xs={12} md={7} align="center">
-				<img width={"90%"} height={"auto"} src={props.image} alt={"Document"}/> :
+				<img width={"90%"} height={"auto"} src={props.image} alt={"Document"}/>
 			</Grid>
 		</Grid>
 	);
