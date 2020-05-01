@@ -29,11 +29,8 @@ const SignerSigningView = props =>
 					alignContent={"center"}
 					spacing={4}
 				>
-					<Grid item>
-						<SignSection disableButton={disableButton} {...props}/>
-					</Grid>
-					<Grid item>
-						<VerifyContractSection setDisableButton={setDisableButton} {...props}/>
+					<Grid item align={"center"}>
+						<SignSection disableButton={disableButton} setDisableButton={setDisableButton} {...props}/>
 					</Grid>
 				</Grid>
 			</Grid>
@@ -44,7 +41,7 @@ const SignerSigningView = props =>
 	);
 };
 
-const VerifyContractSection = props =>
+const SignSection = props =>
 {
 	return (
 		<Grid
@@ -52,10 +49,12 @@ const VerifyContractSection = props =>
 			justify={"center"}
 			alignItems={"center"}
 			alignContent={"center"}
-			style={{height: "100%", width: "80%"}}
+			style={{height: "90%", width: "80%"}}
 			spacing={5}
 		>
-
+			<Grid item xs={12}>
+				<Typography variant={"h6"}>{props.contractOwner} would like you to sign their contract.</Typography>
+			</Grid>
 			<Grid item>
 				<UploadButton
 					text={"Verify Document Match"}
@@ -89,24 +88,6 @@ const VerifyContractSection = props =>
 						});
 					}}
 				/>
-			</Grid>
-		</Grid>
-	);
-};
-
-const SignSection = props =>
-{
-	return (
-		<Grid
-			container
-			justify={"center"}
-			alignItems={"center"}
-			alignContent={"center"}
-			style={{height: "100%", width: "80%"}}
-			spacing={5}
-		>
-			<Grid item>
-				<Typography variant={"h6"}>{props.contractOwner} would like you to sign their contract.</Typography>
 			</Grid>
 			<Grid item>
 				<Button
