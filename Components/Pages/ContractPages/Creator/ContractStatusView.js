@@ -1,12 +1,32 @@
 import React from "react";
 
-import {Card, Grid, Typography} from "@material-ui/core";
+import {Grid, Typography} from "@material-ui/core";
 
 import DoneIcon from '@material-ui/icons/Done';
 import LoopIcon from '@material-ui/icons/Loop';
+import {callLambdaFunction} from "../../../../Hooks/getDatabase";
 
 const ContractStatus = props =>
 {
+	props.contract.events.signature()
+	.on('data', event =>
+	{
+		console.log(event);
+		callLambdaFunction("getURLStatus", { url: props.contractUrl })
+		.then(r =>
+		{
+			console.log(r);
+
+			if(r.data[0])
+			{
+				if(r.data[0].signers.length > 0)
+				{
+					props.setSigners(r.data[0].signers);
+				}
+			}
+		});
+	});
+
 	return(
 		<Grid
 			container
@@ -74,7 +94,6 @@ const SignerView = props =>
 		</Grid>
 	)
 };
-
 
 
 export default ContractStatus;
