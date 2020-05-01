@@ -115,8 +115,6 @@ const ContractPage = props =>
 					}, 3000)
 				}
 			});
-
-			firstUpdate.current = false;
 		}
 	}, [props.ethAccount]);
 
@@ -126,6 +124,11 @@ const ContractPage = props =>
 		{
 			callLambdaFunction("updateURLAccountStatus", {url: contractUrl, urlStatus: urlStatus, ethAccount: props.ethAccount})
 			.then(r => console.log(r));
+		}
+
+		else
+		{
+			firstUpdate.current = false;
 		}
 
 	}, [urlStatus]);
