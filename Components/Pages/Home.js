@@ -95,7 +95,7 @@ const ExistingURLSection = props =>
 				<TextField
 					fullWidth
 					variant={"outlined"}
-					label={"Enter Contract Address"}
+					label={"Enter Contract URL"}
 					value={urlText}
 					onChange={(e) => setUrlText(e.target.value)}
 				/>
