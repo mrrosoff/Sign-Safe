@@ -96,13 +96,14 @@ const SignSection = props =>
 					color={"primary"}
 					onClick={() =>
 					{
-						callLambdaFunction("updateSignerSignStatus", {url: props.contractUrl, ethAccount: props.ethAccount, signed: true})
-						.then(r => console.log(r));
-
 						signContract(props.ethAccount, props.contract, props.notify)
 						.then(r =>
 						{
 							console.log(r);
+
+							callLambdaFunction("updateSignerSignStatus", {url: props.contractUrl, ethAccount: props.ethAccount, signed: true})
+							.then(r => console.log(r));
+
 							props.setUrlStatus(1);
 						});
 					}}

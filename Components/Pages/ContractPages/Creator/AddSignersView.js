@@ -316,6 +316,7 @@ const BackdropConfirm = props =>
 const BackdropButtons = props =>
 {
 	let [loading, setLoading] = useState(false);
+	let [disabled, setDisabled] = useState(false);
 
 	return(
 		<Grid
@@ -329,6 +330,7 @@ const BackdropButtons = props =>
 				<Button
 					variant={"contained"}
 					color={"primary"}
+					disabled={disabled}
 					onClick={() => props.setOpenBackdrop(false)}
 				>
 					Go Back
@@ -338,12 +340,16 @@ const BackdropButtons = props =>
 				<Button
 					variant={"contained"}
 					color={"primary"}
-					onClick={() =>
+					disabled={disabled}
+					onClick={(e) =>
 					{
+						e.stopPropagation();
+						setDisabled(true);
 						setLoading(true);
 						callLambdaFunction("addSigners", {url: props.contractUrl, signers: props.signers}).then(r => console.log(r));
 						deployContract(props.web3, props.ethAccount, props.contractHash, props.signers.map(signer => signer.ethAccount), props.notify).then(contract =>
 						{
+							setDisabled(false);
 							setLoading(false);
 							props.setContractAddress(contract._address);
 							props.setContract(new web3.eth.Contract(MultiplePartyContract.abi, contract._address));
