@@ -135,14 +135,14 @@ const ContractPage = props =>
 
 	useEffect(() =>
 	{
-		callLambdaFunction("updateContractAddress", {url: props.contractUrl, address: contractAddress})
+		callLambdaFunction("updateContractAddress", {url: contractUrl, address: contractAddress})
 		.then(r => console.log(r));
 
 	}, [contractAddress]);
 
 	useEffect(() =>
 	{
-		callLambdaFunction("updateContractHash", {url: props.contractUrl, hash: contractHash})
+		callLambdaFunction("updateContractHash", {url: contractUrl, hash: contractHash})
 		.then(r => console.log(r));
 
 	}, [contractHash]);

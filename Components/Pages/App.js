@@ -21,6 +21,7 @@ const LoadApp = props => {
     const [IPFS, setIPFS] = useState();
 
     useEffect(() => {
+
         testWeb3().then(web3Provider => {
             setWeb3(web3Provider);
             if (web3Provider)
