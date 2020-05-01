@@ -115,6 +115,8 @@ const ContractPage = props =>
 					}, 3000)
 				}
 			});
+
+			firstUpdate.current = false;
 		}
 	}, [props.ethAccount]);
 
@@ -126,24 +128,25 @@ const ContractPage = props =>
 			.then(r => console.log(r));
 		}
 
-		else
-		{
-			firstUpdate.current = false;
-		}
-
 	}, [urlStatus]);
 
 	useEffect(() =>
 	{
-		callLambdaFunction("updateContractAddress", {url: contractUrl, address: contractAddress})
-		.then(r => console.log(r));
+		if (!firstUpdate.current)
+		{
+			callLambdaFunction("updateContractAddress", {url: contractUrl, address: contractAddress})
+			.then(r => console.log(r));
+		}
 
 	}, [contractAddress]);
 
 	useEffect(() =>
 	{
-		callLambdaFunction("updateContractHash", {url: contractUrl, hash: contractHash})
-		.then(r => console.log(r));
+		if (!firstUpdate.current)
+		{
+			callLambdaFunction("updateContractHash", {url: contractUrl, hash: contractHash})
+			.then(r => console.log(r));
+		}
 
 	}, [contractHash]);
 
