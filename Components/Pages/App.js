@@ -6,7 +6,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 
 import { SnackbarProvider, useSnackbar } from 'notistack';
 
-import {testWeb3} from "../../Hooks/getWeb3";
+import {loadWeb3AccountListener, testWeb3} from "../../Hooks/getWeb3";
 
 import Router from "../Router";
 import {getIPFS} from "../../Hooks/getIPFS";
@@ -22,7 +22,8 @@ const LoadApp = props => {
 
     useEffect(() => {
 
-        testWeb3().then(web3Provider => {
+        testWeb3().then(web3Provider =>
+        {
             setWeb3(web3Provider);
             if (web3Provider)
             {
@@ -33,11 +34,13 @@ const LoadApp = props => {
                         setEthAccount(e[0].toLowerCase());
                     }
                 });
+
+                loadWeb3AccountListener(setEthAccount);
             }
         });
 
-        getIPFS().then(IPFSProvider => {
-
+        getIPFS().then(IPFSProvider =>
+        {
             if(IPFSProvider)
             {
                 setIPFS(IPFSProvider);

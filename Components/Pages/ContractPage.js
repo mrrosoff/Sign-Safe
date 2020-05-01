@@ -27,11 +27,13 @@ const ContractPage = props =>
 	let [image, setImage] = useState(null);
 	let [ipfsHash, setipfsHash] = useState(null);
 
-	let [contract, setContract] = useState(null);
-	let [contractAddress, setContractAddress] = useState(null);
+	let [contract, setContract] = useState();
+	let [contractAddress, setContractAddress] = useState();
 	let [contractHash, setContractHash] = useState();
 
-	const firstUpdate = useRef(true);
+	const firstUrlUpdate = useRef(true);
+	const firstAddressUpdate = useRef(true);
+	const firstHashUpdate = useRef(true);
 
 	useEffect(() =>
 	{
@@ -120,7 +122,7 @@ const ContractPage = props =>
 
 	useEffect(() =>
 	{
-		if (!firstUpdate.current)
+		if (!firstUrlUpdate.current)
 		{
 			callLambdaFunction("updateURLAccountStatus", {url: contractUrl, urlStatus: urlStatus, ethAccount: props.ethAccount})
 			.then(r => console.log(r));
@@ -128,27 +130,37 @@ const ContractPage = props =>
 
 		else
 		{
-			firstUpdate.current = false;
+			firstUrlUpdate.current = false;
 		}
 
 	}, [urlStatus]);
 
 	useEffect(() =>
 	{
-		if (!firstUpdate.current)
+		if (!firstAddressUpdate.current)
 		{
 			callLambdaFunction("updateContractAddress", {url: contractUrl, address: contractAddress})
 			.then(r => console.log(r));
+		}
+
+		else
+		{
+			firstAddressUpdate.current = false;
 		}
 
 	}, [contractAddress]);
 
 	useEffect(() =>
 	{
-		if (!firstUpdate.current)
+		if (!firstHashUpdate.current)
 		{
 			callLambdaFunction("updateContractHash", {url: contractUrl, hash: contractHash})
 			.then(r => console.log(r));
+		}
+
+		else
+		{
+			firstHashUpdate.current = false;
 		}
 
 	}, [contractHash]);

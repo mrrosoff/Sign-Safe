@@ -19,7 +19,7 @@ export const testWeb3 = async () =>
 };
 
 
-export const getWeb3 = async (setEthAccount) =>
+export const getWeb3 = async () =>
 {
     let web3 = null;
 
@@ -35,11 +35,7 @@ export const getWeb3 = async (setEthAccount) =>
         {
             dappId: "d8557b0d-3b65-4826-b336-d502f90f1b6f",
             networkId: 4,
-            subscriptions:
-                {
-                    address: address => setEthAccount(address.toLowerCase()),
-                    wallet: wallet => web3 = new Web3(wallet.provider)
-                },
+            subscriptions: { wallet: wallet => web3 = new Web3(wallet.provider) },
             walletSelect: { wallets: wallets }
         }
     );
@@ -50,6 +46,18 @@ export const getWeb3 = async (setEthAccount) =>
     }
 
     return web3;
+};
+
+
+export const loadWeb3AccountListener = (callback) =>
+{
+    if (window.ethereum)
+    {
+        window.ethereum.on('accountsChanged', function(accounts)
+        {
+            callback(accounts[0].toLowerCase())
+        });
+    }
 };
 
 
