@@ -44,8 +44,10 @@ export const getWeb3 = async (setEthAccount) =>
         }
     );
 
-    await onboard.walletSelect();
-    await onboard.walletCheck();
+    if (await onboard.walletSelect())
+    {
+        await onboard.walletCheck();
+    }
 
     return web3;
 };
