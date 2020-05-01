@@ -2,7 +2,6 @@ import React, {useState} from "react";
 
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import withStyles from "@material-ui/core/styles/withStyles";
 import {Backdrop, Box, Button, CircularProgress, ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Grid, IconButton, Paper, TextField, Typography} from "@material-ui/core";
 
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -12,23 +11,23 @@ import {callLambdaFunction} from "../../../../Hooks/getDatabase";
 
 import MultiplePartyContract from "../../../../Contracts/build/MultiplePartyContract";
 
-const useStyles = makeStyles((theme) => (
+const useStylesBackdrop = makeStyles((theme) => (
 	{
 		backdrop:
 			{
 				zIndex: theme.zIndex.drawer + 1,
-				color: '#fff',
+				color: '#FFFFFF',
 			},
 	}
 ));
 
-const NoHoverButton = withStyles({
+const useStylesHover = makeStyles({
 	root: {
 		'&:hover': {
-			backgroundColor: '#FFFFFF',
+			backgroundColor: props => props.color
 		}
 	}
-})(IconButton);
+});
 
 
 const AddSignersView = props =>
@@ -100,6 +99,7 @@ const AddSignersView = props =>
 
 const SignersTable = props =>
 {
+	const classes = useStylesHover({color: props.dark ?"#424242" : "#FFFFFF" });
 	const small = useMediaQuery(theme => theme.breakpoints.down('sm'));
 
 	return(
@@ -140,9 +140,9 @@ const SignersTable = props =>
 								<Typography>{title}</Typography>
 							</Grid>
 							<Grid item style={{marginLeft: 'auto'}}>
-								<NoHoverButton disableRipple style={{paddingTop: '0px', paddingBottom: '0px'}} onClick={() => removeSigner(i)}>
+								<IconButton className={classes.root} disableRipple style={{paddingTop: '0px', paddingBottom: '0px'}} onClick={() => removeSigner(i)}>
 									<HighlightOffIcon/>
-								</NoHoverButton>
+								</IconButton>
 							</Grid>
 						</Grid>
 					</ExpansionPanelSummary>
@@ -267,7 +267,7 @@ const ActionButtons = props =>
 
 const BackdropConfirm = props =>
 {
-	const classes = useStyles();
+	const classes = useStylesBackdrop();
 	return(
 		<Backdrop className={classes.backdrop} open={props.openBackdrop} onClick={() => props.setOpenBackdrop(false)}>
 			<Paper style={{minWidth: "20vw", minHeight: "20vh"}}>
