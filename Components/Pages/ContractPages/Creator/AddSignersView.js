@@ -61,6 +61,7 @@ const AddSignersView = props =>
 				>
 					<Grid item align={"center"}>
 						<SignersTable
+							darkMode={props.darkMode}
 							web3={props.web3}
 							signers={props.signers}
 							setSigners={props.setSigners}
@@ -99,7 +100,7 @@ const AddSignersView = props =>
 
 const SignersTable = props =>
 {
-	const classes = useStylesHover({color: props.dark ?"#424242" : "#FFFFFF" });
+	const classes = useStylesHover({color: props.darkMode ? "#424242" : "#FFFFFF" });
 	const small = useMediaQuery(theme => theme.breakpoints.down('sm'));
 
 	return(
