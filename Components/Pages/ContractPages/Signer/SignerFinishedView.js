@@ -2,6 +2,8 @@ import React from "react";
 
 import {Grid, Typography} from "@material-ui/core";
 
+import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
+
 const SignerFinishedView = props =>
 {
 	return(
@@ -23,7 +25,12 @@ const SignerFinishedView = props =>
 					alignContent={"center"}
 					spacing={4}
 				>
-					You are done!
+					<Grid item>
+						<Typography>Thanks for signing! You will be notified when the contract is completed by all parties.</Typography>
+					</Grid>
+					<Grid item>
+						<SentimentVerySatisfiedIcon />
+					</Grid>
 				</Grid>
 			</Grid>
 		</Grid>

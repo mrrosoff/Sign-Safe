@@ -53,7 +53,7 @@ const SignSection = props =>
 			spacing={5}
 		>
 			<Grid item xs={12}>
-				<Typography variant={"h6"}>{props.contractOwner} would like you to sign their contract.</Typography>
+				<Typography variant={"subtitle1"}>{props.contractOwner} would like you to sign their contract.</Typography>
 			</Grid>
 			<Grid item>
 				<UploadButton

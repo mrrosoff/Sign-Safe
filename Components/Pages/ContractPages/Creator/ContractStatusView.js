@@ -43,9 +43,7 @@ const ContractStatusSignerStateView = props =>
 	{
 		signersTable.push(
 			<Grid item align={"center"} key={props.signers[i].ethAccount}>
-				<Card>
-					<SignerView signer={props.signers[i]}/>
-				</Card>
+				<SignerView signer={props.signers[i]}/>
 			</Grid>
 		);
 	}
@@ -65,13 +63,13 @@ const SignerView = props =>
 			spacing={2}
 		>
 			<Grid item>
-				<Typography variant={"h6"}>{props.signer.name}</Typography>
+				<Typography variant={"subtitle1"}>{props.signer.name}</Typography>
+			</Grid>
+			<Grid item>
+				<Typography variant={"subtitle2"}>{props.signer.ethAccount}</Typography>
 			</Grid>
 			<Grid item>
 				{props.signer.signed ? <DoneIcon /> : <LoopIcon />}
-			</Grid>
-			<Grid item>
-				<Typography variant={"subtitle1"}>{props.signer.ethAccount}</Typography>
 			</Grid>
 		</Grid>
 	)
