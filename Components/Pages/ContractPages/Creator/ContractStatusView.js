@@ -45,6 +45,11 @@ const ContractStatus = props =>
 					alignContent={"center"}
 					spacing={4}
 				>
+					<Grid item>
+						<Typography>
+							Your contract has been created. It is located at {props.contractAddress} on the Ethereum Blockchain.
+						</Typography>
+					</Grid>
 					<ContractStatusSignerStateView signers={props.signers}/>
 				</Grid>
 			</Grid>

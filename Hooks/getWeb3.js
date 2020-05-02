@@ -51,7 +51,7 @@ export const getWeb3 = async () =>
             walletSelect:
                 {
                     heading: "To Use Sign Safe, Please Choose a Wallet Provider.",
-                    description: "This will allow a connection to the Ethereum blockchain, the core element of our secure contracts.",
+                    description: "This will allow a connection to the Ethereum Blockchain, the core element of our secure contracts.",
                     wallets: wallets
                 }
         }
