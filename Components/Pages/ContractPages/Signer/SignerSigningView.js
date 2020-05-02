@@ -20,7 +20,7 @@ const SignerSigningView = props =>
 			style={{height: "100%"}}
 			spacing={2}
 		>
-			<Grid item xs={12} md={5} align="center">
+			<Grid item xs={12} md={6} align="center">
 				<Grid
 					container
 					direction={"column"}
@@ -34,7 +34,7 @@ const SignerSigningView = props =>
 					</Grid>
 				</Grid>
 			</Grid>
-			<Grid item xs={12} md={7} align="center">
+			<Grid item xs={12} md={6} align="center">
 				<img width={"90%"} height={"auto"} src={props.image} alt={"Document"}/>
 			</Grid>
 		</Grid>

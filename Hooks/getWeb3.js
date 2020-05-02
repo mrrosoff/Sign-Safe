@@ -28,7 +28,7 @@ export const getWeb3 = async () =>
         {
             walletName: "torus",
             buildEnv: 'production',
-            buttonPosition: 'top-right',
+            showTorusButton: false,
             enableLogging: true,
             preferred: true
         },

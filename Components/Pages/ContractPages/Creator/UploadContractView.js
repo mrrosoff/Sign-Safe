@@ -22,7 +22,7 @@ const UploadContractView = props =>
 			style={{height: "100%"}}
 			spacing={2}
 		>
-			<Grid item xs={12} md={5} align={"center"}>
+			<Grid item xs={12} md={6} align={"center"}>
 				<ButtonsSection
 					web3={props.web3}
 					IPFS={props.IPFS}
@@ -35,7 +35,7 @@ const UploadContractView = props =>
 					setLoading={setLoading}
 				/>
 			</Grid>
-			<Grid item xs={12} md={7} align="center">
+			<Grid item xs={12} md={6} align="center">
 				{props.image ?
 					<img width={"90%"} height={"auto"} src={props.image} alt={"Document"}/> :
 					<Box width={"90%"}>
