@@ -98,6 +98,16 @@ const ExistingURLSection = props =>
 					label={"Enter Contract URL"}
 					value={urlText}
 					onChange={(e) => setUrlText(e.target.value)}
+					onKeyPress={(ev) => { if (ev.key === 'Enter') { ev.preventDefault();
+
+						if (urlText.includes("http"))
+						{
+							urlText = urlText.substring(urlText.length - 8, urlText.length);
+						}
+
+						props.history.push("/" + urlText);
+
+					}}}
 				/>
 			</Grid>
 			<Grid item>
@@ -115,7 +125,7 @@ const ExistingURLSection = props =>
 							urlText = urlText.substring(urlText.length - 8, urlText.length);
 						}
 
-						props.history.push("/" + urlText)
+						props.history.push("/" + urlText);
 					}}
 				>
 					Go!
