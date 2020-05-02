@@ -377,12 +377,12 @@ const deployContract  = async (web3, ethAccount, contractHash, addresses, notify
 		.send({ from: ethAccount, gas: gas })
 		.on('error', (error) =>
 		{
-			console.error(error);
+			console.error("Deploy Failed", error);
 			setDisabled(false);
 			setLoading(false);
 			produceSnackBar("Something Went Wrong...");
 		})
-		.on('transactionHash', (transactionHash) => { console.log('Transaction Hash:', transactionHash); notify.hash(transactionHash); })
+		.on('transactionHash', (transactionHash) => { console.log('Transaction Hash', transactionHash); notify.hash(transactionHash); })
 		.on('receipt', (receipt) => console.log('Receipt', receipt));
 	}
 

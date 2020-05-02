@@ -134,7 +134,7 @@ const signContract = async (ethAccount, contract, notify, produceSnackBar) =>
 	{
 		return await contract.methods.sign()
 		.send({ from: ethAccount, gas: 5000000 })
-		.on('error', error => { console.error(error); produceSnackBar("Something Went Wrong...") })
+		.on('error', error => { console.error("Signing Failed", error); produceSnackBar("Something Went Wrong...") })
 		.on('transactionHash', transactionHash => { console.log('Transaction Hash:', transactionHash); notify.hash(transactionHash); })
 		.on('receipt', receipt => console.log('Receipt', receipt));
 	}

@@ -11,20 +11,24 @@ const ContractStatus = props =>
 	props.contract.events.signature()
 	.on('data', event =>
 	{
-		console.log(event);
-		callLambdaFunction("getURLStatus", { url: props.contractUrl })
-		.then(r =>
-		{
-			console.log(r);
+		console.log("Someone Signed", event);
 
-			if(r.data[0])
+		setTimeout(() =>
+		{
+			callLambdaFunction("getURLStatus", { url: props.contractUrl })
+			.then(r =>
 			{
-				if(r.data[0].signers.length > 0)
+				console.log(r);
+
+				if(r.data[0])
 				{
-					props.setSigners(r.data[0].signers);
+					if(r.data[0].signers.length > 0)
+					{
+						props.setSigners(r.data[0].signers);
+					}
 				}
-			}
-		});
+			});
+		}, 3000);
 	});
 
 	return(
