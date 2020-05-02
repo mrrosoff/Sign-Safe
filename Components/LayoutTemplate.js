@@ -1,8 +1,11 @@
-import React, {useState} from "react";
+import React, {useState, createRef} from "react";
 
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {Button, Box, CircularProgress, Container, Grid, IconButton, Tooltip, Typography, Paper} from "@material-ui/core";
 import {getWeb3, loadWeb3AccountListener} from "../Hooks/getWeb3";
+
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import CheckIcon from '@material-ui/icons/Check';
 
 import Brightness7Icon from '@material-ui/icons/Brightness7'; // Light
 import Brightness4Icon from '@material-ui/icons/Brightness4'; // Dark
@@ -11,6 +14,9 @@ const LayoutTemplate = props =>
 {
 	const small = useMediaQuery(theme => theme.breakpoints.down('sm'));
 	let [loading, setLoading] = useState(false);
+
+	let inputRef = createRef();
+	let [copied, setCopied] = useState(false);
 
 	return(
 		<Container disableGutters>
@@ -32,10 +38,33 @@ const LayoutTemplate = props =>
 								justify={"center"}
 								alignItems={"center"}
 								alignContent={"center"}
-								spacing={2}
+								spacing={1}
 							>
 								<Grid item>
 									{loading ? <CircularProgress /> : <Web3Item setLoading={setLoading} {...props} />}
+								</Grid>
+								<Grid item style={{marginLeft: '20px'}}>
+									<Tooltip title={"Copy Url To Clipboard"}>
+										<IconButton
+											disabled={copied}
+											onClick={() =>
+											{
+												inputRef.current.select();
+												document.execCommand("copy");
+												setCopied(true);
+
+												setTimeout(() => setCopied(false), 3000);
+											}}
+										>
+											<input
+												readOnly
+												ref={inputRef}
+												style={{position: 'absolute', top: '-9999px', left: '-9999px'}}
+												value={window.location.href}
+											/>
+											{copied ? <CheckIcon /> : <FileCopyIcon/>}
+										</IconButton>
+									</Tooltip>
 								</Grid>
 								<Grid item>
 									<Tooltip title={props.darkMode ? "Light Theme" : "Dark Theme"}>
