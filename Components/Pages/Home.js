@@ -162,7 +162,8 @@ const generateNewURLAndGo = (ethAccount, history, setLoading) => {
 		signers: [],
 		contractAddress: "",
 		contractHash: "",
-		ipfsHash: ""
+		ipfsHash: "",
+		fileType: ""
 	}).then(r =>
 	{
 		console.log(r);

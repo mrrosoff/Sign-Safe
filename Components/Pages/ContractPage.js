@@ -30,10 +30,12 @@ const ContractPage = props =>
 	let [contract, setContract] = useState();
 	let [contractAddress, setContractAddress] = useState();
 	let [contractHash, setContractHash] = useState();
+	let [fileType, setFileType] = useState();
 
 	const firstUrlUpdate = useRef(true);
 	const firstAddressUpdate = useRef(true);
 	const firstHashUpdate = useRef(true);
+	const firstFileTypeUpdate = useRef(true);
 
 	useEffect(() =>
 	{
@@ -61,6 +63,11 @@ const ContractPage = props =>
 					{
 						setipfsHash(r.data[0].ipfsHash);
 						setImage("https://ipfs.io/ipfs/" + r.data[0].ipfsHash)
+					}
+
+					if(r.data[0].fileType)
+					{
+						setFileType(r.data[0].fileType);
 					}
 
 					if(r.data[0].signers.length > 0)
@@ -165,6 +172,21 @@ const ContractPage = props =>
 
 	}, [contractHash]);
 
+	useEffect(() =>
+	{
+		if (!firstFileTypeUpdate.current)
+		{
+			callLambdaFunction("updateContractFileType", {url: contractUrl, fileType: fileType})
+			.then(r => console.log(r));
+		}
+
+		else
+		{
+			firstFileTypeUpdate.current = false;
+		}
+
+	}, [fileType]);
+
 	return (
 		<Layout
 			contractUrl={contractUrl}
@@ -187,6 +209,8 @@ const ContractPage = props =>
 			setContractAddress={setContractAddress}
 			contractHash={contractHash}
 			setContractHash={setContractHash}
+			fileType={fileType}
+			setFileType={setFileType}
 			{...props}
 		/>
 	);

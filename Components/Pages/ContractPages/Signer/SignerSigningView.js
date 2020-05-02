@@ -35,7 +35,12 @@ const SignerSigningView = props =>
 				</Grid>
 			</Grid>
 			<Grid item xs={12} md={6} align="center">
-				<img width={"90%"} height={"auto"} src={props.image} alt={"Document"}/>
+				{props.fileType === "pdf" ?
+					<div style={{width: '90%', height: '70vh', padding: '0px', overflow: 'hidden'}}>
+						<iframe style={{width: '100%', height: '100%', border: 0}} src={props.image} />
+					</div> :
+					<img width={"90%"} height={"auto"} src={props.image} alt={"Document"}/>
+				}
 			</Grid>
 		</Grid>
 	);

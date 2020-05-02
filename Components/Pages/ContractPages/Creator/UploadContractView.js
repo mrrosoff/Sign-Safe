@@ -31,13 +31,18 @@ const UploadContractView = props =>
 					ipfsHash={props.ipfsHash}
 					setipfsHash={props.setipfsHash}
 					setContractHash={props.setContractHash}
+					setFileType={props.setFileType}
 					loading={loading}
 					setLoading={setLoading}
 				/>
 			</Grid>
 			<Grid item xs={12} md={6} align="center">
 				{props.image ?
-					<img width={"90%"} height={"auto"} src={props.image} alt={"Document"}/> :
+					props.fileType === "pdf" ?
+						<div style={{width: '90%', height: '70vh', padding: '0px', overflow: 'hidden'}}>
+							<iframe style={{width: '100%', height: '100%', border: 0}} src={props.image} />
+						</div> :
+						<img width={"90%"} height={"auto"} src={props.image} alt={"Document"}/> :
 					<Box width={"90%"}>
 						<Skeleton height={"70vh"} variant="rect"/>
 					</Box>
@@ -78,6 +83,10 @@ const ButtonsSection = props =>
 							onClick={(e) =>
 							{
 								props.setLoading(true);
+
+								let arraySplit = e.target.files[0].name.split(".");
+								props.setFileType(arraySplit[arraySplit.length - 1]);
+
 								sendToIPFS(props.IPFS, e.target.files[0]).then(fileHash =>
 								{
 									props.setipfsHash(fileHash);
