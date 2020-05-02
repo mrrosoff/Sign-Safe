@@ -82,6 +82,7 @@ const AddSignersView = props =>
 				</Grid>
 			</Box>
 			<BackdropConfirm
+				produceSnackBar={props.produceSnackBar}
 				web3={props.web3}
 				notify={props.notify}
 				ethAccount={props.ethAccount}
@@ -294,6 +295,7 @@ const BackdropConfirm = props =>
 						</Grid>
 						<Grid item>
 							<BackdropButtons
+								produceSnackBar={props.produceSnackBar}
 								web3={props.web3}
 								notify={props.notify}
 								ethAccount={props.ethAccount}
@@ -346,11 +348,11 @@ const BackdropButtons = props =>
 						e.stopPropagation();
 						setDisabled(true);
 						setLoading(true);
-						callLambdaFunction("addSigners", {url: props.contractUrl, signers: props.signers}).then(r => console.log(r));
-						deployContract(props.web3, props.ethAccount, props.contractHash, props.signers.map(signer => signer.ethAccount), props.notify).then(contract =>
+						deployContract(props.web3, props.ethAccount, props.contractHash, props.signers.map(signer => signer.ethAccount), props.notify, setDisabled, setLoading, props.produceSnackBar).then(contract =>
 						{
 							setDisabled(false);
 							setLoading(false);
+							callLambdaFunction("addSigners", {url: props.contractUrl, signers: props.signers}).then(r => console.log(r));
 							props.setContractAddress(contract._address);
 							props.setContract(new web3.eth.Contract(MultiplePartyContract.abi, contract._address));
 							props.setUrlStatus(2)
@@ -365,13 +367,19 @@ const BackdropButtons = props =>
 	);
 };
 
-const deployContract  = async (web3, ethAccount, contractHash, addresses, notify) =>
+const deployContract  = async (web3, ethAccount, contractHash, addresses, notify, setDisabled, setLoading, produceSnackBar) =>
 {
 	const contract = new web3.eth.Contract(MultiplePartyContract.abi);
 	const gas = await contract.deploy({ data: MultiplePartyContract.bytecode, arguments: [contractHash, addresses] }).estimateGas() + 500000;
 	return contract.deploy({ data: MultiplePartyContract.bytecode, arguments: [contractHash, addresses] })
 	.send({ from: ethAccount, gas: gas })
-	.on('error', (error) => console.error(error))
+	.on('error', (error) =>
+	{
+		console.error(error);
+		setDisabled(false);
+		setLoading(false);
+		produceSnackBar("Something went wrong...");
+	})
 	.on('transactionHash', (transactionHash) => { console.log('Transaction Hash:', transactionHash); notify.hash(transactionHash); })
 	.on('receipt', (receipt) => console.log('Receipt', receipt));
 };
