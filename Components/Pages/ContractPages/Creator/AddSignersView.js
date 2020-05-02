@@ -369,19 +369,27 @@ const BackdropButtons = props =>
 
 const deployContract  = async (web3, ethAccount, contractHash, addresses, notify, setDisabled, setLoading, produceSnackBar) =>
 {
-	const contract = new web3.eth.Contract(MultiplePartyContract.abi);
-	const gas = await contract.deploy({ data: MultiplePartyContract.bytecode, arguments: [contractHash, addresses] }).estimateGas() + 500000;
-	return contract.deploy({ data: MultiplePartyContract.bytecode, arguments: [contractHash, addresses] })
-	.send({ from: ethAccount, gas: gas })
-	.on('error', (error) =>
+	try
 	{
-		console.error(error);
-		setDisabled(false);
-		setLoading(false);
-		produceSnackBar("Something went wrong...");
-	})
-	.on('transactionHash', (transactionHash) => { console.log('Transaction Hash:', transactionHash); notify.hash(transactionHash); })
-	.on('receipt', (receipt) => console.log('Receipt', receipt));
+		const contract = new web3.eth.Contract(MultiplePartyContract.abi);
+		const gas = await contract.deploy({ data: MultiplePartyContract.bytecode, arguments: [contractHash, addresses] }).estimateGas() + 500000;
+		return contract.deploy({ data: MultiplePartyContract.bytecode, arguments: [contractHash, addresses] })
+		.send({ from: ethAccount, gas: gas })
+		.on('error', (error) =>
+		{
+			console.error(error);
+			setDisabled(false);
+			setLoading(false);
+			produceSnackBar("Something Went Wrong...");
+		})
+		.on('transactionHash', (transactionHash) => { console.log('Transaction Hash:', transactionHash); notify.hash(transactionHash); })
+		.on('receipt', (receipt) => console.log('Receipt', receipt));
+	}
+
+	catch(err)
+	{
+		console.error(err);
+	}
 };
 
 export default AddSignersView;
