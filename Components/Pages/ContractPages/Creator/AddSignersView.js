@@ -196,6 +196,7 @@ const NameField = props =>
 {
 	return(
 		<TextField
+			fullWidth
 			label={"Name"}
 			value={props.name}
 			onChange={(e) => props.setName(e.target.value)}
@@ -207,6 +208,7 @@ const EmailField = props =>
 {
 	return(
 		<TextField
+			fullWidth
 			label={"Email"}
 			value={props.email}
 			onChange={(e) => props.setEmail(e.target.value)}
@@ -218,6 +220,7 @@ const EthAddrField = props =>
 {
 	return(
 		<TextField
+			fullWidth
 			required
 			label={"Ethereum Address"}
 			error={props.invalidSigner}
@@ -271,7 +274,7 @@ const BackdropConfirm = props =>
 {
 	const classes = useStylesBackdrop();
 	return(
-		<Backdrop className={classes.backdrop} open={props.openBackdrop} onClick={() => props.setOpenBackdrop(false)}>
+		<Backdrop className={classes.backdrop} open={props.openBackdrop}>
 			<Paper style={{minWidth: "20vw", minHeight: "20vh"}}>
 				<Box m={4}>
 					<Grid

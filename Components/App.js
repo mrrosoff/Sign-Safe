@@ -84,8 +84,7 @@ const App = () => {
             createMuiTheme({
                 palette: {
                     type: darkMode ? 'dark' : 'light',
-                    primary: { main: "#157F1F"},
-                    secondary: { main: "#00A5CF"}
+                    primary: { main: darkMode ? "#00A5CF" : "#157F1F"},
                 },
             }),
         [darkMode],
