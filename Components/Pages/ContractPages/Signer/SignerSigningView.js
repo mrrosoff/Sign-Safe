@@ -66,6 +66,7 @@ const SignSection = props =>
 				<UploadButton
 					text={"Verify Document Match"}
 					accept={".png, .jpg, .jpeg, .pdf"}
+					disabled={loading}
 					onClick={(e) =>
 					{
 						var hash;
