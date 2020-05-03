@@ -218,6 +218,8 @@ const ContractPage = props =>
 
 const Layout = props =>
 {
+	console.log(props.isContractOwner, props.isSigner);
+
 	let pageType = <ContractPageLoading {...props}/>;
 
 	if(props.isContractOwner)

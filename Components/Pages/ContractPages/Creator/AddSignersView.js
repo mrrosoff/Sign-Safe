@@ -379,7 +379,8 @@ const deployContract  = async (web3, ethAccount, contractHash, addresses, notify
 			produceSnackBar("Something Went Wrong...");
 		})
 		.on('transactionHash', (transactionHash) => { console.log('Transaction Hash', transactionHash); notify.hash(transactionHash); })
-		.on('receipt', (receipt) => console.log('Receipt', receipt));
+		.on('receipt', (receipt) => console.log('Receipt', receipt))
+		.on('confirmation', (confirmationNumber, receipt) => console.log(confirmationNumber, receipt));
 	}
 
 	catch(err)
