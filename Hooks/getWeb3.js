@@ -48,7 +48,7 @@ export const getWeb3 = async (setWeb3, setEthAccount) =>
             subscriptions:
                 {
                     wallet: wallet => setWeb3(new Web3(wallet.provider)),
-                    account: account => setEthAccount(account)
+                    address: address => setEthAccount(address)
                 },
             walletSelect:
                 {
