@@ -94,6 +94,7 @@ const Web3Item = props =>
 					props.setLoading(true);
 					getWeb3(props.setWeb3, props.setEthAccount).then(() =>
 					{
+						loadWeb3AccountListener();
 						props.setLoading(false)
 					})
 				}}

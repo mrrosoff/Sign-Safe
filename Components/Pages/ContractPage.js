@@ -51,7 +51,7 @@ const ContractPage = props =>
 					if (r.data[0].contractAddress)
 					{
 						setContractAddress(r.data[0].contractAddress);
-						setContract(new web3.eth.Contract(MultiplePartyContract.abi, r.data[0].contractAddress));
+						setContract(new props.web3.eth.Contract(MultiplePartyContract.abi, r.data[0].contractAddress));
 					}
 
 					if (r.data[0].contractHash)
