@@ -28,7 +28,7 @@ const HomeContent = props =>
 			alignContent={"center"}
 			direction={"column"}
 			style={{minHeight: "70vh"}}
-			spacing={4}
+			spacing={8}
 		>
 			<Grid item>
 				<Typography variant={"h2"} align={"center"}>Sign Safe</Typography>
@@ -42,7 +42,7 @@ const HomeContent = props =>
 					justify={"center"}
 					alignContent={"center"}
 					alignItems={"center"}
-					spacing={4}
+					spacing={3}
 					>
 					<Grid item>
 						<Button
@@ -66,13 +66,13 @@ const HomeContent = props =>
 						</Button>
 					</Grid>
 					{loading ? <Grid item><CircularProgress/></Grid> : null}
+					<Grid item xs={12}>
+						<Typography variant={"h6"} align={"center"}>or</Typography>
+					</Grid>
+					<Grid item xs={12}>
+						<ExistingURLSection history={history}/>
+					</Grid>
 				</Grid>
-			</Grid>
-			<Grid item>
-				<Typography variant={"h6"} align={"center"}>or</Typography>
-			</Grid>
-			<Grid item>
-				<ExistingURLSection history={history}/>
 			</Grid>
 		</Grid>
 	)
