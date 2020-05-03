@@ -318,7 +318,6 @@ const BackdropConfirm = props =>
 const BackdropButtons = props =>
 {
 	let [loading, setLoading] = useState(false);
-	let [disabled, setDisabled] = useState(false);
 
 	return(
 		<Grid
@@ -332,7 +331,7 @@ const BackdropButtons = props =>
 				<Button
 					variant={"contained"}
 					color={"primary"}
-					disabled={disabled}
+					disabled={loading}
 					onClick={() => props.setOpenBackdrop(false)}
 				>
 					Go Back
@@ -342,15 +341,13 @@ const BackdropButtons = props =>
 				<Button
 					variant={"contained"}
 					color={"primary"}
-					disabled={disabled}
+					disabled={loading}
 					onClick={(e) =>
 					{
 						e.stopPropagation();
-						setDisabled(true);
 						setLoading(true);
 						deployContract(props.web3, props.ethAccount, props.contractHash, props.signers.map(signer => signer.ethAccount), props.notify, setDisabled, setLoading, props.produceSnackBar).then(contract =>
 						{
-							setDisabled(false);
 							setLoading(false);
 							callLambdaFunction("addSigners", {url: props.contractUrl, signers: props.signers}).then(r => console.log(r));
 							props.setContractAddress(contract._address);

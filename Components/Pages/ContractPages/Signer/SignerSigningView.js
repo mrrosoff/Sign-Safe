@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-import {Button, Grid, Typography} from "@material-ui/core";
+import {Button, CircularProgress, Grid, Typography} from "@material-ui/core";
 
 import {callLambdaFunction} from "../../../../Hooks/getDatabase";
 import {UploadButton} from "../../../Elements/Buttons";
@@ -48,6 +48,8 @@ const SignerSigningView = props =>
 
 const SignSection = props =>
 {
+	let [loading, setLoading] = useState(false);
+
 	return (
 		<Grid
 			container
@@ -96,11 +98,12 @@ const SignSection = props =>
 			</Grid>
 			<Grid item>
 				<Button
-					disabled={props.disableButton}
+					disabled={props.disableButton || props.loading}
 					variant={"contained"}
 					color={"primary"}
 					onClick={() =>
 					{
+						setLoading(true);
 						signContract(props.ethAccount, props.contract, props.notify)
 						.then(r =>
 						{
@@ -109,6 +112,7 @@ const SignSection = props =>
 							callLambdaFunction("updateSignerSignStatus", {url: props.contractUrl, ethAccount: props.ethAccount, signed: true})
 							.then(r => console.log(r));
 
+							setLoading(false);
 							props.setUrlStatus(1);
 						});
 					}}
@@ -116,6 +120,7 @@ const SignSection = props =>
 					Sign Contract
 				</Button>
 			</Grid>
+			{loading ? <Grid item><CircularProgress /></Grid> : null}
 		</Grid>
 	);
 };
