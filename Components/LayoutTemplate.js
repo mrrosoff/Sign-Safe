@@ -92,10 +92,8 @@ const Web3Item = props =>
 				variant={"outlined"}
 				onClick={() => {
 					props.setLoading(true);
-					getWeb3(props.setWeb3).then(() =>
+					getWeb3(props.setWeb3, props.setEthAccount).then(() =>
 					{
-						props.web3.eth.getAccounts().then(e => props.setEthAccount(e[0].toLowerCase()));
-						loadWeb3AccountListener(props.setEthAccount);
 						props.setLoading(false)
 					})
 				}}
