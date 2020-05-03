@@ -351,7 +351,7 @@ const BackdropButtons = props =>
 							setLoading(false);
 							callLambdaFunction("addSigners", {url: props.contractUrl, signers: props.signers}).then(r => console.log(r));
 							props.setContractAddress(contract._address);
-							props.setContract(new web3.eth.Contract(MultiplePartyContract.abi, contract._address));
+							props.setContract(new props.web3.eth.Contract(MultiplePartyContract.abi, contract._address));
 							props.setUrlStatus(2)
 						});
 					}}
@@ -380,7 +380,6 @@ const deployContract  = async (web3, ethAccount, contractHash, addresses, notify
 		})
 		.on('transactionHash', (transactionHash) => { console.log('Transaction Hash', transactionHash); notify.hash(transactionHash); })
 		.on('receipt', (receipt) => console.log('Receipt', receipt))
-		.on('confirmation', (confirmationNumber, receipt) => console.log(confirmationNumber, receipt));
 	}
 
 	catch(err)
