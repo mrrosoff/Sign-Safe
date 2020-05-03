@@ -19,10 +19,8 @@ export const testWeb3 = async () =>
 };
 
 
-export const getWeb3 = async () =>
+export const getWeb3 = async (setWeb3) =>
 {
-    let web3 = null;
-
     const wallets = [
         { walletName: "metamask", preferred: true },
         {
@@ -47,7 +45,7 @@ export const getWeb3 = async () =>
         {
             dappId: "d8557b0d-3b65-4826-b336-d502f90f1b6f",
             networkId: 4,
-            subscriptions: { wallet: wallet => web3 = new Web3(wallet.provider) },
+            subscriptions: { wallet: wallet => setWeb3(new Web3(wallet.provider)) },
             walletSelect:
                 {
                     heading: "To Use Sign Safe, Please Choose a Wallet Provider.",
@@ -61,8 +59,6 @@ export const getWeb3 = async () =>
     {
         await onboard.walletCheck();
     }
-
-    return web3;
 };
 
 
