@@ -99,7 +99,7 @@ const SignSection = props =>
 			</Grid>
 			<Grid item>
 				<Button
-					disabled={props.disableButton || props.loading}
+					disabled={props.disableButton || loading}
 					variant={"contained"}
 					color={"primary"}
 					onClick={() =>
