@@ -346,7 +346,7 @@ const BackdropButtons = props =>
 					{
 						e.stopPropagation();
 						setLoading(true);
-						deployContract(props.web3, props.ethAccount, props.contractHash, props.signers.map(signer => signer.ethAccount), props.notify, setDisabled, setLoading, props.produceSnackBar).then(contract =>
+						deployContract(props.web3, props.ethAccount, props.contractHash, props.signers.map(signer => signer.ethAccount), props.notify, setLoading, props.produceSnackBar).then(contract =>
 						{
 							setLoading(false);
 							callLambdaFunction("addSigners", {url: props.contractUrl, signers: props.signers}).then(r => console.log(r));
@@ -364,7 +364,7 @@ const BackdropButtons = props =>
 	);
 };
 
-const deployContract  = async (web3, ethAccount, contractHash, addresses, notify, setDisabled, setLoading, produceSnackBar) =>
+const deployContract  = async (web3, ethAccount, contractHash, addresses, notify, setLoading, produceSnackBar) =>
 {
 	try
 	{
@@ -375,7 +375,6 @@ const deployContract  = async (web3, ethAccount, contractHash, addresses, notify
 		.on('error', (error) =>
 		{
 			console.error("Deploy Failed", error);
-			setDisabled(false);
 			setLoading(false);
 			produceSnackBar("Something Went Wrong...");
 		})

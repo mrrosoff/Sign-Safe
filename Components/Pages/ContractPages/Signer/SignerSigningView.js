@@ -104,7 +104,7 @@ const SignSection = props =>
 					onClick={() =>
 					{
 						setLoading(true);
-						signContract(props.ethAccount, props.contract, props.notify)
+						signContract(props.ethAccount, props.contract, setLoading, props.notify, props.produceSnackBar)
 						.then(r =>
 						{
 							console.log(r);
@@ -138,13 +138,18 @@ const getDocHash = async (contract) =>
 	}
 };
 
-const signContract = async (ethAccount, contract, notify, produceSnackBar) =>
+const signContract = async (ethAccount, contract, setLoading, notify, produceSnackBar) =>
 {
 	try
 	{
 		return await contract.methods.sign()
 		.send({ from: ethAccount, gas: 5000000 })
-		.on('error', error => { console.error("Signing Failed", error); produceSnackBar("Something Went Wrong...") })
+		.on('error', error =>
+		{
+			console.error("Signing Failed", error);
+			setLoading(false);
+			produceSnackBar("Something Went Wrong...")
+		})
 		.on('transactionHash', transactionHash => { console.log('Transaction Hash:', transactionHash); notify.hash(transactionHash); })
 		.on('receipt', receipt => console.log('Receipt', receipt));
 	}
