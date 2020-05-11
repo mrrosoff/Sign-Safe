@@ -16,7 +16,7 @@
 
   # Development Build Command
 
-#  framework = "#custom"
+  framework = "#custom"
   command = "./netlify-dev.sh"
 
   # Webpack-Dev-Server Port
