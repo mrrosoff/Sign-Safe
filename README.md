@@ -5,7 +5,7 @@
 ## About Project
 
 A simple to use, secure contract solution built on the Ethereum blockchain. Read our research paper [here](./A_Document_Contract_Solution_For_A_Modern_World.pdf)
-and check out our live site [here](https://www.signsafe.technology) (While live, our Backend has been taken down because we are poor). This site uses the security
+and check out our live site [here](https://www.signsafe.technology) **(While live, our Backend has been taken down because we are poor)**. This site uses the security
 and immutability of the blockchain to provide a secure contract experience. Users of the site must exchange their names, emails, and Ethereum addresses to 
 begin the contract creation. The contract creator can input these fields to initialize the signing process. The signers 
 of the document can at that point securely sign the contract hosted on the EVM.
